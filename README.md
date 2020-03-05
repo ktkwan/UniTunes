@@ -6,7 +6,8 @@ Rebecca Zuo, Rachel Souza, Katherine Kwan, Ambika Miglani
 **Team Strengths and Weaknesses:** _Fill this in!_
 
 **Project Idea(s):** _Fill this in with three unique ideas! (Due by March 2)_
-### Idea 1 Brown Spotify 
+### Idea 1 Brown Spotify
+_Rejected - this is a "create, read, update, delete" app with no algorithm_
 
 Problem to solve: 
 Student’s currently have little exposure to the student audio(music, podcasts, dj set) creators on campus. Furthermore, student creators don’t have a platform to share their work with other students in a way that will garner their work the attention that they deserve. 
@@ -21,6 +22,8 @@ User Perspective:
 We created a google form with a few interview questions that we gave to students at Brown, because our target demographic is Brown University students. From survey results, all interviewed participants said that they are interested in learning more about student musicians on campus. The majority of users said that they discover new music through friends recommendations, going to concerts, and through spotify while a minority said they discovered new music through Youtube and Soundcloud. From a scale of 1-5, the majority of users said that how easy it is to access student produced audio is a 2. The people who said that they do create content said that they are maybe empowered to share their work, and they are doing so through social media and soundcloud. 
 
 ### Idea 2 Resource hub for creative work 
+_Rejected for the same reason_
+
 Problem to solve: 
 There are a lot of skilled workers on both RISD and Brown campuses. There is a lot of need for freelance work, and temporary labor among student organizations. Furthermore, there are equally many students seeking quick jobs to make a buck. 
 
@@ -35,6 +38,8 @@ Once again, we created a google form that we passed among Brown University stude
 
 
 ### Idea 3 Brown housing guide 
+_Rejected for the same reason_
+
 Problem to solve: 
 Currently, there seems to be a lack of resources regarding on campus housing options. Most of the information regarding housing currently travels through word of mouth. Thus, we thought it would be helpful to create an information hub for housing recommendations based on student reviews. In particular, resources regarding accessibility, and accommodations are very scarce.
 
