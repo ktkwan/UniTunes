@@ -7,7 +7,7 @@ Rebecca Zuo, Rachel Souza, Katherine Kwan, Ambika Miglani
 
 **Project Idea(s):** _Fill this in with three unique ideas! (Due by March 2)_
 ### Idea 1 Brown Spotify
-_Rejected - this is a "create, read, update, delete" app with no algorithm_
+Approved
 
 Problem to solve: 
 Student’s currently have little exposure to the student audio(music, podcasts, dj set) creators on campus. Furthermore, student creators don’t have a platform to share their work with other students in a way that will garner their work the attention that they deserve. 
@@ -91,7 +91,7 @@ Weaknesses :( -
 I have a hard time getting started but also work better when I start early so I don’t get stressed about it  
  
 
-**Mentor TA:** _Put your mentor TA's name and email here once you're assigned one!_
+**Mentor TA:** Sophia Chen
 
 ## Meetings
 _On your first meeting with your mentor TA, you should plan dates for at least the following meetings:_
