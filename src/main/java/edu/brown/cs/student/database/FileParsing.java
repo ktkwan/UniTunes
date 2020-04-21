@@ -33,12 +33,9 @@ public class FileParsing {
 			String row;
 			
 			try {
-//				System.out.println("hola");
 				csvReader.readLine();
 				while ((row = csvReader.readLine()) != null) {
-//					System.out.println(row);
 					String[] arguments = row.split(",");
-//					System.out.println(arguments);
 					song_info.add(arguments);
 					
 					
