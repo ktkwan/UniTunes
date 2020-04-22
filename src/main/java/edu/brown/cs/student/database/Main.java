@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableMap;
+
+import edu.brown.cs.student.brown_spotify.DatabaseConnection;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -65,7 +67,6 @@ public final class Main {
     OptionSpec<String> databaseSpec =
             parser.accepts("database").withRequiredArg().ofType(String.class);
     OptionSpec<String> deleteSpec = parser.accepts("delete").withRequiredArg().ofType(String.class);
-
 
     OptionSet options = parser.parse(args);
 
