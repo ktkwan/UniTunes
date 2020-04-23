@@ -1,9 +1,10 @@
 package edu.brown.cs.student.brown_spotify;
 import edu.brown.cs.student.commands.Command;
-import org.eclipse.jetty.server.Authentication;
 
-import java.util.HashMap;
 
+/**
+ * Primary class for handling commands to do with the UniTunes program 
+ */
 public class UniTunes {
 
   UserCommand userCommand;
@@ -50,7 +51,7 @@ public class UniTunes {
         /*
         TO DO: Add user to the database (name, brownu email, profile picture)
          */
-        System.out.println("running user command"); 
+        System.out.println("running user command");
         return "Running user command";
       }
     }
