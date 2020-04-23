@@ -55,34 +55,34 @@ public final class MainCopy {
 
     if (options.has("gui")) {
 
-    } else if (options.has("data") || options.has("database")) {
-
-      Database db;
-
-
-      if (options.has("database")) {
-
-        try {
-          db = new Database(options.valueOf(databaseSpec));
-
-          if (options.has("data")) {
-        	
-            String files = options.valueOf(dataSpec);
-            System.out.println(files);
-            List<String> fileNames = new ArrayList<String>(Arrays.asList(files.split(",")));
-
-            for (String file : fileNames) {
-              db.read_csv(file);
-            }
-          }
-     
-        } catch (SQLException e) {
-          System.err.println("SQLite error: " + e.getMessage());
-          System.exit(1);
-        }
-      } else {
-        String files = options.valueOf(dataSpec);
-      }
+//    } else if (options.has("data") || options.has("database")) {
+//
+//      Database db;
+//
+//
+//      if (options.has("database")) {
+//
+//        try {
+//          db = new Database(options.valueOf(databaseSpec));
+//
+//          if (options.has("data")) {
+//
+//            String files = options.valueOf(dataSpec);
+//            System.out.println(files);
+//            List<String> fileNames = new ArrayList<String>(Arrays.asList(files.split(",")));
+//
+//            for (String file : fileNames) {
+//              db.read_csv(file);
+//            }
+//          }
+//
+//        } catch (SQLException e) {
+//          System.err.println("SQLite error: " + e.getMessage());
+//          System.exit(1);
+//        }
+//      } else {
+//        String files = options.valueOf(dataSpec);
+//      }
 
       try (BufferedReader br = new BufferedReader(
               new InputStreamReader(System.in))) {

@@ -3,7 +3,7 @@ import edu.brown.cs.student.commands.Command;
 
 
 /**
- * Primary class for handling commands to do with the UniTunes program 
+ * Primary class for handling commands to do with the UniTunes program
  */
 public class UniTunes {
 

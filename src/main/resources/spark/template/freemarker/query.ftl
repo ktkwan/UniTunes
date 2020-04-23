@@ -1,16 +1,13 @@
 <#assign content>
 
-<h1> Query by Ambooty and Smashed Toes</h1>
+<h1> uniTunes </h1>
 
-<p> neighbors and radius are both valid
-    <form method="GET" action="/neighborsradius">
-    <label for="text">Enter command here: </label><br>
-    <textarea name="text" id="text"></textarea><br>
-    <input type="submit">
-</form>
-</p>
-
-${submitOutput}
+    <canvas id="canvas" width="500%" height="500%"></canvas>
+    <p>
+    coming soon
+    </p>
+    <script type="text/javascript" src="css/paper-full.js"></script>
+    <script type="text/paperscript" canvas = "canvas" src="css/home-background.js"> </script>
 
 </#assign>
 <#include "main.ftl">

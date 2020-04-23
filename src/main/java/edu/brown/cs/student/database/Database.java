@@ -30,7 +30,7 @@ public class Database {
    * @param filename file name of SQLite3 database to open.
    * @throws SQLException if an error occurs in any SQL query.
    */
-  Database(String filename) throws SQLException, ClassNotFoundException {
+  public Database(String filename) throws SQLException, ClassNotFoundException {
 
     /*
     * TODO: Initialize the database connection, turn foreign keys on,
@@ -63,7 +63,7 @@ public class Database {
    * @param filename name of file to read.
    * @throws SQLException if something goes wrong with a SQL query.
    */
-  void read_csv(String filename) throws SQLException, ClassNotFoundException {
+	public void read_csv(String filename) throws SQLException, ClassNotFoundException {
 
 
 //    PreparedStatement prep = conn.prepareStatement("INSERT INTO songs VALUES (?, ?, ?, ?, ?, ?)");

@@ -3,18 +3,19 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
+import java.sql.SQLException;
+import java.util.*;
 
 import com.google.common.collect.ImmutableMap;
 
 import edu.brown.cs.student.brown_spotify.UniTunes;
 import edu.brown.cs.student.commands.Command;
 import edu.brown.cs.student.commands.REPL;
+import edu.brown.cs.student.database.Database;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import joptsimple.OptionSpec;
 import spark.ExceptionHandler;
 import spark.ModelAndView;
 import spark.QueryParamsMap;
@@ -23,6 +24,7 @@ import spark.Response;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
+import edu.brown.cs.student.database.Database;
 
 /**
  * The Main class of our project. This is where execution begins.
@@ -53,13 +55,44 @@ public final class Main {
     parser.accepts("gui");
     parser.accepts("port").withRequiredArg().ofType(Integer.class)
         .defaultsTo(DEFAULT_PORT);
+    OptionSpec<String> dataSpec =
+        parser.accepts("data").withRequiredArg().ofType(String.class);
+
+    OptionSpec<String> databaseSpec =
+        parser.accepts("database").withRequiredArg().ofType(String.class);
     OptionSet options = parser.parse(args);
 
     if (options.has("gui")) {
       runSparkServer((int) options.valueOf("port"));
 
-    }
+    } else if (options.has("data") || options.has("database")) {
 
+      Database db;
+      
+      if (options.has("database")) {
+
+        try {
+          db = new Database(options.valueOf(databaseSpec));
+
+          if (options.has("data")) {
+
+            String files = options.valueOf(dataSpec);
+            System.out.println(files);
+            List<String> fileNames = new ArrayList<String>(Arrays.asList(files.split(",")));
+
+            for (String file : fileNames) {
+              db.read_csv(file);
+            }
+          }
+
+        } catch (SQLException | ClassNotFoundException e) {
+          System.err.println("SQLite error: " + e.getMessage());
+          System.exit(1);
+        }
+      } else {
+        String files = options.valueOf(dataSpec);
+      }
+    }
     // Creating a hashmap of commands that corresponds to different classes that implement the
     // Command interface
     HashMap<String, Command> map = new HashMap<String, Command>();
@@ -101,7 +134,7 @@ public final class Main {
     @Override
     public ModelAndView handle(Request req, Response res) {
       Map<String, Object> variables = ImmutableMap.of("title",
-          "Stars: Query the database", "nearest", "", "radius", "");
+          "uniTunes", "status", "coming soon");
       return new ModelAndView(variables, "query.ftl");
     }
   }
