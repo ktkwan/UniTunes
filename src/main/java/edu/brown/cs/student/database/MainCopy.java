@@ -1,37 +1,20 @@
 package edu.brown.cs.student.database;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import com.google.common.collect.ImmutableMap;
-
-import edu.brown.cs.student.brown_spotify.DatabaseConnection;
-import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
-import spark.ExceptionHandler;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Spark;
-import spark.TemplateViewRoute;
-import spark.template.freemarker.FreeMarkerEngine;
 
 /**
  * The Main class of our project. This is where execution begins.
  */
-public final class Main {
+public final class MainCopy {
 
   private static final int DEFAULT_PORT = 4567;
 
@@ -41,12 +24,12 @@ public final class Main {
    * @param args An array of command line arguments
    */
   public static void main(String[] args) throws SQLException, ClassNotFoundException {
-    new Main(args).run();
+    new MainCopy(args).run();
   }
 
   private String[] args;
 
-  private Main(String[] args) {
+  private MainCopy(String[] args) {
     this.args = args;
   }
 
