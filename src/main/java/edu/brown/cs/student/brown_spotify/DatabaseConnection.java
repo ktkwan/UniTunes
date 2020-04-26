@@ -9,6 +9,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -19,6 +20,7 @@ import com.google.common.cache.LoadingCache;
 public final class DatabaseConnection {
 	public static String connection_filename = null;
 	private static Connection conn = null;
+	public static HashMap<String, String> song_hashmap = new HashMap<>();
 
 
 	/*
@@ -47,6 +49,7 @@ public final class DatabaseConnection {
 		stat.close();
 
 	}
+	
 
 	public static String getGenreFromSongName(String song_name) throws SQLException {
 		String genre = "";
@@ -63,6 +66,24 @@ public final class DatabaseConnection {
 		
 		
 		return genre;
+	}
+	
+	public static HashMap<String, String> getAllSongNames() throws SQLException {
+		HashMap<String, String> id_to_name = new HashMap<>();
+		song_hashmap = new HashMap<>();
+		PreparedStatement prep;
+		String statement = "SELECT track_name, spotify_id FROM songs;";
+		prep = conn.prepareStatement(statement);
+		ResultSet res = prep.executeQuery();
+		while (res.next()) {
+			id_to_name.put(res.getString(2), res.getString(1));
+			song_hashmap.put(res.getString(2), res.getString(1));
+		}
+		
+//		song_hashmap = id_to_name;
+//		song_hashmap = id_to_name;
+		return id_to_name;
+		
 	}
 	
 	public static double getDurationFromSongName(String song_name) throws SQLException {
@@ -132,6 +153,12 @@ public final class DatabaseConnection {
 		}
 		
 
+		
+		return base_url + spotify_id;
+	}
+	
+	public static String getSpotifyLinkFromID(String spotify_id) throws SQLException {
+		String base_url = "open.spotify.com/track/";
 		
 		return base_url + spotify_id;
 	}
