@@ -18,7 +18,7 @@ import java.util.Map;
  * Chooses to pass SQL exceptions on to the class that instantiates it.
  *
  */
-public class Database {
+public class SongDatabase {
 
 
   private static Connection conn = null;
@@ -30,7 +30,7 @@ public class Database {
    * @param filename file name of SQLite3 database to open.
    * @throws SQLException if an error occurs in any SQL query.
    */
-  public Database(String filename) throws SQLException, ClassNotFoundException {
+  public SongDatabase(String filename) throws SQLException, ClassNotFoundException {
 
     /*
     * TODO: Initialize the database connection, turn foreign keys on,

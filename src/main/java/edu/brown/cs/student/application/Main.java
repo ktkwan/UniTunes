@@ -11,20 +11,18 @@ import com.google.common.collect.ImmutableMap;
 import edu.brown.cs.student.brown_spotify.UniTunes;
 import edu.brown.cs.student.commands.Command;
 import edu.brown.cs.student.commands.REPL;
-import edu.brown.cs.student.database.Database;
+import edu.brown.cs.student.database.SongDatabase;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
 import spark.ExceptionHandler;
 import spark.ModelAndView;
-import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
-import edu.brown.cs.student.database.Database;
 
 /**
  * The Main class of our project. This is where execution begins.
@@ -67,12 +65,12 @@ public final class Main {
 
     } else if (options.has("data") || options.has("database")) {
 
-      Database db;
+      SongDatabase db;
       
       if (options.has("database")) {
 
         try {
-          db = new Database(options.valueOf(databaseSpec));
+          db = new SongDatabase(options.valueOf(databaseSpec));
 
           if (options.has("data")) {
 
