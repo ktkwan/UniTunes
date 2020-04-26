@@ -1,5 +1,6 @@
 package edu.brown.cs.student.brown_spotify;
-import java.io.File;
+import java.io.*;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -8,6 +9,7 @@ import java.util.*;
 
 import com.google.common.collect.ImmutableMap;
 
+import edu.brown.cs.student.brown_spotify.DatabaseConnection;
 import edu.brown.cs.student.commands.Command;
 import edu.brown.cs.student.commands.REPL;
 import edu.brown.cs.student.database.SongDatabase;
@@ -180,7 +182,8 @@ public final class Main {
 		 
 		String l = DatabaseConnection.getSpotifyLinkFromID(songID);
 		System.out.println("ID: " + DatabaseConnection.song_hashmap);
-		  Map<String, String> variables = ImmutableMap.of("title",  "uniTunes", "song_name", song_names.get(songID), "display", l);
+		String link = String.format("<a href=\"http://%s\"> %s </a>", l, song_names.get(songID));
+		  Map<String, String> variables = ImmutableMap.of("title",  "uniTunes", "song_name", song_names.get(songID), "display", link);
 		  return new ModelAndView(variables, "song.ftl");
 	  }
   }
