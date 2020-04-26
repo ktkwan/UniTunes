@@ -167,7 +167,7 @@ public final class Main {
 		}
 		
 		Map<String, String> variables = ImmutableMap.of("title",  "uniTunes", "status", "", "display", songs);
-		  return new ModelAndView(variables, "movie_query.ftl");
+		  return new ModelAndView(variables, "song_query.ftl");
 	}
   }
   
@@ -181,7 +181,7 @@ public final class Main {
 		String l = DatabaseConnection.getSpotifyLinkFromID(songID);
 		System.out.println("ID: " + DatabaseConnection.song_hashmap);
 		  Map<String, String> variables = ImmutableMap.of("title",  "uniTunes", "song_name", song_names.get(songID), "display", l);
-		  return new ModelAndView(variables, "actor_results.ftl");
+		  return new ModelAndView(variables, "song.ftl");
 	  }
   }
 
