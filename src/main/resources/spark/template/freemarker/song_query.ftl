@@ -1,7 +1,6 @@
 <#assign content>
 
 <h1 class=mainHeader> Songs</h1>
-<p>Enter two actors names below and see how they are connected!</p>
 <p> Songs:
 </p>
 
