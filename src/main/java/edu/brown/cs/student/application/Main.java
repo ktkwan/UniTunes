@@ -12,6 +12,7 @@ import edu.brown.cs.student.brown_spotify.UniTunes;
 import edu.brown.cs.student.commands.Command;
 import edu.brown.cs.student.commands.REPL;
 import edu.brown.cs.student.database.SongDatabase;
+import edu.brown.cs.student.front_end.Login;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -125,17 +126,17 @@ public final class Main {
     FreeMarkerEngine freeMarker = createEngine();
 
     // Setup Spark Routes
-    Spark.get("/unitunes", new FrontHandler(), freeMarker);
+    Spark.get("/unitunes", Login.getLoginHandler() , freeMarker);
   }
 
-  private static class FrontHandler implements TemplateViewRoute {
-    @Override
-    public ModelAndView handle(Request req, Response res) {
-      Map<String, Object> variables = ImmutableMap.of("title",
-          "uniTunes", "status", "coming soon");
-      return new ModelAndView(variables, "query.ftl");
-    }
-  }
+//  private static class FrontHandler implements TemplateViewRoute {
+//    @Override
+//    public ModelAndView handle(Request req, Response res) {
+//      Map<String, Object> variables = ImmutableMap.of("title",
+//          "uniTunes", "status", "coming soon");
+//      return new ModelAndView(variables, "query.ftl");
+//    }
+//  }
 
   /**
    * Display an error page when an exception occurs in the server.
