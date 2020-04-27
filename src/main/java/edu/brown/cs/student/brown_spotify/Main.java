@@ -1,14 +1,18 @@
-package edu.brown.cs.student.application;
+package edu.brown.cs.student.brown_spotify;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
 
 import com.google.common.collect.ImmutableMap;
 
-import edu.brown.cs.student.brown_spotify.UniTunes;
 import edu.brown.cs.student.commands.Command;
 import edu.brown.cs.student.commands.REPL;
 import edu.brown.cs.student.database.SongDatabase;
@@ -47,6 +51,8 @@ public final class Main {
   private Main(String[] args) {
     this.args = args;
   }
+  
+  public static Map<String, String> song_hashmap = new HashMap<>();
 
   private void run() {
     // Parse command line arguments
@@ -59,12 +65,15 @@ public final class Main {
 
     OptionSpec<String> databaseSpec =
         parser.accepts("database").withRequiredArg().ofType(String.class);
+    parser.accepts("port").withRequiredArg().ofType(Integer.class)
+    .defaultsTo(DEFAULT_PORT);
     OptionSet options = parser.parse(args);
 
     if (options.has("gui")) {
       runSparkServer((int) options.valueOf("port"));
+    }
 
-    } else if (options.has("data") || options.has("database")) {
+    if (options.has("data") || options.has("database")) {
 
       SongDatabase db;
       
@@ -82,6 +91,14 @@ public final class Main {
             for (String file : fileNames) {
               db.read_csv(file);
             }
+          } else {
+        	  String files = options.valueOf(databaseSpec);
+        	  List<String> fileNames = new ArrayList<String>(Arrays.asList(files.split(",")));
+
+              for (String file : fileNames) {
+            	  DatabaseConnection.createConnection(file);
+              }
+        	  
           }
 
         } catch (SQLException | ClassNotFoundException e) {
@@ -127,16 +144,43 @@ public final class Main {
 
     // Setup Spark Routes
     Spark.get("/unitunes", Login.getLoginHandler() , freeMarker);
+    Spark.get("/songs", new SongHandler(), freeMarker);
+    Spark.get("/song/:songID", new SongInfoHandler(), freeMarker);
   }
+  
+  private static class SongHandler implements TemplateViewRoute {
 
-//  private static class FrontHandler implements TemplateViewRoute {
-//    @Override
-//    public ModelAndView handle(Request req, Response res) {
-//      Map<String, Object> variables = ImmutableMap.of("title",
-//          "uniTunes", "status", "coming soon");
-//      return new ModelAndView(variables, "query.ftl");
-//    }
-//  }
+	@Override
+	public ModelAndView handle(Request request, Response response) throws Exception {
+		// TODO Auto-generated method stub
+		HashMap<String, String> song_names = DatabaseConnection.getAllSongNames();
+		song_hashmap = song_names;
+		String songs = "";
+		List<String> song_list = new ArrayList<>();
+		for (Map.Entry<String, String> entry: song_names.entrySet()){
+			 String songLink = String.format("<a href=\"song/%s\"> %s </a>", entry.getKey(), entry.getValue());
+			 songs += songLink;
+		}
+		
+		Map<String, String> variables = ImmutableMap.of("title",  "uniTunes", "status", "", "display", songs);
+		  return new ModelAndView(variables, "song_query.ftl");
+	}
+  }
+  
+  private static class SongInfoHandler implements TemplateViewRoute {
+	  @Override
+	  public ModelAndView handle(Request req, Response res) throws SQLException {
+		  String songID = req.params(":songID");
+		  System.out.println("ID: " + songID);
+		  HashMap<String, String> song_names = DatabaseConnection.getAllSongNames();
+		 
+		String l = DatabaseConnection.getSpotifyLinkFromID(songID);
+		System.out.println("ID: " + DatabaseConnection.song_hashmap);
+		String link = String.format("<a href=\"http://%s\"> %s </a>", l, song_names.get(songID));
+		  Map<String, String> variables = ImmutableMap.of("title",  "uniTunes", "song_name", song_names.get(songID), "display", link, "artist_name", DatabaseConnection.getArtistFromSongID(songID));
+		  return new ModelAndView(variables, "song.ftl");
+	  }
+  }
 
   /**
    * Display an error page when an exception occurs in the server.

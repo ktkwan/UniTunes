@@ -9,6 +9,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -19,9 +20,10 @@ import com.google.common.cache.LoadingCache;
 public final class DatabaseConnection {
 	public static String connection_filename = null;
 	private static Connection conn = null;
+	public static HashMap<String, String> song_hashmap = new HashMap<>();
 
 
-	/*
+	/**
 	 * Creates a connection to the database. Drops the current database if a new
 	 * filename is passed in.
 	 */
@@ -47,6 +49,7 @@ public final class DatabaseConnection {
 		stat.close();
 
 	}
+	
 
 	public static String getGenreFromSongName(String song_name) throws SQLException {
 		String genre = "";
@@ -63,6 +66,24 @@ public final class DatabaseConnection {
 		
 		
 		return genre;
+	}
+	
+	public static HashMap<String, String> getAllSongNames() throws SQLException {
+		HashMap<String, String> id_to_name = new HashMap<>();
+		song_hashmap = new HashMap<>();
+		PreparedStatement prep;
+		String statement = "SELECT track_name, spotify_id FROM songs;";
+		prep = conn.prepareStatement(statement);
+		ResultSet res = prep.executeQuery();
+		while (res.next()) {
+			id_to_name.put(res.getString(2), res.getString(1));
+			song_hashmap.put(res.getString(2), res.getString(1));
+		}
+		
+//		song_hashmap = id_to_name;
+//		song_hashmap = id_to_name;
+		return id_to_name;
+		
 	}
 	
 	public static double getDurationFromSongName(String song_name) throws SQLException {
@@ -99,13 +120,15 @@ public final class DatabaseConnection {
 		return popularity;
 	}
 	
-	/*get artist from the song name*/
-	public static String getArtistFromSongName(String song_name) throws SQLException {
+	/**
+	 * get artist from the song name
+	 * */
+	public static String getArtistFromSongID(String song_id) throws SQLException {
 		String artist = "";
 		PreparedStatement prep;
-		String statement = "SELECT artist FROM songs WHERE track_name=?;";
+		String statement = "SELECT artist FROM songs WHERE spotify_id=?;";
 		prep = conn.prepareStatement(statement);
-		prep.setString(1, song_name);
+		prep.setString(1, song_id);
 		ResultSet res = prep.executeQuery();
 		
 		while (res.next()) {
@@ -117,8 +140,9 @@ public final class DatabaseConnection {
 		return artist;
 	}
 	
-	/*gets link to the track : use later when we need to play songs */
-	
+	/**
+	 * gets link to the track : use later when we need to play songs
+	 * */
 	public static String getSpotifyLinkFromSongName(String song_name) throws SQLException {
 		String spotify_id = "";
 		PreparedStatement prep;
@@ -132,6 +156,12 @@ public final class DatabaseConnection {
 		}
 		
 
+		
+		return base_url + spotify_id;
+	}
+	
+	public static String getSpotifyLinkFromID(String spotify_id) throws SQLException {
+		String base_url = "open.spotify.com/track/";
 		
 		return base_url + spotify_id;
 	}
@@ -154,7 +184,7 @@ public final class DatabaseConnection {
 		return spotify_id;
 	}
 
-	/*
+	/**
 	 * Prints out a table if you give it the table name : debugging puposes
 	 */
 	private static void showTable(String tableName) throws SQLException {
@@ -166,7 +196,7 @@ public final class DatabaseConnection {
 		prep.close();
 	}
 
-	/*
+	/**
 	 * Prints a ResultSet Object NOTE: Because result set is an iterator it will
 	 * be unusable after printing
 	 * Debugging purposes
