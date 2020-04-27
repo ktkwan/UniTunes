@@ -121,12 +121,12 @@ public final class DatabaseConnection {
 	}
 	
 	/*get artist from the song name*/
-	public static String getArtistFromSongName(String song_name) throws SQLException {
+	public static String getArtistFromSongID(String song_id) throws SQLException {
 		String artist = "";
 		PreparedStatement prep;
-		String statement = "SELECT artist FROM songs WHERE track_name=?;";
+		String statement = "SELECT artist FROM songs WHERE spotify_id=?;";
 		prep = conn.prepareStatement(statement);
-		prep.setString(1, song_name);
+		prep.setString(1, song_id);
 		ResultSet res = prep.executeQuery();
 		
 		while (res.next()) {
