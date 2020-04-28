@@ -12,12 +12,21 @@ import java.sql.Statement;
 public class UserDatabase {
 
   private static Connection conn = null;
+  public static String connection_filename = null;
 
   public UserDatabase(String filename) throws SQLException, ClassNotFoundException {
 
+    if (conn != null) {
+      conn.close();
+      conn = null;
+      connection_filename = null;
+    }
+
+    connection_filename = filename;
     Class.forName("org.sqlite.JDBC");
-    String urlToDB = "jdbc:sqlite:" + filename;
+    String urlToDB = "jdbc:sqlite:" + connection_filename;
     conn = DriverManager.getConnection(urlToDB);
+    System.out.println("setting user database to" + urlToDB);
     // these two lines tell the database to enforce foreign keys during operations, and should be present
     Statement stat = conn.createStatement();
     stat.executeUpdate("PRAGMA foreign_keys=ON;");
@@ -32,7 +41,8 @@ public class UserDatabase {
     prep.executeUpdate();
   }
 
-  public void addNewUser(String username, String password, String email, String id) throws SQLException {
+
+  public static void addNewUser(String username, String password, String email, String id) throws SQLException {
     PreparedStatement prep;
     prep = conn.prepareStatement("INSERT INTO " +
         "users " +
