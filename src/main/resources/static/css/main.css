@@ -31,10 +31,10 @@ body {
     margin-bottom: 15px;
     opacity: 65%;
 }
-
+/*
 .submitButton:hover {
     opacity: 100%;
-}
+}*/
 
 .inputHeader {
     font-size: 100px;
@@ -81,12 +81,12 @@ a, a:active, a:focus, a:visited {
 	padding-bottom: 10px;
 }
 
-a:hover {
+/*a:hover {
  	text-decoration: none;
  	color:#ed6663;
  	padding-bottom: 5px;
  	border-bottom: solid 3px #ed6663;
-}
+}*/
 
 .row {
 	

@@ -1,7 +1,7 @@
 body {
 	font-family: 'Verdana'
 	color: black;
-	background: white;
+	background-color: #5479ba;
 
 }
 
@@ -23,18 +23,29 @@ body {
 }
 
 .mainDiv {
-	width: 90%;
-	height:98%;
+	width: 50vh;
+	height:40vh;
+	margin-top: 50px;
 	align-self: center;
 	text-align: center;
 	align-content: center;
-	background-color:#b3f5c8;
+	background-color:white;
 	flex-direction: column;
 	display: flex;
 	white-space: 100px;
+	padding: 100px;
+	justify-content: space-between;
+	border: 5px solid #314c7a;
 
 
 
+
+}
+
+.with-artist{
+	display: flex;
+	flex-direction: column;
+	/*align-self: center;*/
 }
 
 .container {
@@ -43,7 +54,7 @@ body {
 	display: flex;
 	align-self: center;
 	text-align: center;
-	background: white;
+	background: #5479ba;
 	height: 100vh;
 
 }
@@ -107,7 +118,10 @@ body {
     margin: 8px 10px 12px;
 }
 
-.gradient-button-1 {background-image: linear-gradient(to right, #2BC0E4 0%, #EAECC6 51%, #2BC0E4 100%)}
+/*.gradient-button-1 {background-image: linear-gradient(to right, #2BC0E4 0%, #EAECC6 51%, #2BC0E4 100%)}*/
+.gradient-button-1{
+	background-color: black
+}
 
 @keyframes rotation {
   from {

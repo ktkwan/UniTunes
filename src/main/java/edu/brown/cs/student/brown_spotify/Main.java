@@ -173,13 +173,15 @@ public final class Main {
 		HashMap<String, String> song_names = DatabaseConnection.getAllSongNames();
 		song_hashmap = song_names;
 		String songs = "";
+		List<String> n = new ArrayList<>();
 		List<String> song_list = new ArrayList<>();
 		for (Map.Entry<String, String> entry: song_names.entrySet()){
 			 String songLink = String.format("<a href=\"song/%s\"> %s </a>", entry.getKey(), entry.getValue());
 			 songs += songLink;
+			 n.add(songLink);
 		}
 		
-		Map<String, String> variables = ImmutableMap.of("title",  "uniTunes", "status", "", "display", songs);
+		Map<String, List<String>> variables = ImmutableMap.of("display", n);
 		  return new ModelAndView(variables, "song_query.ftl");
 	}
   }
