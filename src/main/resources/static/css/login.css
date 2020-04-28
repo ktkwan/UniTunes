@@ -1,8 +1,15 @@
 body {
-
     text-align: center;
     background-size: cover;
-    font-family: 'Spartan', sans-serif;
+    font-family: 'Helvetica';
     color: #1b262c;
+}
+
+#sign-in-form {
+    display: none;
+}
+
+#create-account-form {
+    display: none;
 }
 

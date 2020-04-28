@@ -16,11 +16,13 @@ import com.google.common.collect.ImmutableMap;
 import edu.brown.cs.student.commands.Command;
 import edu.brown.cs.student.commands.REPL;
 import edu.brown.cs.student.database.SongDatabase;
+import edu.brown.cs.student.database.UserDatabase;
 import edu.brown.cs.student.front_end.Login;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
+import org.eclipse.jetty.server.Authentication;
 import spark.ExceptionHandler;
 import spark.ModelAndView;
 import spark.Request;
@@ -36,13 +38,14 @@ import spark.template.freemarker.FreeMarkerEngine;
 public final class Main {
 
   private static final int DEFAULT_PORT = 4567;
+  private static final String DEFAULT_USERDB = "users.sqlite3";
 
   /**
    * The initial method called when execution begins.
    *
    * @param args An array of command line arguments
    */
-  public static void main(String[] args) {
+  public static void main(String[] args) throws SQLException, ClassNotFoundException {
     new Main(args).run();
   }
 
@@ -50,11 +53,13 @@ public final class Main {
 
   private Main(String[] args) {
     this.args = args;
+
+
   }
   
-  public static Map<String, String> song_hashmap = new HashMap<>();
+  public static HashMap<String, String> song_hashmap = new HashMap<>();
 
-  private void run() {
+  private void run(){
     // Parse command line arguments
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
@@ -65,6 +70,8 @@ public final class Main {
 
     OptionSpec<String> databaseSpec =
         parser.accepts("database").withRequiredArg().ofType(String.class);
+    OptionSpec<String> userDataSpec =
+        parser.accepts("users").withRequiredArg().ofType(String.class).defaultsTo(DEFAULT_USERDB);
     parser.accepts("port").withRequiredArg().ofType(Integer.class)
     .defaultsTo(DEFAULT_PORT);
     OptionSet options = parser.parse(args);
@@ -76,7 +83,7 @@ public final class Main {
     if (options.has("data") || options.has("database")) {
 
       SongDatabase db;
-      
+
       if (options.has("database")) {
 
         try {
@@ -98,15 +105,24 @@ public final class Main {
               for (String file : fileNames) {
             	  DatabaseConnection.createConnection(file);
               }
-        	  
           }
-
         } catch (SQLException | ClassNotFoundException e) {
           System.err.println("SQLite error: " + e.getMessage());
           System.exit(1);
         }
       } else {
         String files = options.valueOf(dataSpec);
+      }
+    }
+
+    if (options.has("users")) {
+      UserDatabase userDb;
+      try {
+        String filename = options.valueOf(userDataSpec);
+        userDb = new UserDatabase(filename);
+      } catch(SQLException | ClassNotFoundException e) {
+        System.out.println("ERROR: User Database cannot be made");
+        System.exit(1);
       }
     }
     // Creating a hashmap of commands that corresponds to different classes that implement the
@@ -144,6 +160,7 @@ public final class Main {
 
     // Setup Spark Routes
     Spark.get("/unitunes", Login.getLoginHandler() , freeMarker);
+    Spark.post("/create-account", Login.getCreateHandler(), freeMarker);
     Spark.get("/songs", new SongHandler(), freeMarker);
     Spark.get("/song/:songID", new SongInfoHandler(), freeMarker);
   }
