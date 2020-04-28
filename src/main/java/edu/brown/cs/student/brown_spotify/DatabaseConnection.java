@@ -72,7 +72,7 @@ public final class DatabaseConnection {
 		HashMap<String, String> id_to_name = new HashMap<>();
 		song_hashmap = new HashMap<>();
 		PreparedStatement prep;
-		String statement = "SELECT track_name, spotify_id FROM songs;";
+		String statement = "SELECT DISTINCT track_name, spotify_id FROM songs;";
 		prep = conn.prepareStatement(statement);
 		ResultSet res = prep.executeQuery();
 		while (res.next()) {
