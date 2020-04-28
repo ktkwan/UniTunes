@@ -176,7 +176,7 @@ public final class Main {
 		 
 		String l = DatabaseConnection.getSpotifyLinkFromID(songID);
 		System.out.println("ID: " + DatabaseConnection.song_hashmap);
-		String link = String.format("<a href=\"http://%s\"> %s </a>", l, song_names.get(songID));
+		String link = String.format("href=\"http://%s\" target=\"_blank\"", l);
 		  Map<String, String> variables = ImmutableMap.of("title",  "uniTunes", "song_name", song_names.get(songID), "display", link, "artist_name", DatabaseConnection.getArtistFromSongID(songID));
 		  return new ModelAndView(variables, "song.ftl");
 	  }

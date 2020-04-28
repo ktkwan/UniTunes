@@ -1,0 +1,15 @@
+body {
+	font-family: 'Verdana';
+	/*color:red;*/
+
+}
+
+.mainHeader {
+	letter-spacing: 5px
+}
+
+.song_name {
+	font-family: 'Verdana';
+	font-weight: bold
+	width: 10px;
+}

@@ -1,13 +1,13 @@
 <#assign content>
-
+<link rel="stylesheet" href="css/song.css">
 <h1 class=mainHeader> Songs</h1>
-<p> Songs:
-</p>
+
+
 
 <p> 
 <#assign items=display?split(", ")>
   <#list items as item> 
-	<li class="${item}">${item}</tr>
+	<li >${item}</tr>
 </#list>
 </p>
 
