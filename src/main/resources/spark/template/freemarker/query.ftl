@@ -2,8 +2,8 @@
 
 <h1> uniTunes </h1>
 
-    <div id="base">
-        <canvas id="canvas" width="500%" height="500%"></canvas>
+    <div id="base" style="color:white; background: #1b262c;">
+        <canvas id="canvas" width="1000%" height="500%" style="background: #1b262c"></canvas>
         <div class = "sign-in-form-pop-up" id="sign-in">
             <button id = "sign-in-button"> Sign in! </button>
             <form id="sign-in-form">

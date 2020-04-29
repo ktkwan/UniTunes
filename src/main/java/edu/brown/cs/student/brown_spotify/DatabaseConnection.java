@@ -154,10 +154,23 @@ public final class DatabaseConnection {
 		while (res.next()) {
 			spotify_id = res.getString(1);
 		}
-		
 
-		
 		return base_url + spotify_id;
+	}
+
+	/**
+	 * @return three random songs from database
+	 * @throws SQLException
+	 */
+	public static List<String> getRandomTrackNames() throws SQLException {
+		List<String> randTrackNames = new ArrayList();
+		PreparedStatement prep;
+		prep = conn.prepareStatement("SELECT track_name FROM songs ORDER BY RANDOM() LIMIT 3;");
+		ResultSet rs = prep.executeQuery();
+		while(rs.next()) {
+			randTrackNames.add(rs.getString(1));
+		}
+		return randTrackNames;
 	}
 	
 	public static String getSpotifyLinkFromID(String spotify_id) throws SQLException {

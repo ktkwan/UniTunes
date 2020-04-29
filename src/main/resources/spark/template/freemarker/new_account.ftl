@@ -2,19 +2,12 @@
 
     <h1> ${status} </h1>
     <div id="welcome-page">
-        <canvas id="canvas" width="500%" height="100%"></canvas>
+        <canvas id="canvas" width="1000%" height="200%" style="background: #1b262c"></canvas>
         <p>Let's find new student music!</p>
-        <div id="discover-background">
-            <input type="checkbox"id="song-rec">song1</input>
-            <input type="checkbox"id="song-rec">song2</input>
-            <input type="checkbox" id="song-rec">song3</input>
-            <input type="checkbox"id="song-rec">song4</input>
-            <input type="checkbox"id="song-rec">song5</input>
-            <input type="checkbox" id="song-rec">song6</input>
-            <input type="checkbox"id="song-rec">song7</input>
-            <input type="checkbox"id="song-rec">song8</input>
-            <input type="checkbox" id="song-rec">song9</input>
-            <input type="submit" id="submit-pref">Find Student Musicians</input>
+        <p>Select your favorite song from the options below to get started. </p>
+
+        <div id="discover">
+               ${songs}
         </div>
     </div>
 

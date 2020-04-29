@@ -38,7 +38,8 @@ import spark.template.freemarker.FreeMarkerEngine;
 public final class Main {
 
   private static final int DEFAULT_PORT = 4567;
-  private static final String DEFAULT_USERDB = "users.sqlite3";
+  private static final String DEFAULT_USER_DB = "users.sqlite3";
+  private static final String DEFAULT_SONG_DB = "data/songs_today.sqlite3";
 
   /**
    * The initial method called when execution begins.
@@ -69,9 +70,9 @@ public final class Main {
         parser.accepts("data").withRequiredArg().ofType(String.class);
 
     OptionSpec<String> databaseSpec =
-        parser.accepts("database").withRequiredArg().ofType(String.class);
+        parser.accepts("database").withRequiredArg().ofType(String.class).defaultsTo(DEFAULT_SONG_DB);
     OptionSpec<String> userDataSpec =
-        parser.accepts("users").withRequiredArg().ofType(String.class).defaultsTo(DEFAULT_USERDB);
+        parser.accepts("users").withRequiredArg().ofType(String.class).defaultsTo(DEFAULT_USER_DB);
     parser.accepts("port").withRequiredArg().ofType(Integer.class)
     .defaultsTo(DEFAULT_PORT);
     OptionSet options = parser.parse(args);

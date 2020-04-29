@@ -230,3 +230,15 @@ tr:nth-child(even) {
 tr:nth-child(odd) {
   background-color: #FFFFFF;
 }
+
+li{
+	display: flex ;
+	/*align-items: center;*/
+	justify-content: center;
+	/*vertical-align: center;*/
+	padding: 2%;
+}
+
+a{
+	padding: 2%;
+}
