@@ -1,5 +1,11 @@
 package edu.brown.cs.student.brown_spotify;
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.brown.cs.student.commands.Command;
+import edu.brown.cs.student.kdtree.Coordinates;
+import edu.brown.cs.student.kdtree.KdTree;
+import edu.brown.cs.student.kdtree.KdTreeNode;
 
 
 /**
@@ -11,13 +17,90 @@ public class UniTunes {
   DatabaseCommand dbCommand;
   SuggestCommand suggestCommand;
   ConnectCommand connectCommand;
+  KdTree tree; 
+  static int dimensions; 
+  List<Song> clusters; 
   
   public UniTunes() {
+	dimensions = 3; 
     userCommand = new UserCommand();
     dbCommand = new DatabaseCommand();
     suggestCommand = new SuggestCommand();
     connectCommand = new ConnectCommand();
-
+    tree = new KdTree(null, 3); 
+    clusters = this.setUpClusters(); 
+    
+  }
+  
+  /*
+   * Manually add the cluster coordinates based on the outputted clusters of the algorithm. 
+   */
+  private List<Song> setUpClusters() {
+	  // for now the number of clusters is set to 5 and trained on a set of 50 songs. 
+	  int numberC = 5;  // changeable parameter 
+	  double[][] algorithmOut = {
+	  {58022.51851852,  58022.51851852,  58022.51851852},
+	  { 71596.19047619,  71596.19047619,  71596.19047619},
+	  { 96890.85185185,  96890.85185185,  96890.85185185},
+      {216291.66666667, 216291.66666667, 216291.66666667},
+      { 46523.53333333,  46523.53333333,  46523.53333333},
+	  };
+	  List<Coordinates> coordList = new ArrayList<Coordinates>(); 
+	  // turn the outputed array in to coordinates 
+	  for(int i = 0; i < numberC; i++) {
+		  Coordinates curr = new Coordinates(algorithmOut[i]); 
+		  coordList.add(curr); 
+	  }
+	  // turn the coordinates in to a list of dummy songs that can be used by kdtree 
+	  List<Song> dummySongList = new ArrayList<Song>(); 
+	  for(int j = 0; j< numberC; j++) {
+		  Song s = new Song(null, null , coordList.get(j), null); 
+		  dummySongList.add(s); 
+	  }
+	  return dummySongList; 
+  }
+  
+  /*
+   * Helper function to create an average array vector for a user's list of favorite songs 
+   */
+  public Song findAverageSong(List<Song> userList) {
+	  double avgX = 0; 
+	  double avgY = 0; 
+	  double avgZ = 0; 
+	  double size = userList.size(); 
+	  for (int i = 0; i< userList.size(); i++) {
+		  Song cur = userList.get(i); 
+		  Coordinates curCoord = cur.coords; 
+		  avgX += curCoord.getValueAtDimension(0); 
+		  avgY += curCoord.getValueAtDimension(1); 
+		  avgZ += curCoord.getValueAtDimension(2); 
+	  }
+	  avgX = avgX/size; 
+	  avgY = avgY/size; 
+	  avgZ = avgZ/size; 
+	  double[] vals = new double[3]; 
+	  vals[0] = avgX; 
+	  vals[1]= avgY; 
+	  vals[2] = avgZ; 
+	  Coordinates c = new Coordinates(vals); 
+	  Song s = new Song(null, null, c, null);  // what id should we give these dummy songs? 
+	  return s; 
+  }
+  /*
+   * helper function to find the closest cluster given a dummy user song 
+   */
+  public Song findClosestCentroid(Song dummy) {
+	  double closestDist = 0; 
+	  Song closestCentroid = null; 
+	  for(int i = 0; i< this.clusters.size(); i++) {
+		  Song cur = this.clusters.get(i); 
+		  double curDist = tree.findistance(dummy.coords, cur.coords); 
+		  if(curDist < closestDist) {
+			  closestDist = curDist; 
+			  closestCentroid = cur; 
+		  }
+	  }
+	  return closestCentroid; 
   }
 
   public Command getUserCommand(){
@@ -77,7 +160,7 @@ public class UniTunes {
 
   /**
    * Nested class for the "Suggest Command"
-   * This suggests student made songs to the user based on a non-student-produced song they like.
+   * This suggests student made songs to the user based on a non-student-produced song they like. This command calls the kdtree, which has 3 dimensions. 
    */
   class SuggestCommand implements Command {
 
@@ -87,6 +170,27 @@ public class UniTunes {
       TO DO: Implement kNN and algorithm lol 
        */
       System.out.println("running suggest command");
+      // eventually this should take in a list of songs and find the closest song and find the closest neighbors to recommend. 
+      // for now let's create a dummy list for a user with two songs 
+      // we need to make a query that takes in a user id and returns a list of songs. Maybe this part can be cached 
+      List<Song> userList = new ArrayList<Song>(); 
+      double[][] testUser= {
+    		  {5.4,7.3}, 
+    		  {3.7,2.0}
+      }; 
+      Coordinates c1 = new Coordinates(testUser[0]); 
+      Coordinates c2 = new Coordinates(testUser[1]); 
+      Song s1 = new Song(null, null, c1, 0); 
+      Song s2 = new Song(null, null, c2, 1); 
+      userList.add(s1); 
+      userList.add(s2); 
+      // generate the average song
+      Song avg = findAverageSong(userList); 
+      // find the closest centroid to the dummy song. 
+      Song closestCentroid = findClosestCentroid(avg); 
+      // now for all the songs for a given centroid, find the closest songs to the centroid => need to set up a query from each 
+      // centroid to a list of songs with the given centroid. 
+      tree.neighbors(closestCentroid, 5, tree.getRoot()); // should print out a list of five recommended songs. 
       return "running suggest command";
     }
   }

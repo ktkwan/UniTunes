@@ -1,4 +1,4 @@
-package edu.brown.cs.student.brown_spotify;
+package edu.brown.cs.student.kdtree;
 
 
 public abstract class KdTreeNode {
@@ -6,13 +6,15 @@ public abstract class KdTreeNode {
 	KdTreeNode leftChild; 
 	KdTreeNode rightChild; 
 	Coordinates coords; 
+	Integer id; 
 	int level; 
 	
-	public KdTreeNode(KdTreeNode leftChild, KdTreeNode rightChild, Coordinates coord) {
+	public KdTreeNode(KdTreeNode leftChild, KdTreeNode rightChild, Coordinates coord, Integer id) {
 		this.leftChild= null; 
 		this.rightChild = null; 
 		this.coords = coord; 
 		this.level = -1;
+		this.id = id; 
 	}
 	// setter for left child 
 //	abstract void setLeft(KdTreeNode left);

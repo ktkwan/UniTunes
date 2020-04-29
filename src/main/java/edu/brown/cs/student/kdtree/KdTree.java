@@ -1,4 +1,4 @@
-package edu.brown.cs.student.brown_spotify;
+package edu.brown.cs.student.kdtree;
 
 
 import java.util.ArrayList;
@@ -156,7 +156,7 @@ public class KdTree<T extends KdTreeNode>{
 			return null; 
 		}
 		if(k==1 && target!=_data.get(0)) {
-			System.out.println(((Star)_data.get(0)).id); 
+			System.out.println((_data.get(0)).id); 
 		}
 		PriorityQueue<KdTreeNode> pq = new PriorityQueue<KdTreeNode>(k,_distComparator.reversed());
 		_distComparator.setTarg(target);
@@ -166,8 +166,8 @@ public class KdTree<T extends KdTreeNode>{
 		Collections.sort(closest, _distComparator);
 		for (KdTreeNode r: closest) {
 			if(r!=target) {
-				System.out.println(((Star)r).id);
-				output.add(Integer.toString(((Star)r).id)); 
+				System.out.println(r.id);
+				output.add(Integer.toString(r.id)); 
 			}
 		}
 		return output; 
