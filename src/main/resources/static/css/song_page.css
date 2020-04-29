@@ -1,5 +1,5 @@
 body {
-	font-family: 'Verdana'
+	font-family: 'Verdana';
 	color: black;
 	background-color: #5479ba;
 
@@ -12,7 +12,7 @@ body {
 
 .song_name {
 	font-family: 'Verdana';
-	font-weight: bold
+	font-weight: bold;
 	width: 10px;
 
 }
@@ -32,7 +32,7 @@ body {
 	background-color:white;
 	flex-direction: column;
 	display: flex;
-	white-space: 100px;
+	white-space: normal;
 	padding: 100px;
 	justify-content: space-between;
 	border: 5px solid #314c7a;
@@ -73,7 +73,7 @@ body {
 }
 
 .sp-button {
-	-webkit-border-image: url("sp://import/img/info_group-button.png") 0 7 42 7;
+	/*-webkit-border-image: url("sp://import/img/info_group-button.png") 0 7 42 7;*/
 	background: initial;
 	border: initial;
 	border-width: 0 7px;

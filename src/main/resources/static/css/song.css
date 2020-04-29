@@ -10,13 +10,13 @@ body {
 
 .song_name {
 	font-family: 'Verdana';
-	font-weight: bold
+	font-weight: bold;
 	width: 10px;
 }
 
 .container{
 	width: 50vh;
-	height: vh;
+	height: 50vh;
 	background-color: white;
 	display: flex;
 	flex-direction: column; 
