@@ -86,6 +86,7 @@ def computeAverageGenre(genres):
     title1 = sorted_d[0][0]
     title2 = sorted_d[1][0]
     normalizedTitle = title1 + " " + title2
+    print(normalizedTitle)
     return normalizedTitle
 
 def computeGenreSimilarity(normalizedTitle, genres):

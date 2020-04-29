@@ -6,6 +6,7 @@ import edu.brown.cs.student.kdtree.Coordinates;
 public class Song extends KdTreeNode {
 	String name;
 	String genre; 
+	String genVal; 
 	Integer duration; 
 	Integer popularity; 
 	Integer id; 
@@ -28,5 +29,33 @@ public class Song extends KdTreeNode {
 		this.duration = duration; 
 		this.popularity = popularity; 
 	}
-	
+	/*
+	 * Uses jaccard similarity of a normalized song to turn the genre in to a value. 
+	 */
+//	public void turnGenreIntoVal() {
+//		CharSequence left = "adult standards"; // change this based on new training set each time, should be set by song universe 
+//	    CharSequence right= (CharSequence) this.genre; 
+//		Set<String> intersectionSet = new HashSet<String>();
+//	    Set<String> unionSet = new HashSet<String>();
+//	    boolean unionFilled = false;
+//	    int leftLength = left.length();
+//	    int rightLength = right.length();
+//	    if (leftLength == 0 || rightLength == 0) {
+//	        return 0d;
+//	    }
+//	
+//	    for (int leftIndex = 0; leftIndex < leftLength; leftIndex++) {
+//	        unionSet.add(String.valueOf(left.charAt(leftIndex)));
+//	        for (int rightIndex = 0; rightIndex < rightLength; rightIndex++) {
+//	            if (!unionFilled) {
+//	                unionSet.add(String.valueOf(right.charAt(rightIndex)));
+//	            }
+//	            if (left.charAt(leftIndex) == right.charAt(rightIndex)) {
+//	                intersectionSet.add(String.valueOf(left.charAt(leftIndex)));
+//	            }
+//	        }
+//	        unionFilled = true;
+//	    }
+//	    this.genVal = Double.valueOf(intersectionSet.size()) / Double.valueOf(unionSet.size());
+//	}
 }

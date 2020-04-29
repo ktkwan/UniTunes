@@ -11,6 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.brown.cs.student.brown_spotify.Integer;
+import edu.brown.cs.student.brown_spotify.Song;
+import edu.brown.cs.student.kdtree.Coordinates;
+import edu.brown.cs.student.kdtree.KdTreeNode;
+
 
 /**
  * Autocorrect but with databases.
@@ -83,6 +88,49 @@ public class SongDatabase {
     	    prep.close();
     }
   }
+	
+	/*
+	 * gets all the songs in the database and creates a list of songs.
+	 * @return: list of songs 
+	 */
+	 public List<Song> getSongs() throws SQLException {
+		 	List<Song> songs = new ArrayList<Song>(); 
+		    String name = ""; 
+		    String spotify_id = ""; 
+		    String genre = ""; 
+		    Integer duration = null; 
+		    Integer popularity = null; 
+		    String query = "SELECT track_name, spotify_id, genre, duration, popularity from SongDatabase";
+		    try (PreparedStatement prep = conn.prepareStatement(query)) {
+		      try (ResultSet rs = prep.executeQuery()) {
+		        while (rs.next()) {
+		          name = rs.getString(1);
+		          spotify_id = rs.getString(2); 
+		          genre = rs.getString(3); 
+		          duration = rs.getString(4); 
+		          popularity = rs.getString(5); 
+		          Song s = new Song(null, null, null, spotify_id); 
+		          s.setClassifiable(genre, duration, popularity);
+		          s.setData(name, spotify_id);
+		          songs.add(s); 
+		        }
+		        rs.close();
+		      } catch (SQLException e1) {
+		        throw (e1);
+		      }
+		      prep.close();
+		    } catch (SQLException e2) {
+		      throw (e2);
+		    }
+		    return songs;
+		  }
+
+	
+	
+	/*
+	 * creates a cache that for each cluster, finds all the songs within that cluster 
+	 */
+	
 
  
 }

@@ -6,6 +6,7 @@ import edu.brown.cs.student.commands.Command;
 import edu.brown.cs.student.kdtree.Coordinates;
 import edu.brown.cs.student.kdtree.KdTree;
 import edu.brown.cs.student.kdtree.KdTreeNode;
+import edu.brown.cs.student.database.SongDatabase;
 
 
 /**
@@ -13,6 +14,8 @@ import edu.brown.cs.student.kdtree.KdTreeNode;
  */
 public class UniTunes {
 
+
+  SongDatabase songdb; 
   UserCommand userCommand;
   DatabaseCommand dbCommand;
   SuggestCommand suggestCommand;
@@ -20,15 +23,19 @@ public class UniTunes {
   KdTree tree; 
   static int dimensions; 
   List<Song> clusters; 
+  List<Song> allSongs; 
   
-  public UniTunes() {
+  public UniTunes(SongDatabase songdb) {
+	this.songdb = songdb; 
+	this.allSongs = new ArrayList<Song>(); 
 	dimensions = 3; 
     userCommand = new UserCommand();
     dbCommand = new DatabaseCommand();
     suggestCommand = new SuggestCommand();
     connectCommand = new ConnectCommand();
-    tree = new KdTree(null, 3); 
-    clusters = this.setUpClusters(); 
+    this.allsongs = songdb.getSongs(); // get all the songs currently in the database, should this be static? 
+    this.clusters = this.setUpClusters(); 
+    tree = new KdTree(this.allsongs, 3); 
     
   }
   
@@ -56,6 +63,7 @@ public class UniTunes {
 	  for(int j = 0; j< numberC; j++) {
 		  Song s = new Song(null, null , coordList.get(j), null); 
 		  dummySongList.add(s); 
+		  allSongs.add(s); 
 	  }
 	  return dummySongList; 
   }
