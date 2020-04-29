@@ -12,19 +12,21 @@ _genres = []
 _duration = []
 _popularity = []
 _jaccardScores = []
-_k = 3 # number of clusters
+_k = 10 # number of clusters
 _newData = []
 _centroids= []
+_trackNames = []
 
 
 # main function
 def main():
-    _genres,_duration, _popularity = readInData()
+    _trackNames, _genres,_duration, _popularity = readInData()
     avgGenre= computeAverageGenre(_genres)
     _jaccardScores = computeGenreSimilarity(avgGenre, _genres)
     # get rid of the headlines
     _duration = _duration[1:]
     _popularity = _popularity[1:]
+    _trackNames = _trackNames[1:]
     # combine three attributes in to one array numbSongs x 3
     for i in range(len(_genres)-1): # accomodate for the headers
         row = []
@@ -40,21 +42,22 @@ def main():
     #closest = closest_centroids(_newData, _centroids)
     #print(closest)
 
-    _centroids,closest_centroids = run(_newData, _centroids)
+    _centroids,closest_centroids = run(_newData,_trackNames, _centroids)
     print(_centroids, closest_centroids)
 
 
 # function that reads in and parses the data from a csv
 def readInData():
-    with open('songs_with_genre.txt') as songs_with_genre:
+    with open('data/songs_with_genre.csv') as songs_with_genre:
         csv_reader = csv.reader(songs_with_genre, delimiter=',')
         line_count = 0
         for row in csv_reader:
             if (row[5] is not None and row[6] is not None and row[7] is not None):
+                _trackNames.append(row[0])
                 _genres.append(row[5])
                 _duration.append(row[6])
                 _popularity.append(row[7])
-    return _genres,_duration,_popularity
+    return _trackNames, _genres,_duration,_popularity
 
 #function that processes the similarity between two genres using jacard similarity, repeats don't matter.
 def jaccardSimilarity(str1, str2):
@@ -160,7 +163,7 @@ def compute_centroids(centroid_indices, centroids, data):
 		centroids[count] = np.average(results)
 		count+=1
 
-def run(data, centroids):
+def run(data, names, centroids):
 	"""
 	Run the k-means algorithm on dataset X with K clusters.
 	Make sure to call closest_centroids and compute_centroids!
@@ -172,6 +175,10 @@ def run(data, centroids):
 	for i in range(0, 1000):
 		closest = closest_centroids(data, centroids)
 		compute_centroids(closest, centroids, data)
+	for i in range(0, len(closest)):
+        # print out everything classified to the 0th centroid
+		if closest[i] == 0:
+		    print(names[i])
 	return(centroids,closest)
 
 #executable
