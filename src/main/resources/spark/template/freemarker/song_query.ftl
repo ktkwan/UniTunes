@@ -12,13 +12,20 @@
 </div>
 <p>
 
-<#assign items=display>
 
-  <#list items as item>
 
-	<li >${item}</tr>
+<#assign hash=songs>
+	 <#list hash as key, value>
+	<div class="row">
+	<li class="songs">
+	${key}
+	${value}
+	
+	</tr>
+	<div>
 
 </#list>
+
 
 </p>
 

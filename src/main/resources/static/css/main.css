@@ -77,7 +77,7 @@ body {
 
 a, a:active, a:focus, a:visited { 
 	text-decoration: none; 
-	color: #1b262c;
+	/*color: #1b262c;*/
 	padding-bottom: 10px;
 }
 

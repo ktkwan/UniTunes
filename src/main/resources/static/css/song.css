@@ -1,6 +1,7 @@
 body {
 	font-family: 'Verdana';
-	background-color: #5479ba;
+	background-color: #233342;
+	color: white;
 
 }
 
@@ -15,18 +16,56 @@ body {
 }
 
 .container{
-	width: 50vh;
+	width: 100vh;
 	/*height: 50vh;*/
 	background-color: white;
 	display: flex;
 	flex-direction: column; 
 	align-self: center;
 	align-items: center;
-	background-color: #c2d9ff;
+	background-color: #b35340;
+	border:5px solid #ce8054;
+	color:white;
 	height:vh;
+	padding: 5px;
 	/*margin-left: 220px;*/
 }
 /*a { color: #FF0000; }*/
+
+.songs{
+	display: flex;
+	flex-direction: column;
+	grid-column: 1 / span 3: 
+}
+
+
+
+.library{
+	/*display: flex;*/
+	/*flex-direction: column;*/
+	/*display:table;*/
+	grid-column: 1 / span 3: 
+
+}
+
+/*.column {
+  float: left;
+  width: 33.33%;
+}
+
+
+.row:after {
+  display: table;
+  clear: both;
+}*/
+img{
+	width:250px;
+}
+
+.row{
+  display: grid;
+  grid-template-columns: 270px 270px 270px;
+}
 
 .first{
 	display: flex;
@@ -39,6 +78,7 @@ body {
 li {
     list-style-type: none;
      margin: 10px 0;
+     color: white;
 }
 
 .record{
@@ -84,10 +124,12 @@ li {
 	/*background-color:white;*/
 	width: 20vh;
 	height:vh;
+	color: white;
 }
 
 a{
-	 TEXT-DECORATION: none
+	color: white;
+	 
 }
 
 a:hover { opacity: 0.5; TEXT-DECORATION: none; font-weight: none }

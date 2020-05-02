@@ -1,7 +1,7 @@
 body {
 	font-family: 'Verdana';
 	color: black;
-	background-color: #5479ba;
+	background-color: #233342;
 
 }
 
@@ -10,10 +10,13 @@ body {
 	font-family: 'Verdana';
 }
 
-.song_name {
+.artist_name {
 	font-family: 'Verdana';
-	font-weight: bold;
+	/*font-weight: bold;*/
 	width: 10px;
+	align-self: center;
+	margin-right: 40px;
+	margin-top: -10px;
 
 }
 
@@ -22,20 +25,32 @@ body {
 
 }
 
+.names{
+	display: flex;
+	flex-direction: column;
+	/*align-items: center;*/
+	/*align-self: center;*/
+
+}
+
 .mainDiv {
-	width: 50vh;
-	height:40vh;
-	margin-top: 50px;
+	width: 60vh;
+	height:60vh;
+	margin-top: 30px;
 	align-self: center;
 	text-align: center;
 	align-content: center;
-	background-color:white;
+	/*background-color:#3D455C;*/
 	flex-direction: column;
 	display: flex;
 	white-space: normal;
+	color:white;
 	padding: 100px;
 	justify-content: space-between;
-	border: 5px solid #314c7a;
+	/*border: 5px solid #586028;*/
+
+	background-color: #b35340;
+	border:5px solid #ce8054;
 
 
 
@@ -54,9 +69,16 @@ body {
 	display: flex;
 	align-self: center;
 	text-align: center;
-	background: #5479ba;
+	background: #233342;
 	height: 100vh;
 
+}
+
+.album_art{
+	align-self: center;
+	width:300px;
+	height:300px;
+	margin-top: 10px;
 }
 
 .record{
@@ -120,6 +142,7 @@ body {
 
 /*.gradient-button-1 {background-image: linear-gradient(to right, #2BC0E4 0%, #EAECC6 51%, #2BC0E4 100%)}*/
 .gradient-button-1{
+	margin-top: 40px;
 	background-color: black
 }
 

@@ -156,6 +156,22 @@ public final class DatabaseConnection {
 
 		return base_url + spotify_id;
 	}
+	
+	public static String getAlbumArt(String song_id) throws SQLException {
+		String album_art = "";
+		PreparedStatement prep;
+		String statement = "SELECT album_art FROM songs WHERE spotify_id=?;";
+		prep = conn.prepareStatement(statement);
+		prep.setString(1, song_id);
+		ResultSet res = prep.executeQuery();
+		while (res.next()) {
+			album_art = res.getString(1);
+		}
+
+		return album_art;
+	}
+	
+	
 
 	/**
 	 * @return three random songs from database
@@ -239,4 +255,6 @@ public final class DatabaseConnection {
 			System.out.println(value);
 		}
 	}
+	
+	
 }

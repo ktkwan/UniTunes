@@ -174,15 +174,20 @@ public final class Main {
 		HashMap<String, String> song_names = DatabaseConnection.getAllSongNames();
 		song_hashmap = song_names;
 		String songs = "";
+		HashMap<String, String> map = new HashMap<>();
 		List<String> n = new ArrayList<>();
 		List<String> song_list = new ArrayList<>();
+		List<String> art_list = new ArrayList<>();
 		for (Map.Entry<String, String> entry: song_names.entrySet()){
 			 String songLink = String.format("<a href=\"song/%s\"> %s </a>", entry.getKey(), entry.getValue());
 			 songs += songLink;
 			 n.add(songLink);
+			 art_list.add(DatabaseConnection.getAlbumArt(entry.getKey()));
+			 String album = String.format("<a href=\"song/%s\"> <img src=%s> </a>", entry.getKey(), DatabaseConnection.getAlbumArt(entry.getKey()));
+			 map.put(songLink, album);
 		}
 		
-		Map<String, List<String>> variables = ImmutableMap.of("display", n);
+		Map<String, HashMap<String, String>> variables = ImmutableMap.of("songs", map);
 		  return new ModelAndView(variables, "song_query.ftl");
 	}
   }
@@ -197,7 +202,7 @@ public final class Main {
 		String l = DatabaseConnection.getSpotifyLinkFromID(songID);
 		System.out.println("ID: " + DatabaseConnection.song_hashmap);
 		String link = String.format("href=\"http://%s\" target=\"_blank\"", l);
-		  Map<String, String> variables = ImmutableMap.of("title",  "uniTunes", "song_name", song_names.get(songID), "display", link, "artist_name", DatabaseConnection.getArtistFromSongID(songID));
+		  Map<String, String> variables = ImmutableMap.of("title",  "uniTunes", "song_name", song_names.get(songID), "display", link, "artist_name", DatabaseConnection.getArtistFromSongID(songID), "album_art", DatabaseConnection.getAlbumArt(songID));
 		  return new ModelAndView(variables, "song.ftl");
 	  }
   }

@@ -4,11 +4,14 @@
 <div class=container>
 <div class=mainDiv>
 <div class=with-artist>
+
 <div class=col>
 <h1 class=mainHeader>${song_name}</h1>
 <img class=record src=/css/images/record.png>
 </div>
-<p class=song_name>by ${artist_name}</p>
+<p class=artist_name>by ${artist_name}</p>
+
+<img class=album_art src=${album_art}>
 </div>
 
 
