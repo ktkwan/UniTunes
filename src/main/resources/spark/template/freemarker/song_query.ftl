@@ -10,7 +10,18 @@
 <p class="t">U n i T u n e s</p>
 </div>
 <div class=buttons>
-
+<div class=home>
+<a href=/unitunes>Home</a>
+</div>
+<div class=browse>
+<a href=/songs>Browse</a>
+</div>
+<div class=lib>
+<a href=/songs>Library</a>
+</div>
+<div class=log>
+<a href=/unitunes>Logout</a>
+</div>
 </div>
 
 <div class=container>
