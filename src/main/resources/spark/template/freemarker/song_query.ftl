@@ -1,7 +1,9 @@
 <#assign content>
 <link rel="stylesheet" href="css/song.css">
+
 <link rel="icon" href="/css/images/record.png">
     <title>UniTunes</title>
+
 <div class=first>
 <div class=nav-bar>
 <img class=music src="https://media.giphy.com/media/cMWU282WTIdihQ6F1X/giphy.gif">
@@ -17,6 +19,8 @@
 
 
 </div>
+</div>
+
 <p>
 
 
@@ -40,7 +44,8 @@
 </div>
 
 
-
+    <script type="text/javascript" src="js/paper-full.js"></script>
+    <script type="text/paperscript" canvas = "canvas" src="js/home-background.js"> </script>
 
 
 

@@ -70,10 +70,17 @@ body {
 }
 
 
+
 .row:after {
   display: table;
   clear: both;
 }*/
+
+
+.all{
+	display: flex;
+	flex-direction: row;
+}
 img{
 	width:250px;
 }
