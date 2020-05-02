@@ -129,13 +129,13 @@ public final class Main {
     // Creating a hashmap of commands that corresponds to different classes that implement the
     // Command interface
     HashMap<String, Command> map = new HashMap<String, Command>();
-    UniTunes uniTunesProgram = new UniTunes();
-    map.put("user", uniTunesProgram.getUserCommand());
-    map.put("db", uniTunesProgram.getDatabaseCommand());
-    map.put("suggest", uniTunesProgram.getSuggestCommand());
-    map.put("connect", uniTunesProgram.getConnectCommand());
-    REPL repl = new REPL(map);
-    repl.runRepl();
+//    UniTunes uniTunesProgram = new UniTunes();
+//    map.put("user", uniTunesProgram.getUserCommand());
+//    map.put("db", uniTunesProgram.getDatabaseCommand());
+//    map.put("suggest", uniTunesProgram.getSuggestCommand());
+//    map.put("connect", uniTunesProgram.getConnectCommand());
+//    REPL repl = new REPL(map);
+//    repl.runRepl();
 
   }
 

@@ -11,10 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.brown.cs.student.brown_spotify.Integer;
 import edu.brown.cs.student.brown_spotify.Song;
-import edu.brown.cs.student.kdtree.Coordinates;
-import edu.brown.cs.student.kdtree.KdTreeNode;
+
+
+//import edu.brown.cs.student.brown_spotify.Song;
+//import edu.brown.cs.student.kdtree.Coordinates;
+//import edu.brown.cs.student.kdtree.KdTreeNode;
 
 
 /**
@@ -53,12 +55,18 @@ public class SongDatabase {
 		prep = conn.prepareStatement("CREATE TABLE IF NOT EXISTS songs("
 		+ "track_name TEXT,"
 		+ "artist TEXT,"
-		+ "date TEXT,"
-		+ "region TEXT,"
 		+ "spotify_id TEXT,"
 		+ "genre TEXT,"
+		+ "popularity INTEGER,"
 		+ "duration INTEGER,"
-		+ "popularity INTEGER);");
+		+ "album_art TEXT,"
+		+ "danceability INTEGER,"
+		+ "energy INTEGER,"
+		+ "loudness INTEGER,"
+		+ "speechiness INTEGER,"
+		+ "acousticness INTEGER,"
+		+ "liveness INTEGER,"
+		+ "tempo INTEGER)");
 		prep.executeUpdate();
   }
 
@@ -75,7 +83,7 @@ public class SongDatabase {
     	List<String[]> csv = FileParsing.parse_csv(filename);
     	for (String[] song: csv) {
     		System.out.println(song);
-    		PreparedStatement prep = conn.prepareStatement("INSERT INTO songs VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    		PreparedStatement prep = conn.prepareStatement("INSERT INTO songs VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?)");
     		prep.setString(1, song[0]);
     		prep.setString(2, song[1]);
     		prep.setString(3, song[2]);
@@ -84,6 +92,12 @@ public class SongDatabase {
     		prep.setString(6, song[5]);
     		prep.setString(7, song[6]);
     		prep.setString(8, song[7]);
+    		prep.setString(9, song[8]);
+    		prep.setString(10, song[9]);
+    		prep.setString(11, song[10]);
+    		prep.setString(12, song[11]);
+    		prep.setString(13, song[12]);
+    		prep.setString(14, song[13]);
     		prep.executeUpdate();
     	    prep.close();
     }
@@ -107,12 +121,12 @@ public class SongDatabase {
 		          name = rs.getString(1);
 		          spotify_id = rs.getString(2); 
 		          genre = rs.getString(3); 
-		          duration = rs.getString(4); 
-		          popularity = rs.getString(5); 
-		          Song s = new Song(null, null, null, spotify_id); 
-		          s.setClassifiable(genre, duration, popularity);
-		          s.setData(name, spotify_id);
-		          songs.add(s); 
+		          duration = rs.getInt(4); 
+		          popularity = rs.getInt(5); 
+//		          Song s = new Song(null, null, null, spotify_id); 
+//		          s.setClassifiable(genre, duration, popularity);
+//		          s.setData(name, spotify_id);
+//		          songs.add(s); 
 		        }
 		        rs.close();
 		      } catch (SQLException e1) {
