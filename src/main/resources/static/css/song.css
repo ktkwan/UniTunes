@@ -1,6 +1,6 @@
 body {
 	font-family: 'Verdana';
-	background-color: #233342;
+	background-color: #5a6882;
 	color: white;
 
 }
@@ -23,8 +23,8 @@ body {
 	flex-direction: column; 
 	align-self: center;
 	align-items: center;
-	background-color: #b35340;
-	border:5px solid #ce8054;
+	background-color: #142b43;
+	border:5px solid #949fb1;
 	color:white;
 	height:vh;
 	padding: 10px;
@@ -42,7 +42,7 @@ body {
 .nav-bar{
 	width: 300vh;
 	height:60px;
-	background-color: #b35340;
+	background-color: #80788d;
 	padding: 20px;
 
 
@@ -51,7 +51,7 @@ body {
 .buttons{
 	width: 300vh;
 	height:40px;
-	background-color: #ce8054;
+	background-color: #f5f1ea;
 }
 
 

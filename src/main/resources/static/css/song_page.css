@@ -35,7 +35,7 @@ body {
 .nav-bar{
 	width: vh;
 	height:60px;
-	background-color: #b35340;
+	background-color: #80788d;
 	padding: 20px;
 
 
@@ -46,7 +46,7 @@ body {
 .buttons{
 	width: vh;
 	height:40px;
-	background-color: #ce8054;
+	background-color: #f5f1ea;
 }
 
 .unitunes{
@@ -80,8 +80,8 @@ body {
 	justify-content: space-between;
 	/*border: 5px solid #586028;*/
 
-	background-color: #b35340;
-	border:5px solid #ce8054;
+	background-color: #142b43;
+	border:5px solid #949fb1;
 	margin-top: 80px;
 
 
@@ -101,7 +101,7 @@ body {
 	display: flex;
 	align-self: center;
 	text-align: center;
-	background: #233342;
+	background: #5a6882;
 	height: vh;
 	width:vh;
 	/*height: 100vh;*/
