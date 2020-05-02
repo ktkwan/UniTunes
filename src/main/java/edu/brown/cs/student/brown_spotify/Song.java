@@ -15,9 +15,10 @@ public class Song extends KdTreeNode {
 		super(leftChild, rightChild, coords, id);
 		this.name = null; 
 		this.id = -1; 
-//		this.leftChild = null;
-//		this.rightChild = null;
-//		this.coords = new Coordinates();
+		this.coords = coords; 
+		this.leftChild = null;
+		this.rightChild = null;
+
 	}
 	public void setData(String name, int id){
 		this.id = id; 
