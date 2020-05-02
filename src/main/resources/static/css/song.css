@@ -16,13 +16,14 @@ body {
 
 .container{
 	width: 50vh;
-	height: 50vh;
+	/*height: 50vh;*/
 	background-color: white;
 	display: flex;
 	flex-direction: column; 
 	align-self: center;
 	align-items: center;
 	background-color: #c2d9ff;
+	height:vh;
 	/*margin-left: 220px;*/
 }
 /*a { color: #FF0000; }*/
@@ -69,7 +70,7 @@ li {
 
 .music{
 	width: 150px;
-	height: 150px;
+	/*height: vh;*/
 }
 
 
@@ -82,6 +83,7 @@ li {
 	flex-direction: row;
 	/*background-color:white;*/
 	width: 20vh;
+	height:vh;
 }
 
 a{
