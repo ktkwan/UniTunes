@@ -1,5 +1,5 @@
 <#assign content>
-
+<link rel="icon" href="/css/images/record.png">
 <h1> uniTunes </h1>
 
     <div id="base" style="color:white; background: #1b262c;">
