@@ -1,6 +1,5 @@
 body {
 	font-family: 'Verdana';
-	color: black;
 	background-color: #233342;
 
 }
@@ -33,6 +32,38 @@ body {
 
 }
 
+.nav-bar{
+	width: vh;
+	height:60px;
+	background-color: #b35340;
+	padding: 20px;
+
+
+
+
+}
+
+.buttons{
+	width: vh;
+	height:40px;
+	background-color: #ce8054;
+}
+
+.unitunes{
+	font-family: 'Verdana';
+	font-weight: bold;
+	color: white;
+	margin-top: -20px;
+
+}
+
+
+.music{
+	margin-top: -20px;
+	width: 70px;
+	/*height: vh;*/
+}
+
 .mainDiv {
 	width: 60vh;
 	height:60vh;
@@ -51,7 +82,7 @@ body {
 
 	background-color: #b35340;
 	border:5px solid #ce8054;
-
+	margin-top: 80px;
 
 
 
@@ -64,13 +95,16 @@ body {
 }
 
 .container {
-	flex-flow: column;
+
+	flex-direction: column;
 	align-content: center;
 	display: flex;
 	align-self: center;
 	text-align: center;
 	background: #233342;
-	height: 100vh;
+	height: vh;
+	width:vh;
+	/*height: 100vh;*/
 
 }
 
@@ -94,26 +128,6 @@ body {
 	flex-direction: row;
 }
 
-.sp-button {
-	/*-webkit-border-image: url("sp://import/img/info_group-button.png") 0 7 42 7;*/
-	background: initial;
-	border: initial;
-	border-width: 0 7px;
-	box-sizing: border-box;
-	color: #333;
-	cursor: default;
-	display: inline-block;
-	font-size: 12px;
-	line-height: 17px;
-	margin: 0;
-	max-width: 100%;
-	overflow: hidden;
-	padding: 2px;
-	text-decoration: none;
-	text-overflow: ellipsis;
-	text-shadow: 0 1px 0 #EEE;
-	white-space: nowrap;
-}
 
 .gradient-button {
     margin: 10px;

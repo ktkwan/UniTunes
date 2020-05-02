@@ -2,6 +2,15 @@
 <link rel="stylesheet" href="/css/song_page.css">
 <link rel="icon" href="/css/images/record.png">
 <div class=container>
+<div class=nav-bar>
+<img class=music src="https://media.giphy.com/media/cMWU282WTIdihQ6F1X/giphy.gif">
+<div class=unitunes>
+<p >U n i t u n e s</p>
+</div>
+</div>
+<div class=buttons>
+
+</div>
 <div class=mainDiv>
 <div class=with-artist>
 

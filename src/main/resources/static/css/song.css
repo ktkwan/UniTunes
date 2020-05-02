@@ -27,7 +27,8 @@ body {
 	border:5px solid #ce8054;
 	color:white;
 	height:vh;
-	padding: 5px;
+	padding: 10px;
+	margin-top: 90px;
 	/*margin-left: 220px;*/
 }
 /*a { color: #FF0000; }*/
@@ -36,6 +37,21 @@ body {
 	display: flex;
 	flex-direction: column;
 	grid-column: 1 / span 3: 
+}
+
+.nav-bar{
+	width: 300vh;
+	height:60px;
+	background-color: #b35340;
+	padding: 20px;
+
+
+}
+
+.buttons{
+	width: 300vh;
+	height:40px;
+	background-color: #ce8054;
 }
 
 
@@ -109,11 +125,16 @@ li {
 }*/
 
 .music{
-	width: 150px;
+	margin-top: -20px;
+	width: 70px;
 	/*height: vh;*/
 }
 
-
+.t{
+	font-family: 'Verdana';
+	font-weight: bold;
+	margin-top: 0px
+}
 
 
 .col {
