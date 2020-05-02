@@ -25,17 +25,28 @@ public class UniTunes {
   List<Song> clusters; 
   List<Song> allSongs; 
   
+<<<<<<< HEAD
   public UniTunes(SongDatabase songdb) {
 	this.songdb = songdb; 
 	this.allSongs = new ArrayList<Song>(); 
 	dimensions = 3; 
+=======
+  public UniTunes() {
+	this.allSongs = new ArrayList<Song>(); 
+	this.dimensions = 3; 
+>>>>>>> rzuoBranch
     userCommand = new UserCommand();
     dbCommand = new DatabaseCommand();
     suggestCommand = new SuggestCommand();
     connectCommand = new ConnectCommand();
+<<<<<<< HEAD
     this.allsongs = songdb.getSongs(); // get all the songs currently in the database, should this be static? 
     this.clusters = this.setUpClusters(); 
     tree = new KdTree(this.allsongs, 3); 
+=======
+    clusters = this.setUpClusters();  
+    tree = new KdTree(this.allSongs, 3); 
+>>>>>>> rzuoBranch
     
   }
   
@@ -61,9 +72,13 @@ public class UniTunes {
 	  // turn the coordinates in to a list of dummy songs that can be used by kdtree 
 	  List<Song> dummySongList = new ArrayList<Song>(); 
 	  for(int j = 0; j< numberC; j++) {
-		  Song s = new Song(null, null , coordList.get(j), null); 
+		  Song s = new Song(null, null , coordList.get(j), j); 
 		  dummySongList.add(s); 
+<<<<<<< HEAD
 		  allSongs.add(s); 
+=======
+		  this.allSongs.add(s); 
+>>>>>>> rzuoBranch
 	  }
 	  return dummySongList; 
   }
@@ -98,7 +113,7 @@ public class UniTunes {
    * helper function to find the closest cluster given a dummy user song 
    */
   public Song findClosestCentroid(Song dummy) {
-	  double closestDist = 0; 
+	  double closestDist = Integer.MAX_VALUE; 
 	  Song closestCentroid = null; 
 	  for(int i = 0; i< this.clusters.size(); i++) {
 		  Song cur = this.clusters.get(i); 
@@ -183,13 +198,13 @@ public class UniTunes {
       // we need to make a query that takes in a user id and returns a list of songs. Maybe this part can be cached 
       List<Song> userList = new ArrayList<Song>(); 
       double[][] testUser= {
-    		  {5.4,7.3}, 
-    		  {3.7,2.0}
+    		  {5.4,7.3, 1.0}, 
+    		  {3.7,2.0,5.5}
       }; 
       Coordinates c1 = new Coordinates(testUser[0]); 
       Coordinates c2 = new Coordinates(testUser[1]); 
-      Song s1 = new Song(null, null, c1, 0); 
-      Song s2 = new Song(null, null, c2, 1); 
+      Song s1 = new Song(null, null, c1, 100); 
+      Song s2 = new Song(null, null, c2, 101); 
       userList.add(s1); 
       userList.add(s2); 
       // generate the average song
@@ -198,7 +213,8 @@ public class UniTunes {
       Song closestCentroid = findClosestCentroid(avg); 
       // now for all the songs for a given centroid, find the closest songs to the centroid => need to set up a query from each 
       // centroid to a list of songs with the given centroid. 
-      tree.neighbors(closestCentroid, 5, tree.getRoot()); // should print out a list of five recommended songs. 
+      System.out.println("found the closest centroid" + closestCentroid); 
+      tree.neighbors(closestCentroid, 1, tree.getRoot()); // should print out a list of five recommended songs. 
       return "running suggest command";
     }
   }
