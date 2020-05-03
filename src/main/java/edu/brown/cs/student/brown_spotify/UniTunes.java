@@ -105,6 +105,36 @@ public class UniTunes {
 	  }
 	  return closestCentroid; 
   }
+  
+  /*
+   * Suggests a song for a new user 
+   */
+  public Song newUserSuggestSong(Song song) {
+	  	  // this takes a song as input and we have to retrieve the id. 
+	      System.out.println(args[0]);
+	      System.out.println(args[1]); 
+	      List<Song> userList = new ArrayList<Song>(); 
+	      double[][] testUser= {
+	    		  {5.4,7.3, 1.0}, 
+	    		  {3.7,2.0,5.5}
+	      }; 
+	      Coordinates c1 = new Coordinates(testUser[0]); 
+	      Coordinates c2 = new Coordinates(testUser[1]); 
+	      Song s1 = new Song(null, null, c1, 100); 
+	      Song s2 = new Song(null, null, c2, 101); 
+	      userList.add(s1); 
+	      userList.add(s2); 
+	      // generate the average song
+	      Song avg = findAverageSong(userList); 
+	      // find the closest centroid to the dummy song. 
+	      Song closestCentroid = findClosestCentroid(avg); 
+	      // now for all the songs for a given centroid, find the closest songs to the centroid => need to set up a query from each 
+	      // centroid to a list of songs with the given centroid. 
+	      System.out.println("found the closest centroid" + closestCentroid); 
+	      tree.neighbors(closestCentroid, 1, tree.getRoot()); // should print out a list of five recommended songs. 
+	      return "running suggest command";
+	  
+  }
 
   public Command getUserCommand(){
     return userCommand;
@@ -176,6 +206,8 @@ public class UniTunes {
       // eventually this should take in a list of songs and find the closest song and find the closest neighbors to recommend. 
       // for now let's create a dummy list for a user with two songs 
       // we need to make a query that takes in a user id and returns a list of songs. Maybe this part can be cached 
+      System.out.println(args[0]);
+      System.out.println(args[1]); 
       List<Song> userList = new ArrayList<Song>(); 
       double[][] testUser= {
     		  {5.4,7.3, 1.0}, 
