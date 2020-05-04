@@ -52,8 +52,9 @@ public class Login {
       String password = req.queryParams("password");
       String confirmPassword = req.queryParams("confirm-password");
       String selectedSong = req.queryParams("song");
+      String userName = (firstName + lastName).toLowerCase(); 
       try {
-        UserDatabase.addNewUser(firstName, lastName, email, password);
+        UserDatabase.addNewUser(userName, email, password);
       } catch(SQLException e) {
         System.out.println("ERROR: Unable to add new user to User Database");
       }
