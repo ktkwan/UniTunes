@@ -120,37 +120,37 @@ public class SongDatabase {
 	 * gets all the songs in the database and creates a list of songs.
 	 * @return: list of songs 
 	 */
-//	 public List<Song> getSongs() throws SQLException {
-//		 	List<Song> songs = new ArrayList<Song>(); 
-//		    String name = ""; 
-//		    String spotify_id = ""; 
-//		    String genre = ""; 
-//		    Integer duration = null; 
-//		    Integer popularity = null; 
-//		    String query = "SELECT track_name, spotify_id, genre, duration, popularity from SongDatabase";
-//		    try (PreparedStatement prep = conn.prepareStatement(query)) {
-//		      try (ResultSet rs = prep.executeQuery()) {
-//		        while (rs.next()) {
-//		          name = rs.getString(1);
-//		          spotify_id = rs.getString(2); 
-//		          genre = rs.getString(3); 
-//		          duration = rs.getInt(4); 
-//		          popularity = rs.getInt(5); 
-////		          Song s = new Song(null, null, null, spotify_id); 
-////		          s.setClassifiable(genre, duration, popularity);
-////		          s.setData(name, spotify_id);
-////		          songs.add(s); 
-//		        }
-//		        rs.close();
-//		      } catch (SQLException e1) {
-//		        throw (e1);
-//		      }
-//		      prep.close();
-//		    } catch (SQLException e2) {
-//		      throw (e2);
-//		    }
-//		    return songs;
-//		  }
+	 public List<Song> getSongs() throws SQLException {
+		 	List<Song> songs = new ArrayList<Song>(); 
+		    String name = ""; 
+		    String spotify_id = ""; 
+		    String genre = ""; 
+		    Integer duration = null; 
+		    Integer popularity = null; 
+		    String query = "SELECT track_name, spotify_id, genre, duration, popularity from SongDatabase";
+		    try (PreparedStatement prep = conn.prepareStatement(query)) {
+		      try (ResultSet rs = prep.executeQuery()) {
+		        while (rs.next()) {
+		          name = rs.getString(1);
+		          spotify_id = rs.getString(2); 
+		          genre = rs.getString(3); 
+		          duration = rs.getInt(4); 
+		          popularity = rs.getInt(5); 
+//		          Song s = new Song(null, null, null, spotify_id); 
+//		          s.setClassifiable(genre, duration, popularity);
+//		          s.setData(name, spotify_id);
+//		          songs.add(s); 
+		        }
+		        rs.close();
+		      } catch (SQLException e1) {
+		        throw (e1);
+		      }
+		      prep.close();
+		    } catch (SQLException e2) {
+		      throw (e2);
+		    }
+		    return songs;
+		  }
 
 	
 }

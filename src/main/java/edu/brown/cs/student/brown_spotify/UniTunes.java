@@ -1,4 +1,5 @@
 package edu.brown.cs.student.brown_spotify;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,43 +8,47 @@ import edu.brown.cs.student.kdtree.Coordinates;
 import edu.brown.cs.student.kdtree.KdTree;
 import edu.brown.cs.student.kdtree.KdTreeNode;
 import edu.brown.cs.student.database.SongDatabase;
+import edu.brown.cs.student.database.UserDatabase;
 
 
 /**
  * Primary class for handling commands to do with the UniTunes program
  */
 public class UniTunes {
-
-
-  SongDatabase songdb;
-  UserDatabase userdb; 
-  UserCommand userCommand;
-  DatabaseCommand dbCommand;
-  SuggestCommand suggestCommand;
-  ConnectCommand connectCommand;
-  KdTree tree;
-  static int dimensions;
-  List<Song> clusters;
-  List<Song> allSongs;
+  private SongDatabase songdb;
+  private UserDatabase userdb; 
+  private UserCommand userCommand;
+  private DatabaseCommand dbCommand;
+  private SuggestCommand suggestCommand;
+  private ConnectCommand connectCommand;
+  private KdTree tree;
+  private static int dimensions;
+  private List<Song> clusters;
+  private List<Song> allSongs;
+  
 
   public UniTunes(SongDatabase songdb, UserDatabase userdb) {
 	this.songdb = songdb;
 	this.userdb = userdb; 
-	this.allSongs = new ArrayList<Song>();
-	dimensions = 3;
-	public UniTunes() {
 	this.allSongs = new ArrayList<Song>();
 	this.dimensions = 3;
     userCommand = new UserCommand();
     dbCommand = new DatabaseCommand();
     suggestCommand = new SuggestCommand();
     connectCommand = new ConnectCommand();
-    this.allsongs = songdb.getSongs(); // get all the songs currently in the database, should this be static?
-    this.clusters = this.setUpClusters();
-    tree = new KdTree(this.allsongs, 3);
-    clusters = this.setUpClusters();
-    tree = new KdTree(this.allSongs, 3);
+//    this.allsongs = songdb.getSongs(); // get all the songs currently in the database, should this be static?
+	  try { 
+		  for(int i = 0; i < songdb.getSongs().size(); i ++) { 
+			  allSongs.add(songdb.getSongs().get(i)); 
+			  this.clusters = this.setUpClusters();
+			    tree = new KdTree(this.allSongs, dimensions);
+			    clusters = this.setUpClusters();
 
+		  }
+	  }catch(SQLException e) { 
+		  System.out.println("ERROR: Empty song list in database"); 
+	  }
+  
   }
 
   /*
@@ -67,6 +72,7 @@ public class UniTunes {
 	  }
 	  // turn the coordinates in to a list of dummy songs that can be used by kdtree
 	  List<Song> dummySongList = new ArrayList<Song>();
+
 	  for(int j = 0; j< numberC; j++) {
 		  Song s = new Song(null, null , coordList.get(j), j);
 		  dummySongList.add(s);
@@ -158,6 +164,9 @@ public class UniTunes {
    */
   public List<Song> exisitingUserSuggestSong(String UserName) {
   	  // get the user based on the userName, retrieve the value from the cache 
+	  /*
+	   * TO DO: make a hashmap that maps a username to a user so that we can get a user easily. 
+	   */
 	  User curUser = this.userdb.get(UserName); 
 	  List<Song> favorites = curUser.favoriteSongs; 
       // generate the average song

@@ -1,4 +1,4 @@
-package src.main.java.edu.brown.cs.student.brown_spotify;
+package edu.brown.cs.student.brown_spotify;
 
 import edu.brown.cs.student.kdtree.KdTreeNode;
 
