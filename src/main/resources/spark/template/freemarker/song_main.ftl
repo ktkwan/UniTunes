@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="css/html5bp.css">
     <link rel="stylesheet" href="css/song_page.css">
     <link rel="stylesheet" href="css/song.css">
+    <link rel="stylesheet" href="css/main.css">
+    
   </head>
   <body>
      ${song}

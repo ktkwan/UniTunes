@@ -14,10 +14,12 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
-//import edu.brown.cs.ngao.timdb.Film;
 import edu.brown.cs.student.kdtree.Coordinates;
 import edu.brown.cs.student.kdtree.KdTreeNode;
 import edu.brown.cs.student.brown_spotify.User;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The database where all user information is stored
@@ -29,6 +31,9 @@ public class UserDatabase {
   private static final int USER_CACHE_SIZE = 10000;
   private static final int EXPIRE_AFTER_WRITE = 10;
   private static LoadingCache<String, User> userMap;
+  //This is the user library. It maps a username to a map of their songs. Their personal song map 
+  //maps a song name to a song list. 
+  private static Map<String, List<String>> userLibrary; 
 
   public UserDatabase(String filename) throws SQLException, ClassNotFoundException {
 
@@ -38,6 +43,7 @@ public class UserDatabase {
       connection_filename = null;
     }
 
+    userLibrary = new HashMap<String, List<String>>(); 
     connection_filename = filename;
     Class.forName("org.sqlite.JDBC");
     String urlToDB = "jdbc:sqlite:" + connection_filename;
@@ -52,7 +58,6 @@ public class UserDatabase {
         + "username TEXT,"
         + "password TEXT,"
         + "email TEXT,"
-        + "id INTEGER,"
         + "genre TEXT);");
     prep.executeUpdate();
   }
@@ -121,7 +126,15 @@ public class UserDatabase {
   /*
    * Adds a new user to the database and creates a new user
    */
+  /** 
+   * Adds a user to the UserDatabase when they create an account 
+   * @param username
+   * @param password
+   * @param email
+   * @throws SQLException
+   */
   public static void addNewUser(String username, String password, String email) throws SQLException {
+	
     PreparedStatement prep;
     prep = conn.prepareStatement("INSERT INTO " +
         "users " +
@@ -134,6 +147,10 @@ public class UserDatabase {
     prep.setString(3, email);
     prep.executeUpdate();
     prep.close();
+    
+    //Adding the user to the hashmap that stores their  library
+    List<String> userSongList = new ArrayList<String>(); 
+    userLibrary.put(username, userSongList); 
 
   }
 
@@ -144,6 +161,26 @@ public class UserDatabase {
     prep.setString(2, id);
     prep.executeUpdate();
     prep.close();
+  }
+  
+  public static void addSongToLibrary(String username, String song) { 
+	  if(username != null || song != null) { 
+		  List<String> library = userLibrary.get(username); 
+		  library.add(song); 
+		  System.out.println(username + library.size());  
+
+	  }
+  }
+  
+  
+  public static List<String> getUserLibrary(String username){
+	  if(username != null || !userLibrary.containsKey(username)) { 
+		  return userLibrary.get(username); 	  
+	  }
+	  String invalid = "That user does not exist"; 
+	  List<String> invalidList = new ArrayList<String>();
+	  invalidList.add(invalid); 
+	  return invalidList; 
   }
 
 }

@@ -1,7 +1,7 @@
 <#assign content>
 <link rel="icon" href="/css/images/record.png">
 <h1> uniTunes </h1>
-
+    <link rel="stylesheet" href="css/main.css">
     <div id="base" style="color:white; background: #1b262c;">
         <canvas id="canvas" width="1000%" height="500%" style="background: #1b262c"></canvas>
         <div class = "sign-in-form-pop-up" id="sign-in">
@@ -24,6 +24,7 @@
             </form>
         </div>
     </div>
+
 
 <#--    <script type="text/css" src="css/login.css"></script>-->
     <script type="text/javascript" src="js/paper-full.js"></script>

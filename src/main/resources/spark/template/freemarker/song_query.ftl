@@ -1,5 +1,6 @@
 <#assign content>
 <link rel="stylesheet" href="css/song.css">
+<link rel="stylesheet" href="css/main.css">
 
 <link rel="icon" href="/css/images/record.png">
     <title>UniTunes</title>
@@ -24,16 +25,21 @@
 </div>
 </div>
 
+
 <div class=container>
 <div class=col>
 <h1 class=mainHeader> Recommended Songs</h1>
+
+<form method="GET" action="/library"> 
+
+<button type="submit" id="library"> My Library </button>
+</form>
 
 
 </div>
 </div>
 
 <p>
-
 
 
 <#assign hash=songs>
@@ -45,6 +51,10 @@
 	
 	</tr>
 	<div>
+  <#list items as item>
+    <form method="POST" action="/songs">
+	<li >${item}
+	</form>
 
 </#list>
 

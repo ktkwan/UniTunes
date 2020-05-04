@@ -25,6 +25,7 @@ import joptsimple.OptionSpec;
 import org.eclipse.jetty.server.Authentication;
 import spark.ExceptionHandler;
 import spark.ModelAndView;
+import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
@@ -164,15 +165,20 @@ public final class Main {
     // Setup Spark Routes
     Spark.get("/unitunes", Login.getLoginHandler() , freeMarker);
     Spark.post("/create-account", Login.getCreateHandler(), freeMarker);
+    Spark.get("/library", Login.getLoadLibraryHandler(), freeMarker);
     Spark.get("/songs", new SongHandler(), freeMarker);
     Spark.get("/song/:songID", new SongInfoHandler(), freeMarker);
+    Spark.post("/songs", new AddToLibraryHandler(), freeMarker);
   }
   
-  private static class SongHandler implements TemplateViewRoute {
+  private static class AddToLibraryHandler implements TemplateViewRoute {
 
 	@Override
 	public ModelAndView handle(Request request, Response response) throws Exception {
-		// TODO Auto-generated method stub
+		QueryParamsMap qm = request.queryMap(); 
+		String songToAdd = qm.value("add"); 
+		UserDatabase.addSongToLibrary(Login.getCurrentUser(), songToAdd);
+
 		HashMap<String, String> song_names = DatabaseConnection.getAllSongNames();
 		song_hashmap = song_names;
 		String songs = "";
@@ -183,14 +189,45 @@ public final class Main {
 		for (Map.Entry<String, String> entry: song_names.entrySet()){
 			 String songLink = String.format("<a href=\"song/%s\"> %s </a>", entry.getKey(), entry.getValue());
 			 songs += songLink;
+			 String likeButton = String.format(
+			 		"<button type=\"submit\" name=\"add\" value=\"%s\"> <3 </button>", entry.getKey());
+			 n.add(songLink); 
+			 n.add(likeButton);
+			 if(entry.getKey().contentEquals(songToAdd)) { 
+				 n.add("Added to Library!"); 
+			 }
+		}
+		Map<String, List<String>> variables = ImmutableMap.of("display", n);
+		return new ModelAndView(variables, "song_query.ftl");
+	} 
+	  
+  }
+  
+  private static class SongHandler implements TemplateViewRoute {
+
+	@Override
+	public ModelAndView handle(Request request, Response response) throws Exception {		
+		HashMap<String, String> song_names = DatabaseConnection.getAllSongNames();
+		song_hashmap = song_names;
+		String songs = "";
+		HashMap<String, String> map = new HashMap<>();
+		List<String> n = new ArrayList<>();
+		List<String> song_list = new ArrayList<>();
+		List<String> art_list = new ArrayList<>();
+		for (Map.Entry<String, String> entry: song_names.entrySet()){
+			 String songLink = String.format("<a href=\"song/%s\"> %s </a>", 
+					 entry.getKey(), entry.getValue());
+			 songs += songLink;
+			 String likeButton = String.format(
+				 		"<button type=\"submit\" name=\"add\" value=\"%s\"> <3 </button>", entry.getKey());
 			 n.add(songLink);
+			 n.add(likeButton); 
 			 art_list.add(DatabaseConnection.getAlbumArt(entry.getKey()));
 			 String album = String.format("<a href=\"song/%s\"> <img src=%s> </a>", entry.getKey(), DatabaseConnection.getAlbumArt(entry.getKey()));
 			 map.put(songLink, album);
 		}
-		
-		Map<String, HashMap<String, String>> variables = ImmutableMap.of("songs", map);
-		  return new ModelAndView(variables, "song_query.ftl");
+		Map<String, Object> variables = ImmutableMap.of("display", n, "songs", map);
+		return new ModelAndView(variables, "song_query.ftl");
 	}
   }
   
