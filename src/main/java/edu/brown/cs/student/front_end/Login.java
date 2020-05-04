@@ -17,17 +17,51 @@ import java.util.Map;
 public class Login {
 
   private static UserDatabase db;
+  public Map<String, List> userLibrary; 
+  private static String userName; 
+  private static DatabaseConnection connection; 
+
 
   public Login(){
-
   }
 
   public static TemplateViewRoute getLoginHandler(){
     return new FrontHandler();
   }
 
-  public static TemplateViewRoute getCreateHandler() { return new CreateHandler(); }
+  public static TemplateViewRoute getCreateHandler() { 
+	  return new CreateHandler(); }
+  
+  public static TemplateViewRoute getLoadLibraryHandler() {
+		return new LoadLibraryHandler();
+	}
+  
+  
+  
+  public static class LoadLibraryHandler implements TemplateViewRoute {
 
+	@Override
+	public ModelAndView handle(Request request, Response response) throws Exception {
+		QueryParamsMap qm = request.queryMap(); 
+		String libraryLoad = qm.value("library");
+		List<String> libraryList = new ArrayList<String>(); 
+		String user = "<h1>" + Login.getCurrentUser() + "</h1>"; 
+		for(int i = 0; i < UserDatabase.getUserLibrary(Login.getCurrentUser()).size(); i ++) {
+			String songId = UserDatabase.getUserLibrary(getCurrentUser()).get(i); 
+			String songlink = DatabaseConnection.getSpotifyLinkFromID(songId); 
+			String item = "<li>"+ songlink + "</li>" ; 
+			libraryList.add(item); 
+		}
+		Map<String, Object> variables = ImmutableMap.of("username", user, 
+				"library", libraryList); 
+		return new ModelAndView(variables, "library.ftl"); 
+	} 	  
+  }
+
+
+  public static String getCurrentUser() { 
+	  return userName; 
+  }
   /**
    * Handler that opens the login page
    */
@@ -52,7 +86,7 @@ public class Login {
       String password = req.queryParams("password");
       String confirmPassword = req.queryParams("confirm-password");
       String selectedSong = req.queryParams("song");
-      String userName = (firstName + lastName).toLowerCase(); 
+      userName = (firstName + lastName).toLowerCase(); 
       try {
         UserDatabase.addNewUser(userName, email, password);
       } catch(SQLException e) {
@@ -83,12 +117,12 @@ public class Login {
           DatabaseConnection.getSpotifyLinkFromID(thirdSongID), "Listen here!");
 
       StringBuilder songListBuilder = new StringBuilder();
-      songListBuilder.append("<li id= \"song-list\">" + "<a href=/create-account id=\"song\">" + firstSong +
+      songListBuilder.append("<li id= \"song-list\">" + "<a href=/songs id=\"song\">" + firstSong +
           " by " + firstArtist +
           "</a> " + "   " +
-          firstLink + "<a href=/create-account id=\"song\">" + "</li>" + "<li id= \"song-list\">" + secondSong + " by " + secondArtist +
+          firstLink + "<a href=/songs id=\"song\">" + "</li>" + "<li id= \"song-list\">" + secondSong + " by " + secondArtist +
           "</a> " + "   " +
-          secondLink + "</li>" + "<li id= \"song-list\">" + "<a href=/create-account " +
+          secondLink + "</li>" + "<li id= \"song-list\">" + "<a href=/songs " +
           "id=\"song\">" + thirdSong + " by " + thirdArtist +
           "</a> " + "   " +
           thirdLink + "</li>");
@@ -100,6 +134,8 @@ public class Login {
     }
 
   }
+
+
 
 
 }

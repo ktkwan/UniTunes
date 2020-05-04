@@ -1,6 +1,7 @@
 <#assign content>
 
     <h1> ${status} </h1>
+    
     <div id="welcome-page">
         <canvas id="canvas" width="1000%" height="200%" style="background: #1b262c"></canvas>
         <p>Let's find new student music!</p>

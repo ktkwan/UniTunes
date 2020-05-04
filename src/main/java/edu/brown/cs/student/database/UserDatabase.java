@@ -86,14 +86,24 @@ public class UserDatabase {
     prep.close();
   }
   
-  public void addSongToLibrary(String username, String song) { 
-	  List<String> library = userLibrary.get(username); 
-	  library.add(song); 
-	  
+  public static void addSongToLibrary(String username, String song) { 
+	  if(username != null || song != null) { 
+		  List<String> library = userLibrary.get(username); 
+		  library.add(song); 
+		  System.out.println(username + library.size());  
+
+	  }
   }
   
-  public List<String> getUserLibrary(String username){
-	  return userLibrary.get(username); 	  
+  
+  public static List<String> getUserLibrary(String username){
+	  if(username != null || !userLibrary.containsKey(username)) { 
+		  return userLibrary.get(username); 	  
+	  }
+	  String invalid = "That user does not exist"; 
+	  List<String> invalidList = new ArrayList<String>();
+	  invalidList.add(invalid); 
+	  return invalidList; 
   }
 
 }
