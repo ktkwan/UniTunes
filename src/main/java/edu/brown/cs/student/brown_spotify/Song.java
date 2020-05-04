@@ -19,7 +19,6 @@ public class Song extends KdTreeNode {
 		this.coords = coords; 
 		this.leftChild = null;
 		this.rightChild = null;
-
 	}
 	public void setData(String name, int id){
 		this.id = id; 
@@ -30,6 +29,7 @@ public class Song extends KdTreeNode {
 		this.duration = duration; 
 		this.popularity = popularity; 
 	}
+	
 	/*
 	 * Uses jaccard similarity of a normalized song to turn the genre in to a value. 
 	 */

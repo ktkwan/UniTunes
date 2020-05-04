@@ -16,6 +16,7 @@ public class UniTunes {
 
 
   SongDatabase songdb;
+  UserDatabase userdb; 
   UserCommand userCommand;
   DatabaseCommand dbCommand;
   SuggestCommand suggestCommand;
@@ -25,11 +26,12 @@ public class UniTunes {
   List<Song> clusters;
   List<Song> allSongs;
 
-  public UniTunes(SongDatabase songdb) {
+  public UniTunes(SongDatabase songdb, UserDatabase userdb) {
 	this.songdb = songdb;
+	this.userdb = userdb; 
 	this.allSongs = new ArrayList<Song>();
 	dimensions = 3;
-  public UniTunes() {
+	public UniTunes() {
 	this.allSongs = new ArrayList<Song>();
 	this.dimensions = 3;
     userCommand = new UserCommand();
@@ -118,32 +120,54 @@ public class UniTunes {
   }
 
   /*
-   * Suggests a song for a new user
+   * Suggests a song for a new user, based on a song that they chose
+   * @input: Song song 
+   * @output: k suggested songs. 
    */
-  public Song newUserSuggestSong(Song song) {
-	  	  // this takes a song as input and we have to retrieve the id.
-	      System.out.println(args[0]);
-	      System.out.println(args[1]);
-	      List<Song> userList = new ArrayList<Song>();
-	      double[][] testUser= {
-	    		  {5.4,7.3, 1.0},
-	    		  {3.7,2.0,5.5}
-	      };
-	      Coordinates c1 = new Coordinates(testUser[0]);
-	      Coordinates c2 = new Coordinates(testUser[1]);
-	      Song s1 = new Song(null, null, c1, 100);
-	      Song s2 = new Song(null, null, c2, 101);
-	      userList.add(s1);
-	      userList.add(s2);
-	      // generate the average song
-	      Song avg = findAverageSong(userList);
-	      // find the closest centroid to the dummy song.
-	      Song closestCentroid = findClosestCentroid(avg);
-	      // now for all the songs for a given centroid, find the closest songs to the centroid => need to set up a query from each
-	      // centroid to a list of songs with the given centroid.
-	      System.out.println("found the closest centroid" + closestCentroid);
-	      tree.neighbors(closestCentroid, 1, tree.getRoot()); // should print out a list of five recommended songs.
-	      return "running suggest command";
+//  public Song newUserSuggestSong(Song song) {
+//	  	  // this takes a song as input and we have to retrieve the id.
+//	      System.out.println(args[0]);
+//	      System.out.println(args[1]);
+//	      List<Song> userList = new ArrayList<Song>();
+//	      double[][] testUser= {
+//	    		  {5.4,7.3, 1.0},
+//	    		  {3.7,2.0,5.5}
+//	      };
+//	      Coordinates c1 = new Coordinates(testUser[0]);
+//	      Coordinates c2 = new Coordinates(testUser[1]);
+//	      Song s1 = new Song(null, null, c1, 100);
+//	      Song s2 = new Song(null, null, c2, 101);
+//	      userList.add(s1);
+//	      userList.add(s2);
+//	      // generate the average song
+//	      Song avg = findAverageSong(userList);
+//	      // find the closest centroid to the dummy song.
+//	      Song closestCentroid = findClosestCentroid(avg);
+//	      // now for all the songs for a given centroid, find the closest songs to the centroid => need to set up a query from each
+//	      // centroid to a list of songs with the given centroid.
+//	      System.out.println("found the closest centroid" + closestCentroid);
+//	      tree.neighbors(closestCentroid, 1, tree.getRoot()); // should print out a list of five recommended songs.
+//	      return "running suggest command";
+//
+//  }
+  
+  /*
+   * Suggests a song for an existing user based on their favorite songs. 
+   * @input: userName 
+   * @output: k number of recommended songs 
+   */
+  public List<Song> exisitingUserSuggestSong(String UserName) {
+  	  // get the user based on the userName, retrieve the value from the cache 
+	  User curUser = this.userdb.get(UserName); 
+	  List<Song> favorites = curUser.favoriteSongs; 
+      // generate the average song
+      Song avg = findAverageSong(favorites); 
+      // find the closest centroid to the dummy song.
+      Song closestCentroid = findClosestCentroid(avg);
+      // now for all the songs for a given centroid, find the closest songs to the centroid => need to set up a query from each
+      // centroid to a list of songs with the given centroid.
+      System.out.println("found the closest centroid" + closestCentroid);
+      return tree.neighbors(closestCentroid, 1, tree.getRoot()); // should print out a list of five recommended songs.
 
   }
 

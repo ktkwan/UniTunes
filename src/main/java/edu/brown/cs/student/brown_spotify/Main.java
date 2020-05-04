@@ -128,14 +128,16 @@ public final class Main {
     }
     // Creating a hashmap of commands that corresponds to different classes that implement the
     // Command interface
-    HashMap<String, Command> map = new HashMap<String, Command>();
-//    UniTunes uniTunesProgram = new UniTunes();
-//    map.put("user", uniTunesProgram.getUserCommand());
-//    map.put("db", uniTunesProgram.getDatabaseCommand());
-//    map.put("suggest", uniTunesProgram.getSuggestCommand());
-//    map.put("connect", uniTunesProgram.getConnectCommand());
-//    REPL repl = new REPL(map);
-//    repl.runRepl();
+    HashMap<String, Command> map = new HashMap<String, Command>();  
+    SongDatabase songDb = new SongDatabase(null); // takes in the file name =====> need to work with Ambika here 
+    UserDatabase userDb = new UserDatabase(null); 
+    UniTunes uniTunesProgram = new UniTunes(songDb, userDb);
+    map.put("user", uniTunesProgram.getUserCommand());
+    map.put("db", uniTunesProgram.getDatabaseCommand());
+    map.put("suggest", uniTunesProgram.getSuggestCommand());
+    map.put("connect", uniTunesProgram.getConnectCommand());
+    REPL repl = new REPL(map);
+    repl.runRepl();
 
   }
 
