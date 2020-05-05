@@ -41,6 +41,8 @@ public final class Main {
   private static final int DEFAULT_PORT = 4567;
   private static final String DEFAULT_USER_DB = "users.sqlite3";
   private static final String DEFAULT_SONG_DB = "data/songs_today.sqlite3";
+  private UserDatabase userDb = null;
+  private SongDatabase songDb = null ;
 
   /**
    * The initial method called when execution begins.
@@ -55,8 +57,8 @@ public final class Main {
 
   private Main(String[] args) {
     this.args = args;
-
-
+    userDb = null; 
+    songDb = null; 
   }
   
   public static HashMap<String, String> song_hashmap = new HashMap<>();
@@ -84,12 +86,11 @@ public final class Main {
 
     if (options.has("data") || options.has("database")) {
 
-      SongDatabase db;
 
       if (options.has("database")) {
 
         try {
-          db = new SongDatabase(options.valueOf(databaseSpec));
+          songDb = new SongDatabase(options.valueOf(databaseSpec));
 
           if (options.has("data")) {
 
@@ -98,7 +99,7 @@ public final class Main {
             List<String> fileNames = new ArrayList<String>(Arrays.asList(files.split(",")));
 
             for (String file : fileNames) {
-              db.read_csv(file);
+              songDb.read_csv(file);
             }
           } else {
         	  String files = options.valueOf(databaseSpec);
@@ -118,7 +119,6 @@ public final class Main {
     }
 
     if (options.has("users")) {
-      UserDatabase userDb;
       try {
         String filename = options.valueOf(userDataSpec);
         userDb = new UserDatabase(filename);
@@ -130,9 +130,9 @@ public final class Main {
     // Creating a hashmap of commands that corresponds to different classes that implement the
     // Command interface
     HashMap<String, Command> map = new HashMap<String, Command>();  
+    //create a unitunes object 
+    
     try {
-		SongDatabase songDb = new SongDatabase(null);
-		UserDatabase userDb = new UserDatabase(null);
 		  UniTunes uniTunesProgram = new UniTunes(songDb, userDb);
 		    map.put("user", uniTunesProgram.getUserCommand());
 		    map.put("db", uniTunesProgram.getDatabaseCommand());
@@ -188,7 +188,8 @@ public final class Main {
 		QueryParamsMap qm = request.queryMap(); 
 		String songToAdd = qm.value("add"); 
 		System.out.println("HERE::::: " + songToAdd);
-		UserDatabase.addSongToLibrary(Login.getCurrentUser(), songToAdd);
+		// need to fix this later =====> design issues 
+		//UserDatabase.addSongToLibrary(Login.getCurrentUser(), songToAdd);
 
 		HashMap<String, String> song_names = DatabaseConnection.getAllSongNames();
 		song_hashmap = song_names;

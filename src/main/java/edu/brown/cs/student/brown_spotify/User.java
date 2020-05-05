@@ -13,7 +13,7 @@ import edu.brown.cs.student.kdtree.Coordinates;
  */
 public class User extends KdTreeNode{
 	int id; 
-	String name; 
+	String name, password, email; 
 	Coordinates coords; 
 	KdTreeNode leftChild, rightChild; 
 	List<Song> favoriteSongs; 
@@ -33,6 +33,13 @@ public class User extends KdTreeNode{
 	public void setData(String name, int id){
 		this.id = id; 
 		this.name = name; 
+	}
+	/*
+	 * set additional attributes
+	 */
+	public void setAdditional(String password, String email) {
+		this.password = password; 
+		this.email = email; 
 	}
 	
 	/*

@@ -30,10 +30,10 @@ public class UserDatabase {
   public static String connection_filename = null;
   private static final int USER_CACHE_SIZE = 10000;
   private static final int EXPIRE_AFTER_WRITE = 10;
-  private static LoadingCache<String, User> userMap;
+ // private static LoadingCache<String, User> userLibrary;
   //This is the user library. It maps a username to a map of their songs. Their personal song map 
   //maps a song name to a song list. 
-  private static Map<String, List<String>> userLibrary; 
+  private static Map<String, User> userLibrary; 
 
   public UserDatabase(String filename) throws SQLException, ClassNotFoundException {
 
@@ -43,7 +43,7 @@ public class UserDatabase {
       connection_filename = null;
     }
 
-    userLibrary = new HashMap<String, List<String>>(); 
+    userLibrary = new HashMap<String, User>(); 
     connection_filename = filename;
     Class.forName("org.sqlite.JDBC");
     String urlToDB = "jdbc:sqlite:" + connection_filename;
@@ -63,65 +63,6 @@ public class UserDatabase {
   }
   
 
-  public void invalidate() {
-	  this.userMap.invalidateAll();
-  }
-
-  /**
-   * This method initializes all of our caches. The maximum size of each cache is
-   * set by trial and error, which we found to be the most optimal our the
-   * searches.
-   *
-   * @throws ExecutionException thrown when attempting to retrieve the result of a
-   *                            task that aborted
-   */
-//  private void initialize() throws ExecutionException {
-//    // actor map gets all of the edges of an actor. For each actor, stores all of
-//    // the movies that the actor is in. Key is an actor id
-//    this.userMap = CacheBuilder.newBuilder().maximumSize(USER_CACHE_SIZE)
-//        .expireAfterWrite(EXPIRE_AFTER_WRITE, TimeUnit.MINUTES)
-//        .build(new CacheLoader<Integer, User>() {
-//		@Override
-//		public User load(Integer userID) throws Exception {
-//			return getUserGivenId(userID);
-//		}
-//        });
-//  }
-  
-  /*
-   * queries the user database and creates a user 
-   * @input: userName
-   * @output: User
-   */
-//  private User getUserGiveId(String userName) {
-//    String id; 
-//    String query = "SELECT username, id FROM users WHERE username = ?";
-//    try (PreparedStatement prep = conn.prepareStatement(query)) {
-//      prep.setString(1, userName);
-//      try (ResultSet rs = prep.executeQuery()) {
-//        id = rs.getString(1);
-//        // create the new user here and cache it 
-//        User newUser = new User(null, null, null, id); 
-//        newUser.setData(userName, id); 
-//        rs.close();
-//      } catch (SQLException e1) {
-//        throw (e1);
-//      }
-//      prep.close();
-//    } catch (SQLException e2) {
-//      throw (e2);
-//    }
-//    return newUser; 
-//  }
-  
-  /**
-   * Getter for userMap.
-   *
-   * @return userMap
-   */
-//  public LoadingCache<Integer, User> getNumActorMap() {
-//    return userMap;
-//  }
 
   /*
    * Adds a new user to the database and creates a new user
@@ -149,9 +90,10 @@ public class UserDatabase {
     prep.close();
     
     //Adding the user to the hashmap that stores their  library
-    List<String> userSongList = new ArrayList<String>(); 
-    userLibrary.put(username, userSongList); 
-
+    User newUser = new User(null, null, null, null); 
+    newUser.setData(username, null); 
+    newUser.setAdditional(password, email); 
+    userLibrary.put(username, newUser); 
   }
 
   public void addTopGenreForUser(String id, String genre) throws SQLException {
@@ -163,14 +105,14 @@ public class UserDatabase {
     prep.close();
   }
   
-  public static void addSongToLibrary(String username, String song) { 
-	  if(username != null || song != null) { 
-		  List<String> library = userLibrary.get(username); 
-		  library.add(song); 
-		  System.out.println(username + library.size());  
-
-	  }
-  }
+//  public static void addSongToLibrary(String username, String song) { 
+//	  if(username != null || song != null) { 
+//		  //List<String> library = userLibrary.get(username); 
+//		  library.add(song); 
+//		  System.out.println(username + library.size());  
+//
+//	  }
+//  }
   
   
   public static List<String> getUserLibrary(String username){

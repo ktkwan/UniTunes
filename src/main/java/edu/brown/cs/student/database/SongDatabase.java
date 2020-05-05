@@ -31,18 +31,9 @@ public class SongDatabase {
 
   private static Connection conn = null;
   private static List<String> words = new ArrayList<>();
-  private static final int SONG_CACHE_SIZE = 10000; // set a max size for the song cache 
+  private static Map<String, Song> songMap;  // maps from id, to Song 
   
   
-  
-  /**
-   * This method overrides from the Database interface. It is called by the
-   * CommandManager. When a different path is inputed using the "mdb" command, we
-   * want to empty our cache by calling invalidateAll on all of our caches.
-   */
-//  public void invalidate() {
-//    songMap.invalidateAll();
-//  }
 
   /**
    * Instantiates the database, creating tables if necessary.
@@ -136,10 +127,11 @@ public class SongDatabase {
 		          genre = rs.getString(3); 
 		          duration = rs.getInt(4); 
 		          popularity = rs.getInt(5); 
-//		          Song s = new Song(null, null, null, spotify_id); 
-//		          s.setClassifiable(genre, duration, popularity);
-//		          s.setData(name, spotify_id);
-//		          songs.add(s); 
+		          Song s = new Song(null, null, null, spotify_id); 
+		          s.setClassifiable(genre, duration, popularity);
+		          s.setData(name, spotify_id);
+		          songs.add(s); 
+		          songMap.put(name, s); 
 		        }
 		        rs.close();
 		      } catch (SQLException e1) {
@@ -151,7 +143,14 @@ public class SongDatabase {
 		    }
 		    return songs;
 		  }
-
+	 
+	 /*
+	  * helper function to get a song based on song name 
+	  */
+	 public Song getSongFromName(String songName) {
+		 return songMap.get(songName); 
+	 }
+	 
 	
 }
 
