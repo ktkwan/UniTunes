@@ -162,23 +162,23 @@ public class UniTunes {
    * @input: userName 
    * @output: k number of recommended songs 
    */
-  public List<Song> exisitingUserSuggestSong(String UserName) {
-  	  // get the user based on the userName, retrieve the value from the cache 
-	  /*
-	   * TO DO: make a hashmap that maps a username to a user so that we can get a user easily. 
-	   */
-	  User curUser = this.userdb.get(UserName); 
-	  List<Song> favorites = curUser.favoriteSongs; 
-      // generate the average song
-      Song avg = findAverageSong(favorites); 
-      // find the closest centroid to the dummy song.
-      Song closestCentroid = findClosestCentroid(avg);
-      // now for all the songs for a given centroid, find the closest songs to the centroid => need to set up a query from each
-      // centroid to a list of songs with the given centroid.
-      System.out.println("found the closest centroid" + closestCentroid);
-      return tree.neighbors(closestCentroid, 1, tree.getRoot()); // should print out a list of five recommended songs.
-
-  }
+//  public List<Song> exisitingUserSuggestSong(String UserName) {
+//  	  // get the user based on the userName, retrieve the value from the cache 
+//	  /*
+//	   * TO DO: make a hashmap that maps a username to a user so that we can get a user easily. 
+//	   */
+//	  User curUser = this.userdb.get(UserName); 
+//	  List<Song> favorites = curUser.favoriteSongs; 
+//      // generate the average song
+//      Song avg = findAverageSong(favorites); 
+//      // find the closest centroid to the dummy song.
+//      Song closestCentroid = findClosestCentroid(avg);
+//      // now for all the songs for a given centroid, find the closest songs to the centroid => need to set up a query from each
+//      // centroid to a list of songs with the given centroid.
+//      System.out.println("found the closest centroid" + closestCentroid);
+//      return tree.neighbors(closestCentroid, 1, tree.getRoot()); // should print out a list of five recommended songs.
+//
+//  }
 
   public Command getUserCommand(){
     return userCommand;
