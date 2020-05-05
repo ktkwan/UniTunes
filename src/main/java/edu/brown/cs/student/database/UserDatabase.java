@@ -90,8 +90,8 @@ public class UserDatabase {
     prep.close();
     
     //Adding the user to the hashmap that stores their  library
-    User newUser = new User(null, null, null, null); 
-    newUser.setData(username, null); 
+    User newUser = new User(null, null, null, "123"); 
+    newUser.setData(username, "123"); 
     newUser.setAdditional(password, email); 
     userLibrary.put(username, newUser); 
   }
@@ -115,16 +115,15 @@ public class UserDatabase {
 //  }
   
   
-  public static List<String> getUserLibrary(String username){
+  public static User getUserLibrary(String username){
 	  if(username != null || !userLibrary.containsKey(username)) { 
 		  return userLibrary.get(username); 	  
-	  }
-	  String invalid = "That user does not exist"; 
-	  List<String> invalidList = new ArrayList<String>();
-	  invalidList.add(invalid); 
-	  return invalidList; 
+	  } else{
+      String invalid = "That user does not exist"; 
+      System.out.println(invalid); 
+    }
+	  return null;  
   }
-
 }
 
 

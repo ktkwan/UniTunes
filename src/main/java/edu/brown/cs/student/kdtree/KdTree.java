@@ -64,6 +64,7 @@ public class KdTree<T extends KdTreeNode>{
 		Collections.sort(data, c);
 		_middle = data.size()/2; 
 		KdTreeNode newMid = data.get(_middle);
+		System.out.println("mid" + newMid); 
 		//assign the root instance if it doesn't yet exist 
 		if(_root == null && level==0) {
 			if(_root == null) {
@@ -80,11 +81,13 @@ public class KdTree<T extends KdTreeNode>{
 		KdTreeNode rightNode = null; 
 		if(newLeft.size()>0) {
 			leftNode = this.buildTree(c, newLeft, level+1); 
+			System.out.println("left" + leftNode) ; 
 		}
 		//visit current node 
 		newMid.setLeft(leftNode); 
 		if(newRight.size()>0) {
 			rightNode = this.buildTree(c, newRight,level+1);
+			System.out.println("right" + rightNode); 
 		}
 		//visit current node 
 		newMid.setRight(rightNode);
@@ -129,7 +132,7 @@ public class KdTree<T extends KdTreeNode>{
 			neigh.poll();
 			neigh.add(curr);
 		}
-		int dim = curr.level % 3;
+		int dim = curr.level % _dimensions; // set this to the number of dimensions 
 		double axis_d = axisDistance(curr.coords, targ.coords,dim);
 		//get the euclidean distance of furthest node from the target 
 		maxDistance = d.distance(neigh.peek().coords, targ.coords);
@@ -167,7 +170,7 @@ public class KdTree<T extends KdTreeNode>{
 		for (KdTreeNode r: closest) {
 			if(r!=target) {
 				System.out.println(r.id);
-				output.add(Integer.toString(r.id)); 
+				output.add(r.id); 
 			}
 		}
 		return output; 
@@ -181,6 +184,9 @@ public class KdTree<T extends KdTreeNode>{
 		}
 		@Override
 		public int compare(KdTreeNode n1, KdTreeNode n2) {
+			// System.out.println("first node" + n1); 
+			// System.out.println("second node" + n2); 
+			// System.out.println("dimension" + _dimension); 
 			Coordinates first = n1.coords; 
 			double val1 = first.getValueAtDimension(_dimension); 
 			Coordinates second = n2.coords; 

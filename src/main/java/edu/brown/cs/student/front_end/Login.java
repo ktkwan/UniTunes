@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import edu.brown.cs.student.brown_spotify.DatabaseConnection;
 import edu.brown.cs.student.database.SongDatabase;
 import edu.brown.cs.student.database.UserDatabase;
+import edu.brown.cs.student.brown_spotify.User; 
+import edu.brown.cs.student.brown_spotify.Song; 
 import org.eclipse.jetty.server.Authentication;
 import spark.*;
 
@@ -44,11 +46,14 @@ public class Login {
 	public ModelAndView handle(Request request, Response response) throws Exception {
 		QueryParamsMap qm = request.queryMap(); 
 		String libraryLoad = qm.value("library");
-		List<String> libraryList = new ArrayList<String>(); 
+    List<String> libraryList = new ArrayList<String>();
 		String user = Login.getCurrentUser(); 
-		for(int i = 0; i < UserDatabase.getUserLibrary(Login.getCurrentUser()).size(); i ++) {
-			String songId = UserDatabase.getUserLibrary(getCurrentUser()).get(i); 
-			String songlink = DatabaseConnection.getSpotifyLinkFromID(songId); 
+    User curUser = UserDatabase.getUserLibrary(user); 
+    // 
+    List<Song> favoriteSongs = curUser.getFavorites();
+		for(int i = 0; i < favoriteSongs.size() ; i ++) {
+			Song curSong = favoriteSongs.get(i);
+			String songlink = DatabaseConnection.getSpotifyLinkFromID(curSong.id); 
 			String item = "<li>"+ songlink + "</li>" ; 
 			libraryList.add(item); 
 		}
@@ -137,8 +142,5 @@ public class Login {
     }
 
   }
-
-
-
 
 }

@@ -6,10 +6,10 @@ public abstract class KdTreeNode {
 	KdTreeNode leftChild; 
 	KdTreeNode rightChild; 
 	Coordinates coords; 
-	Integer id; 
+	String id; 
 	int level; 
 	
-	public KdTreeNode(KdTreeNode leftChild, KdTreeNode rightChild, Coordinates coord, Integer id) {
+	public KdTreeNode(KdTreeNode leftChild, KdTreeNode rightChild, Coordinates coord, String id) {
 		this.leftChild= null; 
 		this.rightChild = null; 
 		this.coords = coord; 

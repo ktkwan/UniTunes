@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.brown.cs.student.brown_spotify.Song;
+import edu.brown.cs.student.kdtree.Coordinates; 
 
 
 //import edu.brown.cs.student.brown_spotify.Song;
@@ -31,7 +32,7 @@ public class SongDatabase {
 
   private static Connection conn = null;
   private static List<String> words = new ArrayList<>();
-  private static Map<String, Song> songMap;  // maps from id, to Song 
+  private static Map<String, Song> songMap = new HashMap<String, Song>();;  // maps from id, to Song 
   
   
 
@@ -118,16 +119,23 @@ public class SongDatabase {
 		    String genre = ""; 
 		    Integer duration = null; 
 		    Integer popularity = null; 
-		    String query = "SELECT track_name, spotify_id, genre, duration, popularity from SongDatabase";
+		    String query = "SELECT track_name, spotify_id, genre, duration, popularity from songs";
 		    try (PreparedStatement prep = conn.prepareStatement(query)) {
 		      try (ResultSet rs = prep.executeQuery()) {
 		        while (rs.next()) {
 		          name = rs.getString(1);
-		          spotify_id = rs.getString(2); 
+		          spotify_id =rs.getString(2); 
 		          genre = rs.getString(3); 
 		          duration = rs.getInt(4); 
 		          popularity = rs.getInt(5); 
-		          Song s = new Song(null, null, null, spotify_id); 
+				  Double[] coordValues = new Double[2]; 
+
+				  coordValues[0] = Double.valueOf(duration); 
+				  coordValues[1] = Double.valueOf(popularity); 
+				  System.out.println("duration: " + coordValues[0]);
+				  System.out.println("pop: " + coordValues[1]);
+				  Coordinates c = new Coordinates(coordValues); 
+		          Song s = new Song(null, null, c, spotify_id); 
 		          s.setClassifiable(genre, duration, popularity);
 		          s.setData(name, spotify_id);
 		          songs.add(s); 

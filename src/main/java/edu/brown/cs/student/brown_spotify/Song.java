@@ -4,23 +4,23 @@ import edu.brown.cs.student.kdtree.Coordinates;
 
 //needs to be able to read a file and create all the stars out of the line, contains a kdtree object to store the stars. 
 public class Song extends KdTreeNode {
-	String name;
-	String genre; 
-	String genVal; 
-	Integer duration; 
-	Integer popularity; 
-	Integer id; 
-	KdTreeNode leftChild, rightChild; 
-	Coordinates coords; 
-	public Song(KdTreeNode leftChild, KdTreeNode rightChild, Coordinates coords, Integer id) {
+	public String name;
+	public String genre; 
+	public String genVal; 
+	public Integer duration; 
+	public Integer popularity; 
+	public String id; 
+	public KdTreeNode leftChild, rightChild; 
+	public Coordinates coords; 
+	public Song(KdTreeNode leftChild, KdTreeNode rightChild, Coordinates coords, String id) {
 		super(leftChild, rightChild, coords, id);
 		this.name = null; 
-		this.id = -1; 
+		this.id = ""; 
 		this.coords = coords; 
 		this.leftChild = null;
 		this.rightChild = null;
 	}
-	public void setData(String name, int id){
+	public void setData(String name, String id){
 		this.id = id; 
 		this.name = name; 
 	}

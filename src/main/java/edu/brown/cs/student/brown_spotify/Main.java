@@ -140,15 +140,12 @@ public final class Main {
 		    map.put("connect", uniTunesProgram.getConnectCommand());
 		    REPL repl = new REPL(map);
 		    repl.runRepl();
-	} catch (ClassNotFoundException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
+        throw new SQLException("throw"); 
 	} catch (SQLException e1) {
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
-	} // takes in the file name =====> need to work with Ambika here 
-   
-  
+
+	} 
 
   }
 

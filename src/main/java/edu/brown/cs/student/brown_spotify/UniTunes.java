@@ -7,7 +7,6 @@ import edu.brown.cs.student.commands.Command;
 import edu.brown.cs.student.kdtree.Coordinates;
 import edu.brown.cs.student.kdtree.KdTree;
 import edu.brown.cs.student.kdtree.KdTreeNode;
-import src.main.java.edu.brown.cs.student.database.String;
 import edu.brown.cs.student.database.SongDatabase;
 import edu.brown.cs.student.database.UserDatabase;
 
@@ -32,20 +31,20 @@ public class UniTunes {
 	this.songdb = songdb;
 	this.userdb = userdb; 
 	this.allSongs = new ArrayList<Song>();
-	this.dimensions = 3;
+	//this.dimensions = 3;
     userCommand = new UserCommand();
     dbCommand = new DatabaseCommand();
     suggestCommand = new SuggestCommand();
     connectCommand = new ConnectCommand();
-//    this.allsongs = songdb.getSongs(); // get all the songs currently in the database, should this be static?
+
 	  try { 
 		  for(int i = 0; i < songdb.getSongs().size(); i ++) { 
 			  allSongs.add(songdb.getSongs().get(i)); 
+      }
+        System.out.println(allSongs);
 			  this.clusters = this.setUpClusters();
-			    tree = new KdTree(this.allSongs, dimensions);
-			    clusters = this.setUpClusters();
+			  tree = new KdTree(allSongs, 2);
 
-		  }
 	  }catch(SQLException e) { 
 		  System.out.println("ERROR: Empty song list in database"); 
 	  }
@@ -57,18 +56,22 @@ public class UniTunes {
    */
   private List<Song> setUpClusters() {
 	  // for now the number of clusters is set to 5 and trained on a set of 50 songs.
-	  int numberC = 5;  // changeable parameter
-	  double[][] algorithmOut = {
-	  {58022.51851852,  58022.51851852,  58022.51851852},
-	  { 71596.19047619,  71596.19047619,  71596.19047619},
-	  { 96890.85185185,  96890.85185185,  96890.85185185},
-      {216291.66666667, 216291.66666667, 216291.66666667},
-      { 46523.53333333,  46523.53333333,  46523.53333333},
-	  };
+	  int numberC = 2;  // changeable parameter for number of clusters 
+	  // Double[][] algorithmOut = {
+	  // {58022.51851852,  58022.51851852,  58022.51851852},
+	  // { 71596.19047619,  71596.19047619,  71596.19047619},
+	  // { 96890.85185185,  96890.85185185,  96890.85185185},
+    //   {216291.66666667, 216291.66666667, 216291.66666667},
+    //   { 46523.53333333,  46523.53333333,  46523.53333333},
+	  // };
+    Double[][] testClust = {
+      {58022.51851852,  58022.51851852}, 
+      { 71596.19047619,  71596.19047619}
+    }; 
 	  List<Coordinates> coordList = new ArrayList<Coordinates>();
 	  // turn the outputed array in to coordinates
 	  for(int i = 0; i < numberC; i++) {
-		  Coordinates curr = new Coordinates(algorithmOut[i]);
+		  Coordinates curr = new Coordinates(testClust[i]); 
 		  coordList.add(curr);
 	  }
 	  // turn the coordinates in to a list of dummy songs that can be used by kdtree
@@ -102,7 +105,7 @@ public class UniTunes {
 	  avgX = avgX/size;
 	  avgY = avgY/size;
 	  avgZ = avgZ/size;
-	  double[] vals = new double[3];
+    Double[] vals = new Double[3];
 	  vals[0] = avgX;
 	  vals[1]= avgY;
 	  vals[2] = avgZ;
@@ -133,20 +136,25 @@ public class UniTunes {
    * @input: Song song 
    * @output: k suggested songs. 
    */
-  public Song newUserSuggestSong(String songName, int k) {
+  public List<Song> newUserSuggestSong(String songName, int k) {
 	  	  // retrieve song from hashmap from songname 
 	  	  Song curSong = this.songdb.getSongFromName(songName); 
+        System.out.println(curSong.name); 
 	      Song closestCentroid = findClosestCentroid(curSong);
 	      // now for all the songs for a given centroid, find the closest songs to the centroid => need to set up a query from each
 	      // centroid to a list of songs with the given centroid.
 	      System.out.println("found the closest centroid" + closestCentroid);
 	      int count = 0; 
 	      List<Song> recommendations = new ArrayList<Song>(); 
+        // just to test 
+        System.out.println("rootNode" + ((Song)tree.getRoot()).name); 
+        List<KdTreeNode> allNodes = tree.neighbors(curSong, 1, tree.getRoot()); 
+        //List<KdTreeNode> allNodes = tree.neighbors(closestCentroid, 1, tree.getRoot()); 
 	      while(count<k) {
-	    	  List<Song> cur = tree.neighbors(closestCentroid, 1, tree.getRoot()); 
-	    	  String curId = cur.id; 
-	    	  if (curId.contains("centroid-") && (!curId.equalsl("dummy"))) {
-	        	  recommendations.append(cur); 
+	    	  Song s = (Song)(allNodes.get(count)); 
+	    	  String curId = s.id; 
+	    	  if (curId.contains("centroid-") && (!curId.equals("dummy"))) {
+	        	  recommendations.add(s); 
 	        	  count += 1; 
 	    	  }
 	      }
@@ -158,7 +166,7 @@ public class UniTunes {
    * @input: userName, k 
    * @output: k number of recommended songs 
    */
-  public List<Song> exisitingUserSuggestSong(String UserName, int k) {
+  public List<Song> existingUserSuggestSong(String UserName, int k) {
   	  // get the user based on the userName, retrieve the value from the cache 
 	  User curUser = this.userdb.getUserLibrary(UserName); 
 	  List<Song> favorites = curUser.favoriteSongs; 
@@ -172,10 +180,10 @@ public class UniTunes {
       int count = 0; 
       List<Song> recommendations = new ArrayList<Song>(); 
       while(count<k) {
-    	  List<Song> cur = tree.neighbors(closestCentroid, 1, tree.getRoot()); 
+    	  Song cur = ((Song)tree.neighbors(closestCentroid, 1, tree.getRoot()).get(0)); 
     	  String curId = cur.id; 
-    	  if (curId.contains("centroid-") && (!curId.equalsl("dummy"))) {
-        	  recommendations.append(cur); 
+    	  if (curId.contains("centroid-") && (!curId.equals("dummy"))) {
+        	  recommendations.add(cur); 
         	  count += 1; 
     	  }
       }
@@ -250,13 +258,13 @@ public class UniTunes {
       TO DO: Implement kNN and algorithm lol
        */
       System.out.println("running suggest command");
-      int k = 5; 
+      int k = 1; 
       // this is the case where it is an existing user, run suggest user userId 
-      if(args.length()==3) {
+      if(args.length ==3) {
     	  String type = args[1]; 
     	  String id = args[2]; 
     	  if(type.equals("user")) {
-    		  existingUserSuggestSong(id, k); 
+          existingUserSuggestSong(id, k); 
     	  }
     	  else if(type.equals("song")){
     		 newUserSuggestSong(id, k); 
