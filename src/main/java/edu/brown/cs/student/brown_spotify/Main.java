@@ -247,7 +247,7 @@ public final class Main {
 			 
 			 song_to_button.put(songLink, likeButton);
 			 art_list.add(DatabaseConnection.getAlbumArt(entry.getKey()));
-			 String album = String.format("<ahref=\"song/%s\"> <img src=%s> </a>", entry.getKey(), DatabaseConnection.getAlbumArt(entry.getKey()));
+			 String album = String.format("<a href=\"song/%s\"> <img src=%s> </a>", entry.getKey(), DatabaseConnection.getAlbumArt(entry.getKey()));
 			 map.put(songLink, album);
 		}
 		Map<String, HashMap<String, String>> variables = ImmutableMap.of("display", song_to_button, "songs", map);
