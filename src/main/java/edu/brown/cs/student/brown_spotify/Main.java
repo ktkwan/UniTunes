@@ -187,6 +187,7 @@ public final class Main {
 	public ModelAndView handle(Request request, Response response) throws Exception {
 		QueryParamsMap qm = request.queryMap(); 
 		String songToAdd = qm.value("add"); 
+		System.out.println("HERE::::: " + songToAdd);
 		UserDatabase.addSongToLibrary(Login.getCurrentUser(), songToAdd);
 
 		HashMap<String, String> song_names = DatabaseConnection.getAllSongNames();
@@ -202,19 +203,25 @@ public final class Main {
 			 String songLink = String.format("<a href=\"song/%s\"> %s </a>", entry.getKey(), entry.getValue());
 			 
 			 songs += songLink;
+//			 String likeButton = String.format(
+//			 		"<button type=\"submit\" name=\"add\" value=\"%s\"> <3 </button>", entry.getKey());
 			 String likeButton = String.format(
-			 		"<button type=\"submit\" name=\"add\" value=\"%s\"> <3 </button>", entry.getKey());
+				 		"<button class=\"btn-secondary like-review\" value=\"%s\">\n" + 
+				 		"    <i class=\"fa fa-heart\" aria-hidden=\"false\"></i> Like\n" + 
+				 		"  </button>", entry.getKey());
 			 n.add(songLink); 
 			 n.add(likeButton);
-			 song_to_button.put(entry.getValue(), likeButton);
-			 if(entry.getKey().contentEquals(songToAdd)) { 
-				 n.add("Added to Library!"); 
-			 }
+			 song_to_button.put(songLink, likeButton);
+			 String album = String.format("<a href=\"song/%s\"> <img src=%s> </a>", entry.getKey(), DatabaseConnection.getAlbumArt(entry.getKey()));
+			 map.put(songLink, album);
+//			 if(entry.getKey().contentEquals(songToAdd)) { 
+//				 n.add("Added to Library!"); 
+//			 }
 			 System.out.println("HERE: " + entry.getValue());
 			System.out.println(likeButton);
 		}
 		
-		Map<String, HashMap<String, String>> variables = ImmutableMap.of("new", song_to_button);
+		Map<String, HashMap<String, String>> variables = ImmutableMap.of("display", song_to_button, "songs", map);
 		return new ModelAndView(variables, "song_query.ftl");
 	} 
 	  

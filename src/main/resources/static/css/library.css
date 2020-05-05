@@ -1,0 +1,102 @@
+body {
+	font-family: 'Verdana';
+	background-color: #5a6882;
+	color: white;
+
+}
+
+.nav-bar{
+	width: 300vh;
+	height:60px;
+	background-color: #80788d;
+	padding: 20px;
+
+
+}
+
+.buttons{
+	width: 300vh;
+	height:40px;
+	background-color: #5a6882;
+	display: flex;
+	/*flex-direction: column;*/
+	flex-wrap: wrap;
+	align-self: center;
+
+	justify-content: center;
+	padding: 5px;
+	border-bottom: 1px solid white;
+
+}
+
+.home{
+	margin-right: 30px;
+	color:white;
+	margin-top: 15px;
+	/*align-self: center;*/
+
+}
+.lib{
+	margin-right: 30px;
+	color:white;
+	margin-top: 15px;
+	/*align-self: center;*/
+
+}
+.browse{
+	margin-right: 30px;
+	color:white;
+	margin-top: 15px;
+	/*align-self: center;*/
+
+}
+.log{
+	margin-right: 30px;
+	color:white;
+	margin-top: 15px;
+	/*align-self: center;*/
+
+}
+
+.first{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	align-self: center;
+	text-align: center;
+}
+
+
+
+
+.music{
+	margin-top: -20px;
+	width: 70px;
+	/*height: vh;*/
+}
+
+a{
+	color: white;
+	 
+}
+
+a:hover { opacity: 0.5; TEXT-DECORATION: none; font-weight: none }
+
+
+.t{
+	font-family: 'Verdana';
+	font-weight: bold;
+	margin-top: 0px
+}
+
+.user{
+	font-weight: bold;
+	margin-top: 20px;
+	font-size: 20px;
+	width: 200px;
+	height: vh;
+	background-color: #142b43;
+	border:5px solid #949fb1;
+}
+
+

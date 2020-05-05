@@ -45,7 +45,7 @@ public class Login {
 		QueryParamsMap qm = request.queryMap(); 
 		String libraryLoad = qm.value("library");
 		List<String> libraryList = new ArrayList<String>(); 
-		String user = "<h1>" + Login.getCurrentUser() + "</h1>"; 
+		String user = Login.getCurrentUser(); 
 		for(int i = 0; i < UserDatabase.getUserLibrary(Login.getCurrentUser()).size(); i ++) {
 			String songId = UserDatabase.getUserLibrary(getCurrentUser()).get(i); 
 			String songlink = DatabaseConnection.getSpotifyLinkFromID(songId); 
