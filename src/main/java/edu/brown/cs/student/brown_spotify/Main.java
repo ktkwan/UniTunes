@@ -130,15 +130,25 @@ public final class Main {
     // Creating a hashmap of commands that corresponds to different classes that implement the
     // Command interface
     HashMap<String, Command> map = new HashMap<String, Command>();  
-//    SongDatabase songDb = new SongDatabase(null); // takes in the file name =====> need to work with Ambika here 
-//    UserDatabase userDb = new UserDatabase(null); 
-//    UniTunes uniTunesProgram = new UniTunes(songDb, userDb);
-//    map.put("user", uniTunesProgram.getUserCommand());
-//    map.put("db", uniTunesProgram.getDatabaseCommand());
-//    map.put("suggest", uniTunesProgram.getSuggestCommand());
-//    map.put("connect", uniTunesProgram.getConnectCommand());
-    REPL repl = new REPL(map);
-    repl.runRepl();
+    try {
+		SongDatabase songDb = new SongDatabase(null);
+		UserDatabase userDb = new UserDatabase(null);
+		  UniTunes uniTunesProgram = new UniTunes(songDb, userDb);
+		    map.put("user", uniTunesProgram.getUserCommand());
+		    map.put("db", uniTunesProgram.getDatabaseCommand());
+		    map.put("suggest", uniTunesProgram.getSuggestCommand());
+		    map.put("connect", uniTunesProgram.getConnectCommand());
+		    REPL repl = new REPL(map);
+		    repl.runRepl();
+	} catch (ClassNotFoundException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	} catch (SQLException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	} // takes in the file name =====> need to work with Ambika here 
+   
+  
 
   }
 
@@ -186,18 +196,25 @@ public final class Main {
 		List<String> n = new ArrayList<>();
 		List<String> song_list = new ArrayList<>();
 		List<String> art_list = new ArrayList<>();
+		HashMap<String, String> song_to_button = new HashMap<>();
 		for (Map.Entry<String, String> entry: song_names.entrySet()){
+			 
 			 String songLink = String.format("<a href=\"song/%s\"> %s </a>", entry.getKey(), entry.getValue());
+			 
 			 songs += songLink;
 			 String likeButton = String.format(
 			 		"<button type=\"submit\" name=\"add\" value=\"%s\"> <3 </button>", entry.getKey());
 			 n.add(songLink); 
 			 n.add(likeButton);
+			 song_to_button.put(entry.getValue(), likeButton);
 			 if(entry.getKey().contentEquals(songToAdd)) { 
 				 n.add("Added to Library!"); 
 			 }
+			 System.out.println("HERE: " + entry.getValue());
+			System.out.println(likeButton);
 		}
-		Map<String, List<String>> variables = ImmutableMap.of("display", n);
+		
+		Map<String, HashMap<String, String>> variables = ImmutableMap.of("new", song_to_button);
 		return new ModelAndView(variables, "song_query.ftl");
 	} 
 	  
@@ -214,19 +231,26 @@ public final class Main {
 		List<String> n = new ArrayList<>();
 		List<String> song_list = new ArrayList<>();
 		List<String> art_list = new ArrayList<>();
+		HashMap<String, String> song_to_button = new HashMap<>();
 		for (Map.Entry<String, String> entry: song_names.entrySet()){
 			 String songLink = String.format("<a href=\"song/%s\"> %s </a>", 
 					 entry.getKey(), entry.getValue());
 			 songs += songLink;
+//			 String likeButton = String.format(
+//				 		"<button  class=like type=\"submit\" name=\"add\" value=\"%s\"> <3 </button>", entry.getKey());
 			 String likeButton = String.format(
-				 		"<button type=\"submit\" name=\"add\" value=\"%s\"> <3 </button>", entry.getKey());
+				 		"<button class=\"btn-secondary like-review\" value=\"%s\">\n" + 
+				 		"    <i class=\"fa fa-heart\" aria-hidden=\"true\"></i> Like\n" + 
+				 		"  </button>", entry.getKey());
 			 n.add(songLink);
 			 n.add(likeButton); 
+			 
+			 song_to_button.put(songLink, likeButton);
 			 art_list.add(DatabaseConnection.getAlbumArt(entry.getKey()));
-			 String album = String.format("<a href=\"song/%s\"> <img src=%s> </a>", entry.getKey(), DatabaseConnection.getAlbumArt(entry.getKey()));
+			 String album = String.format("<ahref=\"song/%s\"> <img src=%s> </a>", entry.getKey(), DatabaseConnection.getAlbumArt(entry.getKey()));
 			 map.put(songLink, album);
 		}
-		Map<String, Object> variables = ImmutableMap.of("display", n, "songs", map);
+		Map<String, HashMap<String, String>> variables = ImmutableMap.of("display", song_to_button, "songs", map);
 		return new ModelAndView(variables, "song_query.ftl");
 	}
   }
@@ -237,7 +261,7 @@ public final class Main {
 		  String songID = req.params(":songID");
 		  System.out.println("ID: " + songID);
 		  HashMap<String, String> song_names = DatabaseConnection.getAllSongNames();
-		 
+		
 		String l = DatabaseConnection.getSpotifyLinkFromID(songID);
 		System.out.println("ID: " + DatabaseConnection.song_hashmap);
 		String link = String.format("href=\"http://%s\" target=\"_blank\"", l);

@@ -3,6 +3,27 @@
 
 <link rel="icon" href="/css/images/record.png">
     <title>UniTunes</title>
+    
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+
+
+
+
+<script>
+ $(function(){
+	$(document).one('click', '.like-review', function(e) {
+		$(this).html('<i class="fa fa-heart" aria-hidden="true"></i> You liked this');
+		$(this).children('.fa-heart').addClass('animate-like');
+	});
+});
+
+
+
+
+
+</script>
+
+
 
 <div class=first>
 <div class=nav-bar>
@@ -36,20 +57,57 @@
 <p>
 
 
-<#assign hash=songs>
+<#assign hash=songs, hash2=display>
 	 <#list hash as key, value>
+	 
 	<div class="row">
 	<li class="songs">
-	${key}
+	${key} 
 	${value}
+	<form method="POST" action="/songs">
+	<div class="like-content">
+	${hash2[key]}
+	<div>
+	</form>
 	
+
+
+  
+  
+  
+
+	
+	
+	
+	</#list>
+
+
+	
+
 	</tr>
+	
+	
+	 
+	 
+
+	
+	
+
+
+	
+	
 	<div>
 
+	
 
-</#list>
-</p>
 </#assign>
+
+
+
+</p>
+
+
+
 
 
 </div>

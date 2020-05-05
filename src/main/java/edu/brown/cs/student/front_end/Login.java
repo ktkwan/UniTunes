@@ -52,6 +52,8 @@ public class Login {
 			String item = "<li>"+ songlink + "</li>" ; 
 			libraryList.add(item); 
 		}
+		
+		System.out.println("this is the user: "+ user);
 		Map<String, Object> variables = ImmutableMap.of("username", user, 
 				"library", libraryList); 
 		return new ModelAndView(variables, "library.ftl"); 
