@@ -24,14 +24,14 @@ public class SentimentAnalysis{
 
     }
     /*
-    * @returns: Positive, Negative, Neutral 
+    * @returns: Positive 1, Negative -1, Neutral 0
     */ 
-    public String analyze(String args) {
+    public double analyze(String args) {
 
 
         // create an empty Annotation just with the given text
         CoreDocument document = new CoreDocument(args);
-
+        double output = 0.0 ; 
 
         pipeline.annotate(document);
 
@@ -40,8 +40,17 @@ public class SentimentAnalysis{
        for (CoreSentence sentence : sentences) {
 		  sentiment = sentence.sentiment();
 	       }
+       if(sentiment.equals("Positive")) {
+    	   output = 1.0; 
+    	   
+       }else if(sentiment.equals("Negative")) {
+    	   output = -1.0; 
+    	   
+       }else {
+    	   output = 0.0; 
+       }
 
-	return sentiment;
+	return output;
 
     }
 }

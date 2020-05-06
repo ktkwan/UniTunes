@@ -14,11 +14,7 @@ import java.util.Map;
 
 import edu.brown.cs.student.brown_spotify.Song;
 import edu.brown.cs.student.kdtree.Coordinates; 
-
-
-//import edu.brown.cs.student.brown_spotify.Song;
-//import edu.brown.cs.student.kdtree.Coordinates;
-//import edu.brown.cs.student.kdtree.KdTreeNode;
+import edu.brown.cs.student.brown_spotify.SentimentAnalysis;
 
 
 /**
@@ -33,7 +29,7 @@ public class SongDatabase {
   private static Connection conn = null;
   private static List<String> words = new ArrayList<>();
   private static Map<String, Song> songMap = new HashMap<String, Song>();;  // maps from id, to Song 
-  
+  private SentimentAnalysis sent; 
   
 
   /**
@@ -43,6 +39,9 @@ public class SongDatabase {
    * @throws SQLException if an error occurs in any SQL query.
    */
   public SongDatabase(String filename) throws SQLException, ClassNotFoundException {
+	 //initialize the sentiment analysis 
+	  this.sent = new SentimentAnalysis(); 
+	  
 
     /*
     * TODO: Initialize the database connection, turn foreign keys on,
@@ -119,6 +118,14 @@ public class SongDatabase {
 		    String genre = ""; 
 		    Integer duration = null; 
 		    Integer popularity = null; 
+		    Integer danceability = null;  
+		    Integer energy = null; 
+		    Integer loudness = null; 
+		    Integer speechiness = null; 
+		    Integer acousticness = null; 
+		    Integer liveness = null; 
+		    Integer tempo = null; 
+		    
 		    String query = "SELECT track_name, spotify_id, genre, duration, popularity from songs";
 		    try (PreparedStatement prep = conn.prepareStatement(query)) {
 		      try (ResultSet rs = prep.executeQuery()) {
@@ -128,10 +135,27 @@ public class SongDatabase {
 		          genre = rs.getString(3); 
 		          duration = rs.getInt(4); 
 		          popularity = rs.getInt(5); 
-				  Double[] coordValues = new Double[2]; 
-
-				  coordValues[0] = Double.valueOf(duration); 
-				  coordValues[1] = Double.valueOf(popularity); 
+		          danceability = rs.getInt(6); 
+				  energy = rs.getInt(7);
+				  loudness = rs.getInt(8); 
+				  speechiness = rs.getInt(9); 
+				  acousticness = rs.getInt(10);
+				  liveness = rs.getInt(11); 
+				  tempo = rs.getInt(12); 
+				  Double[] coordValues = new Double[11]; 
+				  //name 
+				  coordValues[0] = this.sent.analyze(name); 
+				  //genre
+				  coordValues[1] = this.sent.analyze(genre); 
+				  coordValues[2] = Double.valueOf(duration); 
+				  coordValues[3] = Double.valueOf(popularity); 
+				  coordValues[4] = Double.valueOf(danceability); 
+				  coordValues[5] = Double.valueOf(energy); 
+				  coordValues[6] = Double.valueOf(loudness); 
+				  coordValues[7] = Double.valueOf(speechiness); 
+				  coordValues[8] = Double.valueOf(acousticness);
+				  coordValues[9] = Double.valueOf(liveness); 
+				  coordValues[10] = Double.valueOf(tempo); 
 				  System.out.println("duration: " + coordValues[0]);
 				  System.out.println("pop: " + coordValues[1]);
 				  Coordinates c = new Coordinates(coordValues); 

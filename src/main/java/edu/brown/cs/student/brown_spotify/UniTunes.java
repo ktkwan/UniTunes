@@ -39,7 +39,7 @@ public class UniTunes {
 	clusters = new ArrayList<Song>(); 
   this.sent = new SentimentAnalysis(); 
 
-	//this.dimensions = 3;
+	this.dimensions = 14;
     userCommand = new UserCommand();
     dbCommand = new DatabaseCommand();
     suggestCommand = new SuggestCommand();
@@ -51,7 +51,7 @@ public class UniTunes {
 		 	  allSongs.add(songdb.getSongs().get(i)); 
        }
 		 	  this.clusters = this.setUpClusters();
-		 	  tree = new KdTree(allSongs, 2);
+		 	  tree = new KdTree(allSongs, this.dimensions);
 
 	   }catch(SQLException e) { 
 		   System.out.println("ERROR: Empty song list in database"); 
@@ -65,21 +65,31 @@ public class UniTunes {
   private List<Song> setUpClusters() {
 	  // for now the number of clusters is set to 5 and trained on a set of 50 songs.
 	  int numberC = 2;  // changeable parameter for number of clusters 
-	  // Double[][] algorithmOut = {
-	  // {58022.51851852,  58022.51851852,  58022.51851852},
-	  // { 71596.19047619,  71596.19047619,  71596.19047619},
-	  // { 96890.85185185,  96890.85185185,  96890.85185185},
-    //   {216291.66666667, 216291.66666667, 216291.66666667},
-    //   { 46523.53333333,  46523.53333333,  46523.53333333},
-	  // };
-    Double[][] testClust = {
-      {58022.51851852,  58022.51851852}, 
-      { 71596.19047619,  71596.19047619}
-    }; 
+	   Double[][] algorithmOut = {
+			   { 0.0, 0.00,  4.00, 271032.0, .62700, 
+		      .37700, -6.47200,  .0364000,  .77700,  .119000, 
+		      131.333,  0.00,  0.00,  0.00}, 
+			   { 0.00, 0.00,  2.00,  265959.0,  .579000,
+		      .451000, -7.12200,  .0598000,  .537000,  .120000,
+		      139.853,  0.00000, 0.0000,  0.000},
+		      { 0.000,  0.00, 0.000, 0.00, 0.000,
+		      0.00,  0.000,  0.000, 0.000, 0.00,
+		      0.000,  0.00,  0.00,  0.00},
+		      { 0.00,  0.000, 37.000, 81564.0,  .74200, 
+		      .506000,  -12.1650,   .0376000,  .0188000, .0114000,
+		      117.967,  0.000,  0.000,  0.0000}, 
+		      { 0.00, 0.0000,  31.0000,  300306.0,  .501000, 
+		      .372000, -12.1430, .0299000, .581000, .108000, 
+		      117.008,  0.00, 0.00,  0.00}
+	   };
+//    Double[][] testClust = {
+//      {58022.51851852,  58022.51851852}, 
+//      { 71596.19047619,  71596.19047619}
+//    }; 
 	  List<Coordinates> coordList = new ArrayList<Coordinates>();
 	  // turn the outputed array in to coordinates
 	  for(int i = 0; i < numberC; i++) {
-		  Coordinates curr = new Coordinates(testClust[i]); 
+		  Coordinates curr = new Coordinates(algorithmOut[i]); 
 		  coordList.add(curr);
 	  }
 	  // turn the coordinates in to a list of dummy songs that can be used by kdtree
