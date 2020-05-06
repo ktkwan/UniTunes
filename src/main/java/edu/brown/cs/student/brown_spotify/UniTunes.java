@@ -25,29 +25,36 @@ public class UniTunes {
   private static int dimensions;
   private List<Song> clusters;
   private List<Song> allSongs;
+  private SentimentAnalysis sent; 
   
 
   public UniTunes(SongDatabase songdb, UserDatabase userdb) {
 	this.songdb = songdb;
 	this.userdb = userdb; 
 	this.allSongs = new ArrayList<Song>();
+  this.sent = new SentimentAnalysis(); 
+  System.out.println(this.sent.analyze("depressed, fuck we are screwed")); 
+  System.out.println(this.sent.analyze("happy happy it's all okay")); 
+  System.out.println(this.sent.analyze("moonlight")); 
+
 	//this.dimensions = 3;
     userCommand = new UserCommand();
     dbCommand = new DatabaseCommand();
     suggestCommand = new SuggestCommand();
     connectCommand = new ConnectCommand();
 
-	  try { 
-		  for(int i = 0; i < songdb.getSongs().size(); i ++) { 
-			  allSongs.add(songdb.getSongs().get(i)); 
-      }
-        System.out.println(allSongs);
-			  this.clusters = this.setUpClusters();
-			  tree = new KdTree(allSongs, 2);
 
-	  }catch(SQLException e) { 
-		  System.out.println("ERROR: Empty song list in database"); 
-	  }
+	  // try { 
+		//   for(int i = 0; i < songdb.getSongs().size(); i ++) { 
+		// 	  allSongs.add(songdb.getSongs().get(i)); 
+    //   }
+    //     System.out.println(allSongs);
+		// 	  this.clusters = this.setUpClusters();
+		// 	  tree = new KdTree(allSongs, 2);
+
+	  // }catch(SQLException e) { 
+		//   System.out.println("ERROR: Empty song list in database"); 
+	  // }
   
   }
 

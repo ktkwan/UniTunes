@@ -13,7 +13,7 @@ public class SentimentAnalysis{
     private static String sentiment;
     private static StanfordCoreNLP pipeline;
 
-    public static void main( String args ){
+    public SentimentAnalysis(){
 
 	  Properties properties = new Properties();
 
@@ -23,8 +23,10 @@ public class SentimentAnalysis{
 
 
     }
-
-    public static String analyze(String args) {
+    /*
+    * @returns: Positive, Negative, Neutral 
+    */ 
+    public String analyze(String args) {
 
 
         // create an empty Annotation just with the given text
