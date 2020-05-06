@@ -21,7 +21,9 @@
         <div id="discover">
                <#assign items=songs, a=art>
                <#list items as item>
+                <form id="discover" method="POST" action="/songs">
                 ${item}
+                </form>
                 <img class=album_art src=${a[item?index]}>
                 </#list>
           
