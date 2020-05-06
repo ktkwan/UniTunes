@@ -1,7 +1,10 @@
 package edu.brown.cs.student.brown_spotify;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import edu.brown.cs.student.commands.Command;
 import edu.brown.cs.student.kdtree.Coordinates;
@@ -28,14 +31,14 @@ public class UniTunes {
   private KdTree<Song> tree;
   private static int dimensions;
   private List<Song> clusters;
-  private List<Song> allSongs;
+  private static List<Song> allSongs;
   private SentimentAnalysis sent; 
   
 
-  public UniTunes(SongDatabase songdb, UserDatabase userdb) {
-	this.songdb = songdb;
-	this.userdb = userdb; 
-	this.allSongs = new ArrayList<Song>();
+  public UniTunes(SongDatabase sdb, UserDatabase udb) {
+	songdb = sdb;
+	userdb = udb; 
+	allSongs = new ArrayList<Song>();
 	clusters = new ArrayList<Song>(); 
   this.sent = new SentimentAnalysis(); 
 
@@ -44,11 +47,11 @@ public class UniTunes {
     dbCommand = new DatabaseCommand();
     suggestCommand = new SuggestCommand();
     connectCommand = new ConnectCommand();
-
-
+    // System.out.println(sdb.getSongs().size());
+    // this.songdb.getSongs(); 
 	   try { 
-		   for(int i = 0; i < songdb.getSongs().size(); i ++) { 
-		 	  allSongs.add(songdb.getSongs().get(i)); 
+		   for(int i = 0; i < sdb.getSongs().size(); i ++) { 
+		 	  allSongs.add(sdb.getSongs().get(i)); 
        }
 		 	  this.clusters = this.setUpClusters();
 		 	  tree = new KdTree(allSongs, this.dimensions);
@@ -285,23 +288,27 @@ public class UniTunes {
       System.out.println("running suggest command");
       int k = 1; 
       // this is the case where it is an existing user, run suggest user userId 
-      if(args.length ==3) {
+
     	  String type = args[1]; 
     	  String id = args[2]; 
     	  if(type.equals("user")) {
           existingUserSuggestSong(id, k); 
-    	  }
+        }
     	  else if(type.equals("song")){
-    		 newUserSuggestSong(id, k); 
-    	  }
-    	  else {
-    		  System.out.println("invalid command"); 
-    	  }
-      }else {
-    	  System.out.println("wrong number of arguments"); 
-      }
+        System.out.println("Enters here");
+        String song_name = ""; 
+        for (int i=2; i < args.length; i++){
+          song_name+=args[i] + " ";
+        }
+        String newString = song_name.strip(); 
+    		newUserSuggestSong(newString, k); 
+        }else{
+          System.out.println("not a valid command"); 
+        }
+    	 
       return "running suggest command";
-    }
+    
+      }
   }
 
   /**
@@ -322,3 +329,4 @@ public class UniTunes {
   }
 
 }
+

@@ -61,16 +61,16 @@ public class SongDatabase {
 		+ "artist TEXT,"
 		+ "spotify_id TEXT,"
 		+ "genre TEXT,"
-		+ "popularity INTEGER,"
-		+ "duration INTEGER,"
+		+ "popularity DOUBLE,"
+		+ "duration DOUBLE,"
 		+ "album_art TEXT,"
-		+ "danceability INTEGER,"
-		+ "energy INTEGER,"
-		+ "loudness INTEGER,"
-		+ "speechiness INTEGER,"
-		+ "acousticness INTEGER,"
-		+ "liveness INTEGER,"
-		+ "tempo INTEGER)");
+		+ "danceability DOUBLE,"
+		+ "energy DOUBLE,"
+		+ "loudness DOUBLE,"
+		+ "speechiness DOUBLE,"
+		+ "acousticness DOUBLE,"
+		+ "liveness DOUBLE,"
+		+ "tempo DOUBLE)");
 		prep.executeUpdate();
   }
 
@@ -116,55 +116,57 @@ public class SongDatabase {
 		    String name = ""; 
 		    String spotify_id = ""; 
 		    String genre = ""; 
-		    Integer duration = null; 
-		    Integer popularity = null; 
-		    Integer danceability = null;  
-		    Integer energy = null; 
-		    Integer loudness = null; 
-		    Integer speechiness = null; 
-		    Integer acousticness = null; 
-		    Integer liveness = null; 
-		    Integer tempo = null; 
+		    Double duration = null; 
+		    Double popularity = null; 
+		    Double danceability = null;  
+		    Double energy = null; 
+		    Double loudness = null; 
+		    Double speechiness = null; 
+		    Double acousticness = null; 
+		    Double liveness = null; 
+		    Double tempo = null; 
 		    
-		    String query = "SELECT track_name, spotify_id, genre, duration, popularity from songs";
+			int counter = 0;
+		    String query = "SELECT track_name, spotify_id, genre, duration, popularity,danceability, energy, loudness, speechiness, acousticness, liveness, tempo from songs";
 		    try (PreparedStatement prep = conn.prepareStatement(query)) {
 		      try (ResultSet rs = prep.executeQuery()) {
 		        while (rs.next()) {
+				  
 		          name = rs.getString(1);
+			
 		          spotify_id =rs.getString(2); 
+			
 		          genre = rs.getString(3); 
-		          duration = rs.getInt(4); 
-		          popularity = rs.getInt(5); 
-		          danceability = rs.getInt(6); 
-				  energy = rs.getInt(7);
-				  loudness = rs.getInt(8); 
-				  speechiness = rs.getInt(9); 
-				  acousticness = rs.getInt(10);
-				  liveness = rs.getInt(11); 
-				  tempo = rs.getInt(12); 
+		          duration = rs.getDouble(4); 
+		          popularity = rs.getDouble(5); 
+		          danceability = rs.getDouble(6); 
+				  energy = rs.getDouble(7);
+				  loudness = rs.getDouble(8); 
+				  speechiness = rs.getDouble(9); 
+				  acousticness = rs.getDouble(10);
+				  liveness = rs.getDouble(11); 
+				  tempo = rs.getDouble(12); 
 				  Double[] coordValues = new Double[11]; 
 				  //name 
 				  coordValues[0] = this.sent.analyze(name); 
 				  //genre
 				  coordValues[1] = this.sent.analyze(genre); 
-				  coordValues[2] = Double.valueOf(duration); 
-				  coordValues[3] = Double.valueOf(popularity); 
-				  coordValues[4] = Double.valueOf(danceability); 
-				  coordValues[5] = Double.valueOf(energy); 
-				  coordValues[6] = Double.valueOf(loudness); 
-				  coordValues[7] = Double.valueOf(speechiness); 
-				  coordValues[8] = Double.valueOf(acousticness);
-				  coordValues[9] = Double.valueOf(liveness); 
-				  coordValues[10] = Double.valueOf(tempo); 
-				  System.out.println("duration: " + coordValues[0]);
-				  System.out.println("pop: " + coordValues[1]);
+				  coordValues[2] = duration; 
+				  coordValues[3] = popularity; 
+				  coordValues[4] = danceability; 
+				  coordValues[5] = energy; 
+				  coordValues[6] = loudness; 
+				  coordValues[7] = speechiness; 
+				  coordValues[8] = acousticness;
+				  coordValues[9] = liveness; 
+				  coordValues[10] = tempo; 
 				  Coordinates c = new Coordinates(coordValues); 
 		          Song s = new Song(null, null, c, spotify_id); 
 		          s.setClassifiable(genre, duration, popularity);
 		          s.setData(name, spotify_id);
 		          songs.add(s); 
 		          songMap.put(name, s); 
-		        }
+				}
 		        rs.close();
 		      } catch (SQLException e1) {
 		        throw (e1);
@@ -172,7 +174,9 @@ public class SongDatabase {
 		      prep.close();
 		    } catch (SQLException e2) {
 		      throw (e2);
-		    }
+			}
+			System.out.println("done creating all songs: " + counter); 
+			counter += 1; 
 		    return songs;
 		  }
 	 

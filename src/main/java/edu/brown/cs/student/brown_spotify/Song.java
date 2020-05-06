@@ -7,8 +7,8 @@ public class Song extends KdTreeNode {
 	public String name;
 	public String genre; 
 	public String genVal; 
-	public Integer duration; 
-	public Integer popularity; 
+	public Double duration; 
+	public Double popularity; 
 	public String id; 
 	public KdTreeNode leftChild, rightChild; 
 	public Coordinates coords; 
@@ -27,7 +27,7 @@ public class Song extends KdTreeNode {
 		this.name = name; 
 	}
 	
-	public void setClassifiable(String genre, Integer duration, Integer popularity) {
+	public void setClassifiable(String genre, Double duration, Double popularity) {
 		this.genre = genre; 
 		this.duration = duration; 
 		this.popularity = popularity; 
