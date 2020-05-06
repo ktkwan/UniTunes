@@ -18,6 +18,10 @@ public abstract class KdTreeNode {
 	}
 	// setter for left child 
 //	abstract void setLeft(KdTreeNode left);
+	public String getId() { 
+		return id; 
+	}
+	
 	public void setRight(KdTreeNode right) {
 		this.rightChild = right; 
 	}

@@ -155,7 +155,7 @@ public class SongDatabase {
 	 /*
 	  * helper function to get a song based on song name 
 	  */
-	 public Song getSongFromName(String songName) {
+	 public static Song getSongFromName(String songName) {
 		 return songMap.get(songName); 
 	 }
 	 
