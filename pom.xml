@@ -20,6 +20,13 @@
   <!-- Dependencies section for libraries put all of your libraries in here -->
   <dependencies>
 
+<!--  Needed to add this for some reason? ? do not delete-->
+	<dependency>
+	    <groupId>javax.servlet</groupId>
+	    <artifactId>javax.servlet-api</artifactId>
+	    <version>3.1.0</version>
+	</dependency>
+
     <!--
         jopt-simple is a command line parser.
         https://pholser.github.io/jopt-simple/.

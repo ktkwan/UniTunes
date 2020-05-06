@@ -34,11 +34,11 @@ public abstract class KdTreeNode {
 	}
 	
 	public KdTreeNode getRight() {
-		return this.rightChild;
+		return rightChild; 
 	}
 	
 	public KdTreeNode getLeft() {
-		return this.leftChild;
+		return leftChild; 
 	}
 	
 	public boolean hasRight() {

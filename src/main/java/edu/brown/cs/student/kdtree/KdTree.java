@@ -65,7 +65,7 @@ public class KdTree<T extends KdTreeNode>{
 		Collections.sort(data, c);
 		_middle = data.size()/2; 
 		KdTreeNode newMid = data.get(_middle);
-		System.out.println("mid" + newMid); 
+//		System.out.println("mid" + newMid); 
 		//assign the root instance if it doesn't yet exist 
 		if(_root == null && level==0) {
 			if(_root == null) {
@@ -82,13 +82,13 @@ public class KdTree<T extends KdTreeNode>{
 		KdTreeNode rightNode = null; 
 		if(newLeft.size()>0) {
 			leftNode = this.buildTree(c, newLeft, level+1); 
-			System.out.println("left" + leftNode) ; 
+//			System.out.println("left" + leftNode) ; 
 		}
 		//visit current node 
 		newMid.setLeft(leftNode); 
 		if(newRight.size()>0) {
 			rightNode = this.buildTree(c, newRight,level+1);
-			System.out.println("right" + rightNode); 
+//			System.out.println("right" + rightNode); 
 		}
 		//visit current node 
 		newMid.setRight(rightNode);

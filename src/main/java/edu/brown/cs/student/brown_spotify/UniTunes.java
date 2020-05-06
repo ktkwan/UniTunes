@@ -33,14 +33,11 @@ public class UniTunes {
   
 
   public UniTunes(SongDatabase songdb, UserDatabase userdb) {
-//	this.songdb = songdb;
-//	this.userdb = userdb; 
+	this.songdb = songdb;
+	this.userdb = userdb; 
 	this.allSongs = new ArrayList<Song>();
 	clusters = new ArrayList<Song>(); 
   this.sent = new SentimentAnalysis(); 
-  System.out.println(this.sent.analyze("depressed, fuck we are screwed")); 
-  System.out.println(this.sent.analyze("happy happy it's all okay")); 
-  System.out.println(this.sent.analyze("moonlight")); 
 
 	//this.dimensions = 3;
     userCommand = new UserCommand();
@@ -49,17 +46,16 @@ public class UniTunes {
     connectCommand = new ConnectCommand();
 
 
-	  // try { 
-		//   for(int i = 0; i < songdb.getSongs().size(); i ++) { 
-		// 	  allSongs.add(songdb.getSongs().get(i)); 
-    //   }
-    //     System.out.println(allSongs);
-		// 	  this.clusters = this.setUpClusters();
-		// 	  tree = new KdTree(allSongs, 2);
+	   try { 
+		   for(int i = 0; i < songdb.getSongs().size(); i ++) { 
+		 	  allSongs.add(songdb.getSongs().get(i)); 
+       }
+		 	  this.clusters = this.setUpClusters();
+		 	  tree = new KdTree(allSongs, 2);
 
-	  // }catch(SQLException e) { 
-		//   System.out.println("ERROR: Empty song list in database"); 
-	  // }
+	   }catch(SQLException e) { 
+		   System.out.println("ERROR: Empty song list in database"); 
+	   }
   
   }
 
@@ -152,11 +148,9 @@ public class UniTunes {
   public List<String> newUserSuggestSong(String songName, int k) {
 	  	  // retrieve song from hashmap from songname 
 	  	  Song curSong = SongDatabase.getSongFromName(songName); 
-        System.out.println(curSong.name); 
 	      Song closestCentroid = findClosestCentroid(curSong);
-	      // now for all the songs for a given centroid, find the closest songs to the centroid => need to set up a query from each
+//	       now for all the songs for a given centroid, find the closest songs to the centroid => need to set up a query from each
 	      // centroid to a list of songs with the given centroid.
-	      System.out.println("found the closest centroid" + closestCentroid);
 	      int count = 0; 
 	      List<String> recommendations = new ArrayList<String>(); 
         // just to test 
@@ -193,7 +187,7 @@ public class UniTunes {
       Song closestCentroid = findClosestCentroid(avg);
       // now for all the songs for a given centroid, find the closest songs to the centroid => need to set up a query from each
       // centroid to a list of songs with the given centroid.
-      System.out.println("found the closest centroid" + closestCentroid);
+//      System.out.println("found the closest centroid" + closestCentroid);
       int count = 0; 
       List<String> recommendations = new ArrayList<String>(); 
       while(count<k) {
