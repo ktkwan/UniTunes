@@ -7,11 +7,8 @@
 <p class="t">U n i T u n e s</p>
 </div>
 <div class=buttons>
-<div class=home>
-<a href=/unitunes>Home</a>
-</div>
 <div class=browse>
-<a href=/songs>Browse</a>
+<a href=/songs>Recommendations</a>
 </div>
 <div class=lib>
 <a method="GET" href=/library>Library</a>
@@ -35,10 +32,17 @@ ${s}
 <div>		
 <p>
 
-<#assign items=library>
+<#assign items=library, n=names, a=art>
 
   <#list items as item>
-	<li >${item}
+  <div class=lib>
+  ${n[item?index]}
+ 
+  ${a[item?index]}
+  </div>
+
+
+
 
 </#list>
 </div>

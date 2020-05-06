@@ -212,6 +212,22 @@ public final class DatabaseConnection {
 		return spotify_id;
 	}
 
+	public static String getNameFromID(String id) throws SQLException {
+		String name = "";
+		PreparedStatement prep;
+		String statement = "SELECT track_name FROM songs WHERE spotify_id=?;";
+		prep = conn.prepareStatement(statement);
+		prep.setString(1, id);
+		ResultSet res = prep.executeQuery();
+		while (res.next()) {
+			name = res.getString(1);
+		}
+		
+
+		
+		return name;
+	}
+
 	/**
 	 * Prints out a table if you give it the table name : debugging puposes
 	 */

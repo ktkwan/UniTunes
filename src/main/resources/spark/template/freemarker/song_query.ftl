@@ -10,13 +10,14 @@
 
 
 <script>
+
  $(function(){
+	
 	$(document).one('click', '.like-review', function(e) {
-		
+		$(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
+
 	});
 });
-
-
 
 
 
@@ -30,11 +31,8 @@
 <p class="t">U n i T u n e s</p>
 </div>
 <div class=buttons>
-<div class=home>
-<a href=/unitunes>Home</a>
-</div>
 <div class=browse>
-<a href=/songs>Browse</a>
+<a href=/songs>Recommendations</a>
 </div>
 <div class=lib>
 <a method="GET" href=/library>Library</a>
@@ -63,7 +61,7 @@
 	<li class="songs">
 	${key} 
 	${value}
-	<form method="POST" action="/songs">
+	<form id=f method="POST" >
 	<div class="like-content">
 	${hash2[key]}
 	<div>

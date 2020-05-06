@@ -99,4 +99,9 @@ a:hover { opacity: 0.5; TEXT-DECORATION: none; font-weight: none }
 	border:5px solid #949fb1;
 }
 
+.lib{
+	display: flex;
+	flex-direction: column;
+}
+
 

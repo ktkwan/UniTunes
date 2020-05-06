@@ -47,20 +47,29 @@ public class Login {
 		QueryParamsMap qm = request.queryMap(); 
 		String libraryLoad = qm.value("library");
     List<String> libraryList = new ArrayList<String>();
+    List<String> names = new ArrayList<String>();
+    List<String> art = new ArrayList<String>();
 		String user = Login.getCurrentUser(); 
     User curUser = UserDatabase.getUserLibrary(user); 
     // 
     List<Song> favoriteSongs = curUser.getFavorites();
+    System.out.println("length: " + favoriteSongs.size());
 		for(int i = 0; i < favoriteSongs.size() ; i ++) {
 			Song curSong = favoriteSongs.get(i);
+
+      System.out.println("HERE: " + curSong.id);
 			String songlink = DatabaseConnection.getSpotifyLinkFromID(curSong.id); 
 			String item = "<li>"+ songlink + "</li>" ; 
 			libraryList.add(item); 
+      names.add(curSong.name);
+      
+      String album = String.format("<a href=\"song/%s\"> <img src=%s> </a>", curSong.id, DatabaseConnection.getAlbumArt(curSong.id));
+      art.add(album);
 		}
 		
 		System.out.println("this is the user: "+ user);
 		Map<String, Object> variables = ImmutableMap.of("username", user, 
-				"library", libraryList); 
+				"library", libraryList, "names", names, "art", art); 
 		return new ModelAndView(variables, "library.ftl"); 
 	} 	  
   }
@@ -134,10 +143,27 @@ public class Login {
           "id=\"song\">" + thirdSong + " by " + thirdArtist +
           "</a> " + "   " +
           thirdLink + "</li>");
+          List<String> songs = new ArrayList<>();
+          songs.add("<li id= \"song-list\">" + "<a href=/songs id=\"song\">" + firstSong +
+          " by " + firstArtist +
+          "</a> " + "   " +
+          firstLink + "<a href=/songs id=\"song\">" + "</li>");
+          songs.add("<li id= \"song-list\">" + secondSong + " by " + secondArtist +
+          "</a> " + "   " +
+          secondLink + "</li>");
+          songs.add("<li id= \"song-list\">" + "<a href=/songs " +
+          "id=\"song\">" + thirdSong + " by " + thirdArtist +
+          "</a> " + "   " +
+          thirdLink + "</li>");
+
+      List<String> art = new ArrayList<>();
+      art.add(DatabaseConnection.getAlbumArt(firstSongID));
+      art.add(DatabaseConnection.getAlbumArt(secondSongID));
+      art.add(DatabaseConnection.getAlbumArt(thirdSongID));
       String songList = songListBuilder.toString();
       String welcomeMessage = "Welcome" + " " + firstName + "!";
       Map<String, Object> variables = ImmutableMap.of("status",
-          welcomeMessage, "songs", songList);
+          welcomeMessage, "songs", songs, "art", art);
       return new ModelAndView(variables,"new_account.ftl");
     }
 

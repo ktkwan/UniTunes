@@ -15,7 +15,7 @@ public class Song extends KdTreeNode {
 	public Song(KdTreeNode leftChild, KdTreeNode rightChild, Coordinates coords, String id) {
 		super(leftChild, rightChild, coords, id);
 		this.name = null; 
-		this.id = ""; 
+		this.id = id; 
 		this.coords = coords; 
 		this.leftChild = null;
 		this.rightChild = null;

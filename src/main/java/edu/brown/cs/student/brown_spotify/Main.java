@@ -184,10 +184,16 @@ public final class Main {
 	public ModelAndView handle(Request request, Response response) throws Exception {
 		QueryParamsMap qm = request.queryMap(); 
 		String songToAdd = qm.value("add"); 
-		System.out.println("HERE::::: " + songToAdd);
+	
 		// need to fix this later =====> design issues 
 		//UserDatabase.addSongToLibrary(Login.getCurrentUser(), songToAdd);
-
+    String user = Login.getCurrentUser(); 
+    User curUser = UserDatabase.getUserLibrary(user); 
+    String name = DatabaseConnection.getNameFromID(songToAdd);
+    if (!curUser.favoriteSongs.contains(SongDatabase.getSongFromName(name))){
+      curUser.addSong(SongDatabase.getSongFromName(name));
+    }
+    
 		HashMap<String, String> song_names = DatabaseConnection.getAllSongNames();
 		song_hashmap = song_names;
 		String songs = "";
@@ -201,10 +207,10 @@ public final class Main {
 			 String songLink = String.format("<a href=\"song/%s\"> %s </a>", entry.getKey(), entry.getValue());
 			 
 			 songs += songLink;
-//			 String likeButton = String.format(
-//			 		"<button type=\"submit\" name=\"add\" value=\"%s\"> <3 </button>", entry.getKey());
+			//  String likeButton = String.format(
+			//  		"<button type=\"submit\" name=\"add\" value=\"%s\"> <3 </button>", entry.getKey());
 			 String likeButton = String.format(
-				 		"<button class=\"btn-secondary like-review\" value=\"%s\">\n" + 
+				 		"<button class=\"btn-secondary like-review\" name=\"add\" value=\"%s\">\n" + 
 				 		"    <i class=\"fa fa-heart\" aria-hidden=\"false\"></i> Like\n" + 
 				 		"  </button>", entry.getKey());
 			 n.add(songLink); 
@@ -215,8 +221,6 @@ public final class Main {
 //			 if(entry.getKey().contentEquals(songToAdd)) { 
 //				 n.add("Added to Library!"); 
 //			 }
-			 System.out.println("HERE: " + entry.getValue());
-			System.out.println(likeButton);
 		}
 		
 		Map<String, HashMap<String, String>> variables = ImmutableMap.of("display", song_to_button, "songs", map);
@@ -244,7 +248,7 @@ public final class Main {
 //			 String likeButton = String.format(
 //				 		"<button  class=like type=\"submit\" name=\"add\" value=\"%s\"> <3 </button>", entry.getKey());
 			 String likeButton = String.format(
-				 		"<button class=\"btn-secondary like-review\" value=\"%s\">\n" + 
+				 		"<button class=\"btn-secondary like-review\" value=\"%s\" name=\"add\">\n" + 
 				 		"    <i class=\"fa fa-heart\" aria-hidden=\"true\"></i> Like\n" + 
 				 		"  </button>", entry.getKey());
 			 n.add(songLink);
@@ -274,6 +278,7 @@ public final class Main {
 		  return new ModelAndView(variables, "song.ftl");
 	  }
   }
+
 
   /**
    * Display an error page when an exception occurs in the server.

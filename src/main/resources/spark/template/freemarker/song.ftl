@@ -9,14 +9,11 @@
 </div>
 </div>
 <div class=buttons>
-<div class=home>
-<a href=/unitunes>Home</a>
-</div>
 <div class=browse>
-<a href=/songs>Browse</a>
+<a href=/songs>Recommendations</a>
 </div>
 <div class=lib>
-<a href=/songs>Library</a>
+<a href=/library>Library</a>
 </div>
 <div class=log>
 <a href=/unitunes>Logout</a>
