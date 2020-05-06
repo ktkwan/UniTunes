@@ -64,9 +64,61 @@ public class UserDatabase {
   
 
 
-  /*
-   * Adds a new user to the database and creates a new user
+  /** 
+   * Checking if user exists for both login and creating account functionality 
+   * @param email
+   * @return boolean 
+   * @throws SQLException
    */
+  public static boolean checkIfUserExists(String email) throws SQLException { 
+	  PreparedStatement prep;
+	  prep = conn.prepareStatement("SELECT EXISTS(SELECT * FROM users WHERE email=?);"); 
+	  prep.setString(1, email);
+	  ResultSet rs = prep.executeQuery(); 
+	  if(rs.next()){ 
+		  return true; 
+	  }
+	  return false; 
+  }
+  
+  /** 
+   * Verifying password against email address for login purposes 
+ * @throws SQLException 
+   */
+  public static boolean verifyPasswordWithEmail(String email, String password) throws SQLException { 
+	  String actualPassword = ""; 
+	  PreparedStatement prep;
+	  prep = conn.prepareStatement("SELECT password FROM users WHERE email=?; "); 
+	  prep.setString(1, email);
+	  ResultSet rs = prep.executeQuery(); 
+	  while(rs.next()) { 
+		  actualPassword = rs.getString(1); 
+	  }
+	  if(password != null && actualPassword != null && password.contentEquals(actualPassword)) { 
+		  return true; 
+	  }
+	  return false; 
+  }
+  
+  
+  /** 
+   * Gets a user from their email and password 
+ * @throws SQLException 
+   */
+  public static String getUserFromEmailAndPassword(String email, String password) throws SQLException { 
+	  String user = ""; 
+	  PreparedStatement prep;
+	  prep = conn.prepareStatement("SELECT username FROM users WHERE email = ? AND password = ?; "); 
+	  prep.setString(1, email);
+	  prep.setString(2, password);
+	  prep.close(); 
+	  ResultSet rs = prep.executeQuery(); 
+	  while(rs.next()) { 
+		  user = rs.getString(1); 
+	  }
+	  return user; 
+  }
+  
   /** 
    * Adds a user to the UserDatabase when they create an account 
    * @param username
@@ -96,6 +148,7 @@ public class UserDatabase {
     userLibrary.put(username, newUser); 
   }
 
+  //currently unused 
   public void addTopGenreForUser(String id, String genre) throws SQLException {
     PreparedStatement prep;
     prep = conn.prepareStatement("INSERT INTO users(genre) VALUES(?) WHERE (users.id = ?);");
@@ -105,14 +158,6 @@ public class UserDatabase {
     prep.close();
   }
   
-//  public static void addSongToLibrary(String username, String song) { 
-// 	  if(username != null || song != null) { 
-// 		  //List<String> library = userLibrary.get(username); 
-// 		  library.add(song); 
-// 		  System.out.println(username + library.size());  
-
-// 	  }
-//  }
   
   
   public static User getUserLibrary(String username){

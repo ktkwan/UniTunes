@@ -17,6 +17,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
 public final class DatabaseConnection {
+	
 	public static String connection_filename = null;
 	private static Connection conn = null;
 	public static HashMap<String, String> song_hashmap = new HashMap<>();
@@ -78,9 +79,7 @@ public final class DatabaseConnection {
 			id_to_name.put(res.getString(2), res.getString(1));
 			song_hashmap.put(res.getString(2), res.getString(1));
 		}
-		
-//		song_hashmap = id_to_name;
-//		song_hashmap = id_to_name;
+
 		return id_to_name;
 		
 	}
@@ -178,15 +177,18 @@ public final class DatabaseConnection {
 	 * @throws SQLException
 	 */
 	public static List<String> getRandomTrackNames() throws SQLException {
-		List<String> randTrackNames = new ArrayList();
+		List<String> randTrackNames = new ArrayList<String>();
 		PreparedStatement prep;
 		prep = conn.prepareStatement("SELECT track_name FROM songs ORDER BY RANDOM() LIMIT 3;");
 		ResultSet rs = prep.executeQuery();
 		while(rs.next()) {
+			System.out.println("here"); 
 			randTrackNames.add(rs.getString(1));
 		}
+		
 		return randTrackNames;
 	}
+	
 	
 	public static String getSpotifyLinkFromID(String spotify_id) throws SQLException {
 		String base_url = "open.spotify.com/track/";

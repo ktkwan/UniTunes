@@ -173,6 +173,7 @@ public final class Main {
     Spark.get("/unitunes", Login.getLoginHandler() , freeMarker);
     Spark.post("/create-account", Login.getCreateHandler(), freeMarker);
     Spark.get("/library", Login.getLoadLibraryHandler(), freeMarker);
+    Spark.get("/library", Login.getVerifyLoginHandler(), freeMarker);
     Spark.get("/songs", new SongHandler(), freeMarker);
     Spark.get("/song/:songID", new SongInfoHandler(), freeMarker);
     Spark.post("/songs", new AddToLibraryHandler(), freeMarker);

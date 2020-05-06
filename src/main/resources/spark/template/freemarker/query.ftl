@@ -6,9 +6,10 @@
     <link rel="stylesheet" href="css/main.css">
     <div id="base" style="color:white; ">
         <canvas id="canvas" width="1800%" height="300%"></canvas>
+        <h2 id="status"> ${status} </h2>
         <div class = "sign-in-form-pop-up" id="sign-in">
             <button id = "sign-in-button" class = gradient-button sign-in-button> Sign in! </button>
-            <form id="sign-in-form">
+            <form id="sign-in-form" method="GET" action="/library">
                 <div class=inputs>
                 <b >Email: </b><input type="text" name="email_login" class=email>
                 <b >Password: </b><input type="text" name="password_login" class=pass>

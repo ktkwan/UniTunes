@@ -22,9 +22,11 @@ public class Login {
   public Map<String, List> userLibrary; 
   private static String userName; 
   private static DatabaseConnection connection; 
+  public static boolean loggedIn; 
 
 
   public Login(){
+
   }
 
   public static TemplateViewRoute getLoginHandler(){
@@ -38,7 +40,65 @@ public class Login {
 		return new LoadLibraryHandler();
 	}
   
-  
+  public static TemplateViewRoute getVerifyLoginHandler() { 
+	  return new VerifyLoginHandler(); 
+  }
+  /** 
+   * Handles login of existing users *
+   */
+  public static class VerifyLoginHandler implements TemplateViewRoute {
+
+	@Override
+	public ModelAndView handle(Request request, Response response) throws Exception {
+//		userName=""; 
+		QueryParamsMap qm = request.queryMap(); 
+		String email = qm.value("email_login");
+		String password = qm.value("password_login");
+		if(email.contentEquals("") || password.contentEquals("") || email == null || password == null) { 
+			userName = "";
+			Map<String, Object> variables = ImmutableMap.of("title",
+			          "uniTunes", "status", "Enter an email and password to log in!");
+		    return new ModelAndView(variables, "query.ftl");
+		}	
+		
+		//If user exists, check if their password is correct
+		else { 
+	    
+		if(UserDatabase.checkIfUserExists(email)) { 
+			//If their password is correct, bring them to their library 			
+			if(UserDatabase.verifyPasswordWithEmail(email, password)) { 
+				userName = UserDatabase.getUserFromEmailAndPassword(email, password); 
+				//if username is null or empty, reload home page 
+				if(userName == null || userName.contentEquals("")) { 
+					Map<String, Object> variables = ImmutableMap.of("title",
+					          "uniTunes", "status", "Enter an email and password to log in!");
+				    return new ModelAndView(variables, "query.ftl");
+				}					
+				System.out.println("User exists and correct password");
+				List<String> libraryList = new ArrayList<String>();
+			    List<String> names = new ArrayList<String>();
+			    List<String> art = new ArrayList<String>();
+					String user = Login.getCurrentUser(); 		
+				Login.LoadUserLibrary(libraryList, names, art, user); 
+				Map<String, Object> variables = ImmutableMap.of("username", user, 
+						"library", libraryList, "names", names, "art", art); 
+				return new ModelAndView(variables, "library.ftl"); 
+			} 
+			//If password is incorrect, reload home page with status message
+			else { 
+				Map<String, Object> variables = ImmutableMap.of("title",
+				          "uniTunes", "status", "Incorrect password");
+			    return new ModelAndView(variables, "query.ftl");
+			}
+		}
+		//If email doesn't exist in database, reload home page with status message 
+		Map<String, Object> variables = ImmutableMap.of("title",
+		          "uniTunes", "status", "User doesn't exist! Try using another email.");
+	    return new ModelAndView(variables, "query.ftl");
+		}
+	} 
+	  
+  }
   
   public static class LoadLibraryHandler implements TemplateViewRoute {
 
@@ -50,14 +110,12 @@ public class Login {
     List<String> names = new ArrayList<String>();
     List<String> art = new ArrayList<String>();
 		String user = Login.getCurrentUser(); 
+		
+//	Login.LoadUserLibrary(libraryList, names, art, user); 
     User curUser = UserDatabase.getUserLibrary(user); 
-    // 
     List<Song> favoriteSongs = curUser.getFavorites();
-    System.out.println("length: " + favoriteSongs.size());
 		for(int i = 0; i < favoriteSongs.size() ; i ++) {
 			Song curSong = favoriteSongs.get(i);
-
-      System.out.println("HERE: " + curSong.id);
 			String songlink = DatabaseConnection.getSpotifyLinkFromID(curSong.id); 
 			String item = "<li>"+ songlink + "</li>" ; 
 			libraryList.add(item); 
@@ -73,6 +131,26 @@ public class Login {
 		return new ModelAndView(variables, "library.ftl"); 
 	} 	  
   }
+  
+  public static void LoadUserLibrary(List<String> libraryList, List<String> names, List<String> art, String user) throws SQLException { 
+	    libraryList = new ArrayList<String>();
+	    names = new ArrayList<String>();
+	    art = new ArrayList<String>();
+	    user = Login.getCurrentUser(); 
+	    User curUser = UserDatabase.getUserLibrary(user); 
+	    List<Song> favoriteSongs = curUser.getFavorites();
+			for(int i = 0; i < favoriteSongs.size() ; i ++) {
+				Song curSong = favoriteSongs.get(i);
+				String songlink = DatabaseConnection.getSpotifyLinkFromID(curSong.id); 
+				String item = "<li>"+ songlink + "</li>" ; 
+				libraryList.add(item); 
+	      names.add(curSong.name);
+	      
+	      String album = String.format("<a href=\"song/%s\"> <img src=%s> </a>", curSong.id, DatabaseConnection.getAlbumArt(curSong.id));
+	      art.add(album);
+			}
+	  
+  }
 
 
   public static String getCurrentUser() { 
@@ -84,8 +162,10 @@ public class Login {
   private static class FrontHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(Request req, Response res) {
+//     loggedIn = false; 
+//     userName = ""; 
       Map<String, Object> variables = ImmutableMap.of("title",
-          "uniTunes", "status", "coming soon");
+          "uniTunes", "status", "");
       return new ModelAndView(variables, "query.ftl");
     }
   }
@@ -96,6 +176,7 @@ public class Login {
   private static class CreateHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(Request req, Response res) throws SQLException {
+      loggedIn = true; 
       String firstName = req.queryParams("firstName");
       String lastName = req.queryParams("lastName");
       String email = req.queryParams("email");
