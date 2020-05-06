@@ -33,6 +33,7 @@ public class UniTunes {
   private List<Song> clusters;
   private static List<Song> allSongs;
   private SentimentAnalysis sent; 
+  public static List<String> suggestedSongs;
   
 
   public UniTunes(SongDatabase sdb, UserDatabase udb) {
@@ -40,6 +41,7 @@ public class UniTunes {
 	userdb = udb; 
 	allSongs = new ArrayList<Song>();
 	clusters = new ArrayList<Song>(); 
+  suggestedSongs = new ArrayList<>();
   this.sent = new SentimentAnalysis(); 
 
 	this.dimensions = 14;
@@ -182,6 +184,7 @@ public class UniTunes {
 	    		  System.out.println("ERROR: Could not find song name in database"); 
 	    	  }
 	      }
+        this.suggestedSongs = recommendations;
 	      return recommendations; // should print out a list of five recommended songs.
   }
   

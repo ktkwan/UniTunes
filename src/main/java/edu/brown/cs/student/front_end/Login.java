@@ -197,7 +197,7 @@ public class Login {
       String firstSong = randomTracks.get(0);
       String firstSongID = DatabaseConnection.getIDFromSongName(firstSong);
       String firstArtist = DatabaseConnection.getArtistFromSongID(firstSongID);
-      String firstLink = String.format("<a href=\"http://%s\" target=\"_blank\"> %s </a>",
+      String firstLink = String.format("<a href=\"http://%s\" target=\"_blank\" %s </a>",
           DatabaseConnection.getSpotifyLinkFromID(firstSongID), "Listen here!");
 
       //Organising information for second song
@@ -225,17 +225,28 @@ public class Login {
           "</a> " + "   " +
           thirdLink + "</li>");
           List<String> songs = new ArrayList<>();
-          songs.add("<li id= \"song-list\">" + "<a href=/songs id=\"song\">" + firstSong +
+          List<String> songs2 = new ArrayList<>();
+          songs.add("<li id= \"song-list\">" + "<a  href=/songs id=\"song\" >" + firstSong +
           " by " + firstArtist +
           "</a> " + "   " +
           firstLink + "<a href=/songs id=\"song\">" + "</li>");
           songs.add("<li id= \"song-list\">" + secondSong + " by " + secondArtist +
           "</a> " + "   " +
           secondLink + "</li>");
-          songs.add("<li id= \"song-list\">" + "<a href=/songs " +
+          songs.add("<li id= \"song-list\">" + "<a  href=/songs " +
           "id=\"song\">" + thirdSong + " by " + thirdArtist +
           "</a> " + "   " +
           thirdLink + "</li>");
+
+          String one = String.format("<input type=\"hidden\" name=\"suggestion\" value=\"%s\"/><li name=\"suggestion\" value=\"%s\" id= \"song-list\"><a name=\"suggestion\" value=\"%s\" href=/songs id=\"song\" > %s </a>  %s <a href=/songs id=\"song\"></li>", firstSong, firstSong, firstSong, firstSong, firstLink);
+          System.out.println(one);
+          String two = String.format("<input type=\"hidden\" name=\"suggestion\" value=\"%s\"/><li name=\"suggestion\" value=\"%s\" id= \"song-list\"><a name=\"suggestion\" value=\"%s\" href=/songs id=\"song\" > %s </a>  %s <a href=/songs id=\"song\"></li>", secondSong, secondSong, secondSong, secondSong, secondLink);
+          String three = String.format("<input type=\"hidden\" name=\"suggestion\" value=\"%s\"/><li name=\"suggestion\" value=\"%s\" id= \"song-list\"><a name=\"suggestion\" value=\"%s\" href=/songs id=\"song\" > %s </a>  %s <a href=/songs id=\"song\"></li>", thirdSong, thirdSong, thirdSong, thirdSong, thirdLink);
+
+          songs2.add(one);
+          songs2.add(two);
+          songs2.add(three);
+
 
       List<String> art = new ArrayList<>();
       art.add(DatabaseConnection.getAlbumArt(firstSongID));
@@ -244,7 +255,7 @@ public class Login {
       String songList = songListBuilder.toString();
       String welcomeMessage = "Welcome" + " " + firstName + "!";
       Map<String, Object> variables = ImmutableMap.of("status",
-          welcomeMessage, "songs", songs, "art", art);
+          welcomeMessage, "songs", songs2, "art", art);
       return new ModelAndView(variables,"new_account.ftl");
     }
 

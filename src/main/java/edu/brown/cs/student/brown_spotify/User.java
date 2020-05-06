@@ -17,6 +17,7 @@ public class User extends KdTreeNode{
 	Coordinates coords; 
 	KdTreeNode leftChild, rightChild; 
 	List<Song> favoriteSongs; 
+	String suggestSong;
 	public User(KdTreeNode leftChild, KdTreeNode rightChild, Coordinates coords, String id) {
 		super(leftChild, rightChild, coords, id);
 		this.name = null; 
@@ -25,6 +26,8 @@ public class User extends KdTreeNode{
 		this.leftChild = null;
 		this.rightChild = null;
 		this.favoriteSongs = new ArrayList<Song>(); 
+		this.suggestSong = "";
+
 		
 	}
 	/*
@@ -33,6 +36,14 @@ public class User extends KdTreeNode{
 	public void setData(String name, String id){
 		this.id = id; 
 		this.name = name; 
+	}
+
+	public void setSuggest(String song){
+		this.suggestSong = song;
+	}
+
+	public String getSuggest(){
+		return this.suggestSong;
 	}
 	/*
 	 * set additional attributes

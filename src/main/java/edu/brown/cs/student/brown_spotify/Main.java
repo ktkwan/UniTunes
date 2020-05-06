@@ -38,11 +38,12 @@ import spark.template.freemarker.FreeMarkerEngine;
  */
 public final class Main {
 
-  private static final int DEFAULT_PORT = 4567;
+  private static final int DEFAULT_PORT = 4566;
   private static final String DEFAULT_USER_DB = "users.sqlite3";
   private static final String DEFAULT_SONG_DB = "data/songs_today.sqlite3";
-  private UserDatabase userDb = null;
-  private SongDatabase songDb = null ;
+  private static UserDatabase userDb = null;
+  private static SongDatabase songDb = null ;
+  private static UniTunes uniTunesProgram;
 
   /**
    * The initial method called when execution begins.
@@ -59,6 +60,7 @@ public final class Main {
     this.args = args;
     userDb = null; 
     songDb = null; 
+    uniTunesProgram = null;
   }
   
   public static HashMap<String, String> song_hashmap = new HashMap<>();
@@ -133,7 +135,7 @@ public final class Main {
     //create a unitunes object 
     
     try {
-		  UniTunes uniTunesProgram = new UniTunes(songDb, userDb);
+		    uniTunesProgram = new UniTunes(songDb, userDb);
 		    map.put("user", uniTunesProgram.getUserCommand());
 		    map.put("db", uniTunesProgram.getDatabaseCommand());
 		    map.put("suggest", uniTunesProgram.getSuggestCommand());
@@ -236,13 +238,33 @@ public final class Main {
 	public ModelAndView handle(Request request, Response response) throws Exception {		
 		HashMap<String, String> song_names = DatabaseConnection.getAllSongNames();
 		song_hashmap = song_names;
+    QueryParamsMap qm = request.queryMap(); 
+    String suggestion_song = qm.value("suggestion");
+    String[] command = new String[3];
+    command[0] = "suggest";
+    command[1] = "song";
+    command[2] = suggestion_song;
+    String user = Login.getCurrentUser(); 
+    User curUser = UserDatabase.getUserLibrary(user); 
+    // curUser.suggestSong = suggest;
+    System.out.println("song: " + curUser.getSuggest());
+    System.out.println("song: " + suggestion_song);
+    System.out.println("entire command "+ command);
+    //UniTunes uni = new UniTunes(songDb, userDb);
+    uniTunesProgram.getSuggestCommand().runCommand(command);
+    System.out.println("Here: " + uniTunesProgram.suggestedSongs);
+
 		String songs = "";
 		HashMap<String, String> map = new HashMap<>();
 		List<String> n = new ArrayList<>();
 		List<String> song_list = new ArrayList<>();
 		List<String> art_list = new ArrayList<>();
+
+
 		HashMap<String, String> song_to_button = new HashMap<>();
 		for (Map.Entry<String, String> entry: song_names.entrySet()){
+        
+        
 			 String songLink = String.format("<a href=\"song/%s\"> %s </a>", 
 					 entry.getKey(), entry.getValue());
 			 songs += songLink;
@@ -259,6 +281,7 @@ public final class Main {
 			 art_list.add(DatabaseConnection.getAlbumArt(entry.getKey()));
 			 String album = String.format("<a href=\"song/%s\"> <img src=%s> </a>", entry.getKey(), DatabaseConnection.getAlbumArt(entry.getKey()));
 			 map.put(songLink, album);
+        
 		}
 		Map<String, HashMap<String, String>> variables = ImmutableMap.of("display", song_to_button, "songs", map);
 		return new ModelAndView(variables, "song_query.ftl");
