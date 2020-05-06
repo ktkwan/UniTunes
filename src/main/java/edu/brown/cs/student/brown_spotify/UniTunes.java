@@ -12,6 +12,7 @@ import edu.brown.cs.student.database.UserDatabase;
 
 
 /**
+ * 
  * Primary class for handling commands to do with the UniTunes program
  */
 public class UniTunes {
@@ -21,7 +22,7 @@ public class UniTunes {
   private DatabaseCommand dbCommand;
   private SuggestCommand suggestCommand;
   private ConnectCommand connectCommand;
-  private KdTree tree;
+  private KdTree<Song> tree;
   private static int dimensions;
   private List<Song> clusters;
   private List<Song> allSongs;
@@ -51,7 +52,7 @@ public class UniTunes {
   
   }
 
-  /*
+  /**
    * Manually add the cluster coordinates based on the outputted clusters of the algorithm.
    */
   private List<Song> setUpClusters() {
@@ -87,7 +88,7 @@ public class UniTunes {
 	  return dummySongList;
   }
 
-  /*
+  /**
    * Helper function to create an average array vector for a user's list of favorite songs
    */
   public Song findAverageSong(List<Song> userList) {
@@ -113,7 +114,7 @@ public class UniTunes {
 	  Song s = new Song(null, null, c, "dummy");  // what id should we give these dummy songs?
 	  return s;
   }
-  /*
+  /**
    * helper function to find the closest cluster given a dummy user song
    */
   public Song findClosestCentroid(Song dummy) {
@@ -131,12 +132,12 @@ public class UniTunes {
   }
   
 
-  /*
+  /**
    * Suggests a song for a new user, based on a song that they chose
    * @input: Song song 
    * @output: k suggested songs. 
    */
-  public List<Song> newUserSuggestSong(String songName, int k) {
+  public List<String> newUserSuggestSong(String songName, int k) {
 	  	  // retrieve song from hashmap from songname 
 	  	  Song curSong = this.songdb.getSongFromName(songName); 
         System.out.println(curSong.name); 
@@ -145,28 +146,32 @@ public class UniTunes {
 	      // centroid to a list of songs with the given centroid.
 	      System.out.println("found the closest centroid" + closestCentroid);
 	      int count = 0; 
-	      List<Song> recommendations = new ArrayList<Song>(); 
+	      List<String> recommendations = new ArrayList<String>(); 
         // just to test 
         System.out.println("rootNode" + ((Song)tree.getRoot()).name); 
-        List<KdTreeNode> allNodes = tree.neighbors(curSong, 1, tree.getRoot()); 
+        List<String> allNodes = tree.neighbors(curSong, 1, tree.getRoot()); 
         //List<KdTreeNode> allNodes = tree.neighbors(closestCentroid, 1, tree.getRoot()); 
 	      while(count<k) {
-	    	  Song s = (Song)(allNodes.get(count)); 
-	    	  String curId = s.id; 
+	    	  String curId = allNodes.get(count); 
+	    	  try {
+	    	  String song_name = DatabaseConnection.getSongNameFromID(curId); 
 	    	  if (curId.contains("centroid-") && (!curId.equals("dummy"))) {
-	        	  recommendations.add(s); 
+	        	  recommendations.add(song_name); 
 	        	  count += 1; 
+	    	  }
+	    	  }catch(SQLException e) { 
+	    		  System.out.println("ERROR: Could not find song name in database"); 
 	    	  }
 	      }
 	      return recommendations; // should print out a list of five recommended songs.
   }
   
-  /*
+  /**
    * Suggests a song for an existing user based on their favorite songs. 
    * @input: userName, k 
    * @output: k number of recommended songs 
    */
-  public List<Song> existingUserSuggestSong(String UserName, int k) {
+  public List<String> existingUserSuggestSong(String UserName, int k) {
   	  // get the user based on the userName, retrieve the value from the cache 
 	  User curUser = this.userdb.getUserLibrary(UserName); 
 	  List<Song> favorites = curUser.favoriteSongs; 
@@ -178,19 +183,23 @@ public class UniTunes {
       // centroid to a list of songs with the given centroid.
       System.out.println("found the closest centroid" + closestCentroid);
       int count = 0; 
-      List<Song> recommendations = new ArrayList<Song>(); 
+      List<String> recommendations = new ArrayList<String>(); 
       while(count<k) {
-    	  Song cur = ((Song)tree.neighbors(closestCentroid, 1, tree.getRoot()).get(0)); 
-    	  String curId = cur.id; 
-    	  if (curId.contains("centroid-") && (!curId.equals("dummy"))) {
-        	  recommendations.add(cur); 
-        	  count += 1; 
-    	  }
+    	  String curId = tree.neighbors(closestCentroid, 1, tree.getRoot()).get(0); 
+    	  try {
+	    	  String song_name = DatabaseConnection.getSongNameFromID(curId); 
+	    	  if (curId.contains("centroid-") && (!curId.equals("dummy"))) {
+	        	  recommendations.add(song_name); 
+	        	  count += 1; 
+	    	  }
+	    	  }catch(SQLException e) { 
+	    		  System.out.println("ERROR: Could not find song name in database"); 
+	    	  }
       }
       return recommendations; // should print out a list of five recommended songs.
 
   }
-
+  
   public Command getUserCommand(){
     return userCommand;
   }

@@ -25,6 +25,7 @@ public class KdTree<T extends KdTreeNode>{
 		//start building the tree starting at the root 
 		this.buildTree(_k, _data,0);
 	}
+	
 	public KdTreeNode getRoot() {
 		return _root; 
 	}
@@ -121,6 +122,7 @@ public class KdTree<T extends KdTreeNode>{
 			return neigh;
 		}
 		double currToTarget = d.distance(curr.coords, targ.coords); 
+//		System.out.println("currToTarget: " + currToTarget); 
 		double maxDistance = (!neigh.isEmpty()) ? d.distance(neigh.peek().coords, targ.coords) : 
 			Double.MAX_VALUE;
 		//if (neigh.size() < num_neighbors && !curr.equals(targ) && !neigh.contains(curr)) {
@@ -133,24 +135,34 @@ public class KdTree<T extends KdTreeNode>{
 			neigh.add(curr);
 		}
 		int dim = curr.level % _dimensions; // set this to the number of dimensions 
+//		System.out.println("curr level" + curr.level); 
+//		System.out.println("curr coords" + curr.coords); 
+//		System.out.println("targ coords" + targ.coords); 
 		double axis_d = axisDistance(curr.coords, targ.coords,dim);
 		//get the euclidean distance of furthest node from the target 
 		maxDistance = d.distance(neigh.peek().coords, targ.coords);
-		if (maxDistance >= axis_d) {
+		if (maxDistance > axis_d) {
 			//recur on both 
+			if(curr.getLeft()!=null) {
 			this.getClosest2(neigh, d, num_neighbors, targ, curr.getLeft());
+			} else if(curr.getRight()!=null) {
 			this.getClosest2(neigh, d, num_neighbors, targ, curr.getRight());
+			}
 				
 		} else if (curr.coords.getValueAtDimension(dim) < targ.coords.getValueAtDimension(dim)) {
+			if(curr.getRight()!=null) { 
 			this.getClosest2(neigh, d, num_neighbors, targ, curr.getRight());
+			}
 		} else {
+			if(curr.getLeft()!=null) {
 			this.getClosest2(neigh,  d, num_neighbors, targ, curr.getLeft());
+			}
 		}
 		return neigh;
 		
 	}
 	
-	/*
+	/**
 	 * neighbors function that calls the recursive function
 	 * returns an ArrayList of strings of the IDs of the closest neighbors 
 	 */
@@ -195,6 +207,12 @@ public class KdTree<T extends KdTreeNode>{
 		}
 	}
 	
+	/** 
+	 * LOOK AT THIS 
+	 * @author ambikamiglani
+	 *
+	 * @param <T>
+	 */
 	private class DistanceComparator<T extends KdTreeNode> implements Comparator<T>{
 		KdTreeNode _comparatorTarget; 
 		public void setTarg(KdTreeNode target) {
