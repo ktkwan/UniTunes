@@ -239,7 +239,11 @@ public class Login {
           "</a> " + "   " +
           thirdLink + "</li>");
 
-          String one = String.format("<input type=\"hidden\" name=\"suggestion\" value=\"%s\"/><li name=\"suggestion\" value=\"%s\" id= \"song-list\"><a name=\"suggestion\" value=\"%s\" href=/songs id=\"song\" > %s </a>  %s <a href=/songs id=\"song\"></li>", firstSong, firstSong, firstSong, firstSong, firstLink);
+          String one = String.format("<input type=\"hidden\" name=\"suggestion\" value=\"%s\"/>"
+          		+ "<li name=\"suggestion\" value=\"%s\" id= \"song-list\">"
+          		+ "<a name=\"suggestion\" value=\"%s\" href=/songs id=\"song\" > "
+          		+ "%s </a> <a href=/songs id=\"song\"> %s </a></li>", firstSong, firstSong, firstSong, firstSong, firstLink);
+          
           System.out.println(one);
           String two = String.format("<input type=\"hidden\" name=\"suggestion\" value=\"%s\"/><li name=\"suggestion\" value=\"%s\" id= \"song-list\"><a name=\"suggestion\" value=\"%s\" href=/songs id=\"song\" > %s </a>  %s <a href=/songs id=\"song\"></li>", secondSong, secondSong, secondSong, secondSong, secondLink);
           String three = String.format("<input type=\"hidden\" name=\"suggestion\" value=\"%s\"/><li name=\"suggestion\" value=\"%s\" id= \"song-list\"><a name=\"suggestion\" value=\"%s\" href=/songs id=\"song\" > %s </a>  %s <a href=/songs id=\"song\"></li>", thirdSong, thirdSong, thirdSong, thirdSong, thirdLink);
