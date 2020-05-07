@@ -17,18 +17,16 @@ public class KDTreeTest {
     private KdTree<Song> tree2;
     private KdTree<Song> tree3;
 
-    //private KdTreeNode<String> root1;
-    //private KdTreeNode<String> root2;
-    //private KdTreeNode<String> root3;
-    
-    //@Before
-    //public void () {
-    
-    
+    private KdTreeNode root1;
+    private KdTreeNode root2;
+    private KdTreeNode root3;
+    // private KdTreeNode<String> root2;
+    // private KdTreeNode<String> root3;
 
-    
-    
-    
-    
+    @Before
+    public void setUpTree() {
+	ArrayList<KdTreeNode> nodes = new ArrayList<KdTreeNode>();
+
+    }
 
 }
