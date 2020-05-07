@@ -11,12 +11,20 @@ import edu.brown.cs.student.kdtree.KdTreeNode;
 
 
 import edu.brown.cs.student.brown_spotify.Song;
+import edu.brown.cs.student.brown_spotify.UniTunes;
+import edu.brown.cs.student.database.SongDatabase;
+import edu.brown.cs.student.database.UserDatabase;
 
 public class UniTunesTest {
+    private static SongDatabase songdb;
+    private static UserDatabase userdb; 
+    private static UniTunes tunes;
+    
     
     @Before
     public void setup() {
-	
+	 tunes = new UniTunes(songdb, userdb);
+	 tunes.setUpClusters();
     }
     
    

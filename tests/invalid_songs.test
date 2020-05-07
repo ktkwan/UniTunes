@@ -3,6 +3,6 @@ db data/brown_songs.sqlite3
 connect "blank" "banker"
 OUTPUT
 running database command 
-running connect command
+ERROR: Could not find song name in database
 ERROR:
 END
