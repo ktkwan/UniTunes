@@ -19,7 +19,7 @@ public class UniTunesTest {
     private static SongDatabase songdb;
     private static UserDatabase userdb; 
     private static UniTunes tunes;
-    
+    /*
     
     @Before
     public void setup() {
@@ -27,6 +27,6 @@ public class UniTunesTest {
 	 tunes.setUpClusters();
     }
     
-   
+   */
 
 }
