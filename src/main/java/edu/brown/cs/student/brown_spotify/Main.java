@@ -58,11 +58,11 @@ public final class Main {
 
   private Main(String[] args) {
     this.args = args;
-    userDb = null; 
-    songDb = null; 
+    userDb = null;
+    songDb = null;
     uniTunesProgram = null;
   }
-  
+
   public static HashMap<String, String> song_hashmap = new HashMap<>();
 
   private void run(){
@@ -131,9 +131,9 @@ public final class Main {
     }
     // Creating a hashmap of commands that corresponds to different classes that implement the
     // Command interface
-    HashMap<String, Command> map = new HashMap<String, Command>();  
-    //create a unitunes object 
-    
+    HashMap<String, Command> map = new HashMap<String, Command>();
+    //create a unitunes object
+
     try {
 		    uniTunesProgram = new UniTunes(songDb, userDb);
 		    map.put("user", uniTunesProgram.getUserCommand());
@@ -142,12 +142,12 @@ public final class Main {
 		    map.put("connect", uniTunesProgram.getConnectCommand());
 		    REPL repl = new REPL(map);
 		    repl.runRepl();
-        throw new SQLException("throw"); 
+        throw new SQLException("throw");
 	} catch (SQLException e1) {
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
 
-	} 
+	}
 
   }
 
@@ -180,23 +180,23 @@ public final class Main {
     Spark.get("/song/:songID", new SongInfoHandler(), freeMarker);
     Spark.post("/songs", new AddToLibraryHandler(), freeMarker);
   }
-  
+
   private static class AddToLibraryHandler implements TemplateViewRoute {
 
 	@Override
 	public ModelAndView handle(Request request, Response response) throws Exception {
-		QueryParamsMap qm = request.queryMap(); 
-		String songToAdd = qm.value("add"); 
-	
-		// need to fix this later =====> design issues 
+		QueryParamsMap qm = request.queryMap();
+		String songToAdd = qm.value("add");
+
+		// need to fix this later =====> design issues
 		//UserDatabase.addSongToLibrary(Login.getCurrentUser(), songToAdd);
-    String user = Login.getCurrentUser(); 
-    User curUser = UserDatabase.getUserLibrary(user); 
+    String user = Login.getCurrentUser();
+    User curUser = UserDatabase.getUserLibrary(user);
     String name = DatabaseConnection.getNameFromID(songToAdd);
     if (!curUser.favoriteSongs.contains(SongDatabase.getSongFromName(name))){
       curUser.addSong(SongDatabase.getSongFromName(name));
     }
-    
+
 		HashMap<String, String> song_names = DatabaseConnection.getAllSongNames();
 		song_hashmap = song_names;
 		String songs = "";
@@ -206,55 +206,49 @@ public final class Main {
 		List<String> art_list = new ArrayList<>();
 		HashMap<String, String> song_to_button = new HashMap<>();
 		for (Map.Entry<String, String> entry: song_names.entrySet()){
-			 
+
 			 String songLink = String.format("<a href=\"song/%s\"> %s </a>", entry.getKey(), entry.getValue());
-			 
+
 			 songs += songLink;
-			//  String likeButton = String.format(
-			//  		"<button type=\"submit\" name=\"add\" value=\"%s\"> <3 </button>", entry.getKey());
 			 String likeButton = String.format(
-				 		"<button class=\"btn-secondary like-review\" name=\"add\" value=\"%s\">\n" + 
-				 		"    <i class=\"fa fa-heart\" aria-hidden=\"false\"></i> Like\n" + 
+				 		"<button class=\"btn-secondary like-review\" name=\"add\" value=\"%s\">\n" +
+				 		"    <i class=\"fa fa-heart\" aria-hidden=\"false\"></i> Like\n" +
 				 		"  </button>", entry.getKey());
-			 n.add(songLink); 
+			 n.add(songLink);
 			 n.add(likeButton);
 			 song_to_button.put(songLink, likeButton);
 			 String album = String.format("<a href=\"song/%s\"> <img src=%s> </a>", entry.getKey(), DatabaseConnection.getAlbumArt(entry.getKey()));
 			 map.put(songLink, album);
-//			 if(entry.getKey().contentEquals(songToAdd)) { 
-//				 n.add("Added to Library!"); 
-//			 }
 		}
-		
+
 		Map<String, HashMap<String, String>> variables = ImmutableMap.of("display", song_to_button, "songs", map);
 		return new ModelAndView(variables, "song_query.ftl");
-	} 
-	  
+	}
+
   }
-  
+
   private static class SongHandler implements TemplateViewRoute {
 
 	@Override
-	public ModelAndView handle(Request request, Response response) throws Exception {		
+	public ModelAndView handle(Request request, Response response) throws Exception {
 		HashMap<String, String> song_names = DatabaseConnection.getAllSongNames();
 		song_hashmap = song_names;
-    QueryParamsMap qm = request.queryMap(); 
-    String suggestion_song = qm.value("suggestion");
-    System.out.println(suggestion_song); 
+    QueryParamsMap qm = request.queryMap();
+    String suggestion_song = qm.value("add");
+    String s = request.queryParams("suggestion");
     String[] command = new String[3];
     command[0] = "suggest";
     command[1] = "song";
     command[2] = suggestion_song;
-    String user = Login.getCurrentUser(); 
-    User curUser = UserDatabase.getUserLibrary(user); 
+    String user = Login.getCurrentUser();
+    User curUser = UserDatabase.getUserLibrary(user);
     // curUser.suggestSong = suggest;
-    //System.out.println("song: " + curUser.getSuggest());
-    //System.out.println("song: " + suggestion_song);
-   //System.out.println("entire command "+ command);
+    System.out.println("song: " + curUser.getSuggest());
+    System.out.println("song: " + s);
+    System.out.println("entire command "+ command);
     //UniTunes uni = new UniTunes(songDb, userDb);
-
-    uniTunesProgram.getSuggestCommand().runCommand(command);
-    System.out.println("Here: " + uniTunesProgram.suggestedSongs);
+    // uniTunesProgram.getSuggestCommand().runCommand(command);
+    // System.out.println("Here: " + uniTunesProgram.suggestedSongs);
 
 		String songs = "";
 		HashMap<String, String> map = new HashMap<>();
@@ -265,38 +259,38 @@ public final class Main {
 
 		HashMap<String, String> song_to_button = new HashMap<>();
 		for (Map.Entry<String, String> entry: song_names.entrySet()){
-        
-        
-			 String songLink = String.format("<a href=\"song/%s\"> %s </a>", 
+
+
+			 String songLink = String.format("<a href=\"song/%s\"> %s </a>",
 					 entry.getKey(), entry.getValue());
 			 songs += songLink;
 //			 String likeButton = String.format(
 //				 		"<button  class=like type=\"submit\" name=\"add\" value=\"%s\"> <3 </button>", entry.getKey());
 			 String likeButton = String.format(
-				 		"<button class=\"btn-secondary like-review\" value=\"%s\" name=\"add\">\n" + 
-				 		"    <i class=\"fa fa-heart\" aria-hidden=\"true\"></i> Like\n" + 
+				 		"<button class=\"btn-secondary like-review\" value=\"%s\" name=\"add\">\n" +
+				 		"    <i class=\"fa fa-heart\" aria-hidden=\"true\"></i> Like\n" +
 				 		"  </button>", entry.getKey());
 			 n.add(songLink);
-			 n.add(likeButton); 
-			 
+			 n.add(likeButton);
+
 			 song_to_button.put(songLink, likeButton);
 			 art_list.add(DatabaseConnection.getAlbumArt(entry.getKey()));
 			 String album = String.format("<a href=\"song/%s\"> <img src=%s> </a>", entry.getKey(), DatabaseConnection.getAlbumArt(entry.getKey()));
 			 map.put(songLink, album);
-        
+
 		}
 		Map<String, HashMap<String, String>> variables = ImmutableMap.of("display", song_to_button, "songs", map);
 		return new ModelAndView(variables, "song_query.ftl");
 	}
   }
-  
+
   private static class SongInfoHandler implements TemplateViewRoute {
 	  @Override
 	  public ModelAndView handle(Request req, Response res) throws SQLException {
 		  String songID = req.params(":songID");
 		  System.out.println("ID: " + songID);
 		  HashMap<String, String> song_names = DatabaseConnection.getAllSongNames();
-		
+
 		String l = DatabaseConnection.getSpotifyLinkFromID(songID);
 		System.out.println("ID: " + DatabaseConnection.song_hashmap);
 		String link = String.format("href=\"http://%s\" target=\"_blank\"", l);

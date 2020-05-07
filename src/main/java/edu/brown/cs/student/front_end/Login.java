@@ -177,6 +177,11 @@ public class Login {
     @Override
     public ModelAndView handle(Request req, Response res) throws SQLException {
       loggedIn = true; 
+
+      
+      QueryParamsMap qm = req.queryMap(); 
+		  String songToAdd = qm.value("add");
+      System.out.println("song: " + songToAdd);
       String firstName = req.queryParams("firstName");
       String lastName = req.queryParams("lastName");
       String email = req.queryParams("email");
@@ -197,7 +202,7 @@ public class Login {
       String firstSong = randomTracks.get(0);
       String firstSongID = DatabaseConnection.getIDFromSongName(firstSong);
       String firstArtist = DatabaseConnection.getArtistFromSongID(firstSongID);
-      String firstLink = String.format("<a href=\"http://%s\" target=\"_blank\" %s </a>",
+      String firstLink = String.format("<a href=\"http://%s\" target=\"_blank\"> %s </a>",
           DatabaseConnection.getSpotifyLinkFromID(firstSongID), "Listen here!");
 
       //Organising information for second song
@@ -239,14 +244,12 @@ public class Login {
           "</a> " + "   " +
           thirdLink + "</li>");
 
-          String one = String.format("<input type=\"hidden\" name=\"suggestion\" value=\"%s\"/>"
-          		+ "<li name=\"suggestion\" value=\"%s\" id= \"song-list\">"
-          		+ "<a name=\"suggestion\" value=\"%s\" href=/songs id=\"song\" > "
-          		+ "%s </a> <a href=/songs id=\"song\"> %s </a></li>", firstSong, firstSong, firstSong, firstSong, firstLink);
-          
+          String one = String.format("<li id= \"song-list\"><a name=\"suggestion\" value=\"%s\" href=/songs id=\"song\" > %s </a>  %s </li>", firstSong, firstSong, firstLink);
           System.out.println(one);
-          String two = String.format("<input type=\"hidden\" name=\"suggestion\" value=\"%s\"/><li name=\"suggestion\" value=\"%s\" id= \"song-list\"><a name=\"suggestion\" value=\"%s\" href=/songs id=\"song\" > %s </a>  %s <a href=/songs id=\"song\"></li>", secondSong, secondSong, secondSong, secondSong, secondLink);
-          String three = String.format("<input type=\"hidden\" name=\"suggestion\" value=\"%s\"/><li name=\"suggestion\" value=\"%s\" id= \"song-list\"><a name=\"suggestion\" value=\"%s\" href=/songs id=\"song\" > %s </a>  %s <a href=/songs id=\"song\"></li>", thirdSong, thirdSong, thirdSong, thirdSong, thirdLink);
+          String two = String.format("<li id= \"song-list\"><a name=\"suggestion\" value=\"%s\" href=/songs id=\"song\" > %s </a>  %s </li>", secondSong, secondSong, secondLink);
+          String three = String.format("<li id= \"song-list\"><a name=\"suggestion\" value=\"%s\" href=/songs id=\"song\" > %s </a>  %s </li>", thirdSong, thirdSong, thirdLink);
+          // String two = String.format("<input type=\"hidden\" name=\"suggestion\" value=\"%s\"/><li name=\"suggestion\" value=\"%s\" id= \"song-list\"><a name=\"suggestion\" value=\"%s\" href=/songs id=\"song\" > %s </a>  %s <a href=/songs id=\"song\"></li>", secondSong, secondSong, secondSong, secondSong, secondLink);
+          // String three = String.format("<input type=\"hidden\" name=\"suggestion\" value=\"%s\"/><li name=\"suggestion\" value=\"%s\" id= \"song-list\"><a name=\"suggestion\" value=\"%s\" href=/songs id=\"song\" > %s </a>  %s <a href=/songs id=\"song\"></li>", thirdSong, thirdSong, thirdSong, thirdSong, thirdLink);
 
           songs2.add(one);
           songs2.add(two);
@@ -263,6 +266,22 @@ public class Login {
           welcomeMessage, "songs", songs2, "art", art);
       return new ModelAndView(variables,"new_account.ftl");
     }
+
+    public static void setSuggest(String song_name){
+      System.out.println("in setting!!!");
+       String user = Login.getCurrentUser(); 
+        User curUser = UserDatabase.getUserLibrary(user); 
+        curUser.setSuggest(song_name);
+        
+    }
+
+    public static String getSuggest(){
+      String user = Login.getCurrentUser(); 
+        User curUser = UserDatabase.getUserLibrary(user); 
+        
+      return curUser.getSuggest();
+    }
+
 
   }
 
