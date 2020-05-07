@@ -1,0 +1,8 @@
+INPUT
+db data/brown_songs.sqlite3
+connect "blank" "banker"
+OUTPUT
+running database command 
+running connect command
+ERROR:
+END
