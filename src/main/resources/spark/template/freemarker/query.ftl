@@ -24,8 +24,8 @@
                 <b class=first1>First Name:</b> <input type="text" name="firstName" class=email>
                 <b class=last1>Last Name: </b><input type="text" name="lastName" class=email>
                 <b>Email: </b><input type="text" name="email" class=email>
-                <b>Password: </b><input type="text" name="password" class=email>
-                <b>Confirm Password: </b><input type="text" name="confirm-password" class=email>
+                <b>Password: </b><input type="password" name="password" class=email>
+                <b>Confirm Password: </b><input type="password" name="confirm-password" class=email>
                 <input type="submit" id="submit" class=sub></input>
             </div>
             </form>

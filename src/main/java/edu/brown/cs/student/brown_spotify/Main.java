@@ -239,7 +239,8 @@ public final class Main {
 		HashMap<String, String> song_names = DatabaseConnection.getAllSongNames();
 		song_hashmap = song_names;
     QueryParamsMap qm = request.queryMap(); 
-    String suggestion_song = qm.value("suggestion");
+    String suggestion_song = qm.value("add");
+    String s = request.queryParams("suggestion");
     String[] command = new String[3];
     command[0] = "suggest";
     command[1] = "song";
@@ -248,11 +249,11 @@ public final class Main {
     User curUser = UserDatabase.getUserLibrary(user); 
     // curUser.suggestSong = suggest;
     System.out.println("song: " + curUser.getSuggest());
-    System.out.println("song: " + suggestion_song);
+    System.out.println("song: " + s);
     System.out.println("entire command "+ command);
     //UniTunes uni = new UniTunes(songDb, userDb);
-    uniTunesProgram.getSuggestCommand().runCommand(command);
-    System.out.println("Here: " + uniTunesProgram.suggestedSongs);
+    // uniTunesProgram.getSuggestCommand().runCommand(command);
+    // System.out.println("Here: " + uniTunesProgram.suggestedSongs);
 
 		String songs = "";
 		HashMap<String, String> map = new HashMap<>();
