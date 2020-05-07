@@ -135,9 +135,6 @@ public class KdTree<T extends KdTreeNode>{
 			neigh.add(curr);
 		}
 		int dim = curr.level % _dimensions; // set this to the number of dimensions 
-//		System.out.println("curr level" + curr.level); 
-//		System.out.println("curr coords" + curr.coords); 
-//		System.out.println("targ coords" + targ.coords); 
 		double axis_d = axisDistance(curr.coords, targ.coords,dim);
 		//get the euclidean distance of furthest node from the target 
 		maxDistance = d.distance(neigh.peek().coords, targ.coords);
@@ -181,7 +178,7 @@ public class KdTree<T extends KdTreeNode>{
 		Collections.sort(closest, _distComparator);
 		for (KdTreeNode r: closest) {
 			if(r!=target) {
-				System.out.println(r.id);
+				//System.out.println(r.id);
 				output.add(r.id); 
 			}
 		}

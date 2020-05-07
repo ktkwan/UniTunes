@@ -33,7 +33,7 @@ public class UniTunes {
   private List<Song> clusters;
   private static List<Song> allSongs;
   private SentimentAnalysis sent; 
-  public static List<String> suggestedSongs;
+  public List<String> suggestedSongs;
   
 
   public UniTunes(SongDatabase sdb, UserDatabase udb) {
@@ -139,13 +139,13 @@ public class UniTunes {
   /**
    * helper function to find the closest cluster given a dummy user song
    */
-  public Song findClosestCentroid(Song dummy) {
+  public Song findClosestCentroid(Song s) {
 	  double closestDist = Integer.MAX_VALUE;
 	  Song closestCentroid = null;
 	  
 	  for(int i = 0; i< this.clusters.size(); i++) {
 		  Song cur = this.clusters.get(i);
-		  double curDist = tree.findistance(dummy.coords, cur.coords);
+		  double curDist = tree.findistance(s.coords, cur.coords);
 		  if(curDist < closestDist) {
 			  closestDist = curDist;
 			  closestCentroid = cur;
@@ -168,16 +168,16 @@ public class UniTunes {
 	      // centroid to a list of songs with the given centroid.
 	      int count = 0; 
 	      List<String> recommendations = new ArrayList<String>(); 
-        // just to test 
-//        System.out.println("rootNode" + ((Song)tree.getRoot()).name); 
-        List<String> allNodes = tree.neighbors(curSong, 1, tree.getRoot()); 
-        //List<KdTreeNode> allNodes = tree.neighbors(closestCentroid, 1, tree.getRoot()); 
+        List<String> allNodes = tree.neighbors(curSong, 10, tree.getRoot()); 
 	      while(count<k) {
 	    	  String curId = allNodes.get(count); 
 	    	  try {
-	    	  String song_name = DatabaseConnection.getSongNameFromID(curId); 
-	    	  if (curId.contains("centroid-") && (!curId.equals("dummy"))) {
-	        	  recommendations.add(song_name); 
+          String song_name = DatabaseConnection.getSongNameFromID(curId); 
+          System.out.println(song_name); 
+	    	  if ((!curId.contains("centroid-")) && (!curId.equals("dummy"))) {
+              recommendations.add(song_name); 
+              Song recSong = SongDatabase.getSongFromName(song_name); 
+              System.out.println("name: " + song_name + " genre: " + recSong.genre + " Danceability: " + recSong.attribute);
 	        	  count += 1; 
 	    	  }
 	    	  }catch(SQLException e) { 
@@ -206,10 +206,11 @@ public class UniTunes {
 //      System.out.println("found the closest centroid" + closestCentroid);
       int count = 0; 
       List<String> recommendations = new ArrayList<String>(); 
+      List<String> allNodes = tree.neighbors(avg, 10, tree.getRoot()); 
       while(count<k) {
-    	  String curId = tree.neighbors(closestCentroid, 1, tree.getRoot()).get(0); 
+    	  String curId = allNodes.get(count); 
     	  try {
-	    	  String song_name = DatabaseConnection.getSongNameFromID(curId); 
+          String song_name = DatabaseConnection.getSongNameFromID(curId); 
 	    	  if (curId.contains("centroid-") && (!curId.equals("dummy"))) {
 	        	  recommendations.add(song_name); 
 	        	  count += 1; 
@@ -289,7 +290,7 @@ public class UniTunes {
       TO DO: Implement kNN and algorithm lol
        */
       System.out.println("running suggest command");
-      int k = 1; 
+      int k = 3; 
       // this is the case where it is an existing user, run suggest user userId 
 
     	  String type = args[1]; 

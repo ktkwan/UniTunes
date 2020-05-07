@@ -126,7 +126,6 @@ public class SongDatabase {
 		    Double liveness = null; 
 		    Double tempo = null; 
 		    
-			int counter = 0;
 		    String query = "SELECT track_name, spotify_id, genre, duration, popularity,danceability, energy, loudness, speechiness, acousticness, liveness, tempo from songs";
 		    try (PreparedStatement prep = conn.prepareStatement(query)) {
 		      try (ResultSet rs = prep.executeQuery()) {
@@ -162,7 +161,7 @@ public class SongDatabase {
 				  coordValues[10] = tempo; 
 				  Coordinates c = new Coordinates(coordValues); 
 		          Song s = new Song(null, null, c, spotify_id); 
-		          s.setClassifiable(genre, duration, popularity);
+		          s.setClassifiable(genre, duration, popularity, danceability);
 		          s.setData(name, spotify_id);
 		          songs.add(s); 
 		          songMap.put(name, s); 
@@ -175,8 +174,7 @@ public class SongDatabase {
 		    } catch (SQLException e2) {
 		      throw (e2);
 			}
-			System.out.println("done creating all songs: " + counter); 
-			counter += 1; 
+			System.out.println("loading songs"); 
 		    return songs;
 		  }
 	 

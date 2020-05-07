@@ -240,6 +240,7 @@ public final class Main {
 		song_hashmap = song_names;
     QueryParamsMap qm = request.queryMap(); 
     String suggestion_song = qm.value("suggestion");
+    System.out.println(suggestion_song); 
     String[] command = new String[3];
     command[0] = "suggest";
     command[1] = "song";
@@ -247,10 +248,11 @@ public final class Main {
     String user = Login.getCurrentUser(); 
     User curUser = UserDatabase.getUserLibrary(user); 
     // curUser.suggestSong = suggest;
-    System.out.println("song: " + curUser.getSuggest());
-    System.out.println("song: " + suggestion_song);
-    System.out.println("entire command "+ command);
+    //System.out.println("song: " + curUser.getSuggest());
+    //System.out.println("song: " + suggestion_song);
+   //System.out.println("entire command "+ command);
     //UniTunes uni = new UniTunes(songDb, userDb);
+
     uniTunesProgram.getSuggestCommand().runCommand(command);
     System.out.println("Here: " + uniTunesProgram.suggestedSongs);
 
