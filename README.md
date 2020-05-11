@@ -26,7 +26,7 @@ freemarker and Spark.
 2. ./run --gui --database=data/brown_songs.sqlite3 --users=users.sqlite3
 3. on a web browser go to "localhost:4566/unitunes" and begin exploring Brown University Music!
 
-
+![Recommended Song Page](song.png)
 
 
 
