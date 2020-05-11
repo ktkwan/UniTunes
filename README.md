@@ -1,9 +1,5 @@
 # uniTunes
 
-![Recommended Song Page](home.png)
-
-![Recommended Song Page](song.png)
-
 Student’s currently have little exposure to the student audio(music, podcasts, dj set) creators on campus.
 Furthermore, student creators don’t have a platform to share their work with other students in a way that 
 will garner their work the attention that they deserve.
@@ -30,7 +26,11 @@ freemarker and Spark.
 2. ./run --gui --database=data/brown_songs.sqlite3 --users=users.sqlite3
 3. on a web browser go to "localhost:4566/unitunes" and begin exploring Brown University Music!
 
+![Recommended Song Page](home.png)
+
+![Recommended Song Page](song.png)
 
 
+![Video](page_recording.mov)
 
 
