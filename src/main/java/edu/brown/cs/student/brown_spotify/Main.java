@@ -242,14 +242,6 @@ public final class Main {
     command[2] = suggestion_song;
     String user = Login.getCurrentUser();
     User curUser = UserDatabase.getUserLibrary(user);
-    // curUser.suggestSong = suggest;
-    System.out.println("song: " + curUser.getSuggest());
-    System.out.println("song: " + s);
-    System.out.println("entire command "+ command);
-    //UniTunes uni = new UniTunes(songDb, userDb);
-    // uniTunesProgram.getSuggestCommand().runCommand(command);
-    // System.out.println("Here: " + uniTunesProgram.suggestedSongs);
-
 		String songs = "";
 		HashMap<String, String> map = new HashMap<>();
 		List<String> n = new ArrayList<>();
@@ -288,11 +280,9 @@ public final class Main {
 	  @Override
 	  public ModelAndView handle(Request req, Response res) throws SQLException {
 		  String songID = req.params(":songID");
-		  System.out.println("ID: " + songID);
 		  HashMap<String, String> song_names = DatabaseConnection.getAllSongNames();
 
 		String l = DatabaseConnection.getSpotifyLinkFromID(songID);
-		System.out.println("ID: " + DatabaseConnection.song_hashmap);
 		String link = String.format("href=\"http://%s\" target=\"_blank\"", l);
 		  Map<String, String> variables = ImmutableMap.of("title",  "uniTunes", "song_name", song_names.get(songID), "display", link, "artist_name", DatabaseConnection.getArtistFromSongID(songID), "album_art", DatabaseConnection.getAlbumArt(songID));
 		  return new ModelAndView(variables, "song.ftl");

@@ -174,7 +174,6 @@ public class SongDatabase {
 		    } catch (SQLException e2) {
 		      throw (e2);
 			}
-			System.out.println("loading songs"); 
 		    return songs;
 		  }
 	 
